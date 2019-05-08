@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerMainWPF", "BudgetPlannerMainWPF\BudgetPlannerMainWPF.csproj", "{364C4824-38CC-4FB4-A4F1-5D64E5E1EAF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerLib", "BudgetPlannerLib\BudgetPlannerLib.csproj", "{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{364C4824-38CC-4FB4-A4F1-5D64E5E1EAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{364C4824-38CC-4FB4-A4F1-5D64E5E1EAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{364C4824-38CC-4FB4-A4F1-5D64E5E1EAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
