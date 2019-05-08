@@ -45,17 +45,25 @@
         <!--#endregion-->
         
         <!--#region ::Test Info::-->
-        <TextBlock x:Name="SelectedIncome_Category"
+        <TextBlock x:Name="SelectedIncome" Text="{Binding Path=SelectedIncome.Value}" Background="AliceBlue"
                    Grid.Column="1" Grid.Row="7"/>
+        <TextBlock x:Name="SelectedExpense" Text="{Binding Path=SelectedExpense.Value}" Background="AliceBlue"
+                   Grid.Column="2" Grid.Row="7"/>
         <!--#endregion-->
         
         <!--#region ::Buttons::-->
-        <Button x:Name="AddIncomeColumn" Content="New Income"
-                Grid.Column="1" Grid.Row="5"/>
-        <Button x:Name="AddExpenseColumn" Content="New Expense"
-                Grid.Column="2" Grid.Row="5"/>
-        <Button x:Name="ReomveSelected" Content="Remove Selected"
-                Grid.Column="1" Grid.Row="6"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2">
+            <Button x:Name="AddIncomeColumn" Content="New Income"/>
+            <Button x:Name="AddExpenseColumn" Content="New Expense"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">
+            <Button x:Name="RemoveIncome">Remove Income</Button>
+            <Button x:Name="RemoveExpense">Remove Expense</Button>
+        </StackPanel>
+        
         <!--#endregion-->
         
         <!--#region ::Display Category::-->
@@ -65,7 +73,8 @@
         
         <!--#region ::Data Grid Income::-->
         <DataGrid x:Name="IncomeData" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100" CanUserAddRows="True" SelectedItem="{Binding Path=SelectedIncome}"
+                  MinWidth="100" CanUserAddRows="True" CanUserDeleteRows="False"
+                  SelectedItem="{Binding Path=SelectedIncome}"
                   Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" Margin="0,0,10,0" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
@@ -77,7 +86,8 @@
         
         <!--#region ::Data Grid Expense::-->
         <DataGrid x:Name="ExpenseData" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100"
+                  MinWidth="100" CanUserAddRows="True"
+                  SelectedItem="{Binding Path=SelectedExpense}"
                   Grid.Column="4" Grid.Row="1" Grid.RowSpan="7" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>

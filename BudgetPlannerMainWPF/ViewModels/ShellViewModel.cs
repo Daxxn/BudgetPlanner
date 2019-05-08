@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows;
 using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
 using Caliburn.Micro;
@@ -15,6 +16,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         private BindableCollection<Expense> _expenseDataList = new BindableCollection<Expense>();
 
         private Income _selecetedIncome;
+        private Expense _selectedExpense;
 
         private double _incomeTotal;
         private double _expenseTotal;
@@ -34,11 +36,6 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataElement.ValueChanged += this.DataElement_ValueChanged;
         }
 
-        // Testing needed
-        private void DataElement_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
         #endregion
 
         #region - Methods
@@ -63,6 +60,11 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        private void DataElement_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateData();
+        }
+
         public void AddIncomeColumn()
         {
             IncomeData.Add(new Income("", 0, IncomeData.Count));
@@ -71,6 +73,18 @@ namespace BudgetPlannerMainWPF.ViewModels
         public void AddExpenseColumn()
         {
             ExpenseData.Add(new Expense("New Expense", 0.0, ExpenseData.Count));
+        }
+
+        public void RemoveIncome()
+        {
+            IncomeData.Remove(SelectedIncome);
+            SelectedIncome = null;
+        }
+
+        public void RemoveExpense()
+        {
+            ExpenseData.Remove(SelectedExpense);
+            SelectedExpense = null;
         }
 
         public static void Exit()
@@ -114,6 +128,16 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _selecetedIncome = value;
+                NotifyOfPropertyChange(() => SelectedIncome);
+            }
+        }
+
+        public Expense SelectedExpense
+        {
+            get { return _selectedExpense; }
+            set
+            {
+                _selectedExpense = value;
             }
         }
 
