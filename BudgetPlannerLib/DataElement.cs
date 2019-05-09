@@ -16,6 +16,7 @@ namespace BudgetPlannerLib
         #endregion
 
         #region - Constructors
+        public DataElement() { }
         public DataElement(string category, double value)
         {
             Category = category;

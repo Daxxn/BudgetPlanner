@@ -14,6 +14,7 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Constructors
+        public Expense() : base() { }
         public Expense(string categ, double val, int id) : base(categ, val)
         {
             Category = categ;
@@ -24,7 +25,15 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Methods
-
+        public static Expense FromFields(string[] fields)
+        {
+            return new Expense()
+            {
+                IdNumber = Int32.Parse(fields[0]),
+                Category = fields[1],
+                Value = Double.Parse(fields[2])
+            };
+        }
         #endregion
 
         #region - Properties

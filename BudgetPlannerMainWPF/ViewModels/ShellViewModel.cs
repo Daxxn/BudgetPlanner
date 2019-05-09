@@ -6,6 +6,7 @@ using System.Windows;
 using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
 using Caliburn.Micro;
+using Microsoft.Win32;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -22,7 +23,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         private double _expenseTotal;
 
         private double _netDifference;
-        
+
+        private FileConrol _saveControl;
+        private FileConrol _openControl;
+
+        public string FilePath { get; set; }
         #endregion
 
         #region - Constructors
@@ -65,6 +70,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             UpdateData();
         }
 
+        #region Add/Remove
         public void AddIncomeColumn()
         {
             IncomeData.Add(new Income("", 0, IncomeData.Count));
@@ -85,6 +91,38 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             ExpenseData.Remove(SelectedExpense);
             SelectedExpense = null;
+        }
+        #endregion
+
+        public void OpenFile()
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Multiselect = false;
+            openFile.Title = "Open Budget Plan";
+            if(openFile.ShowDialog() == true)
+            {
+                FilePath = openFile.FileName;
+                OpenController = new FileConrol(openFile.FileName);
+                OpenController.OpenFile();
+
+                IncomeData = new BindableCollection<Income>(OpenController.IncomeData);
+                ExpenseData = new BindableCollection<Expense>(OpenController.ExpenseData);
+            }
+        }
+
+        public void SaveFile()
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Title = "Save Budget Plan";
+            saveFile.OverwritePrompt = true;
+            saveFile.AddExtension = true;
+            saveFile.DefaultExt = ".txt";
+
+            if(saveFile.ShowDialog() == true)
+            {
+                SaveController = new FileConrol(saveFile.FileName, IncomeData.ToList(), ExpenseData.ToList());
+                SaveController.SaveFile();
+            }
         }
 
         public static void Exit()
@@ -170,6 +208,24 @@ namespace BudgetPlannerMainWPF.ViewModels
                 _expenseTotal = value;
                 NotifyOfPropertyChange(() => ExpenseTotal);
                 NotifyOfPropertyChange(() => ExpenseData);
+            }
+        }
+        
+        public FileConrol SaveController
+        {
+            get { return _saveControl; }
+            set
+            {
+                _saveControl = value;
+            }
+        }
+
+        public FileConrol OpenController
+        {
+            get { return _openControl; }
+            set
+            {
+                _openControl = value;
             }
         }
         #endregion

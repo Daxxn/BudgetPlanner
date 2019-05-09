@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DataElement.cs" />
     <Compile Include="Models\Expense.cs" />
+    <Compile Include="Models\FileConrol.cs" />
     <Compile Include="Models\Income.cs" />
     <Compile Include="Models\SubCategories.cs" />
     <Compile Include="TestDataAccesser.cs" />

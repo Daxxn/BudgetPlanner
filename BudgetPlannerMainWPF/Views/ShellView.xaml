@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
-        mc:Ignorable="d" WindowState="Maximized"
-        Title="Budget Planner" Height="450" Width="800">
+        mc:Ignorable="d"
+        Title="Budget Planner" Height="500" Width="800">
     <Grid>
         <!--#region ::Grid Definitions::-->
         <Grid.ColumnDefinitions>
@@ -18,13 +18,12 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -33,32 +32,41 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <!--#endregion-->
         
+        <!--#region ::Menu Bar::-->
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8">
+            <MenuItem x:Name="NewFile" Header="New"/>
+            <MenuItem x:Name="OpenFile" Header="Open"/>
+            <MenuItem x:Name="SaveFile" Header="Save"/>
+        </Menu>
+        <!--#endregion-->
+        
         <!--#region ::Info Boxes::-->
         <TextBox x:Name="IncomeTotal" Background="AliceBlue" MinWidth="100" IsReadOnly="True" Margin="0,0,10,0"
-                 Grid.Column="3" Grid.Row="8"/>
+                 Grid.Column="9" Grid.Row="9"/>
         <TextBox x:Name="ExpenseTotal" Background="AliceBlue" MinWidth="100" IsReadOnly="True"
-                 Grid.Column="4" Grid.Row="8"/>
+                 Grid.Column="10" Grid.Row="9"/>
         <!--#endregion-->
         
         <!--#region ::Test Info::-->
         <TextBlock x:Name="SelectedIncome" Text="{Binding Path=SelectedIncome.Value}" Background="AliceBlue"
-                   Grid.Column="1" Grid.Row="7"/>
+                   Grid.Column="2" Grid.Row="7"/>
         <TextBlock x:Name="SelectedExpense" Text="{Binding Path=SelectedExpense.Value}" Background="AliceBlue"
                    Grid.Column="2" Grid.Row="7"/>
         <!--#endregion-->
         
         <!--#region ::Buttons::-->
-        <StackPanel Orientation="Horizontal"
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2">
             <Button x:Name="AddIncomeColumn" Content="New Income"/>
             <Button x:Name="AddExpenseColumn" Content="New Expense"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal"
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">
             <Button x:Name="RemoveIncome">Remove Income</Button>
             <Button x:Name="RemoveExpense">Remove Expense</Button>
@@ -73,9 +81,9 @@
         
         <!--#region ::Data Grid Income::-->
         <DataGrid x:Name="IncomeData" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100" CanUserAddRows="True" CanUserDeleteRows="False"
+                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False"
                   SelectedItem="{Binding Path=SelectedIncome}"
-                  Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" Margin="0,0,10,0" >
+                  Grid.Column="9" Grid.Row="1" Grid.RowSpan="8" Margin="10,0,10,0" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                 <DataGridTextColumn Header="Income" Binding="{Binding Path=Category, Mode=TwoWay}"/>
@@ -86,9 +94,9 @@
         
         <!--#region ::Data Grid Expense::-->
         <DataGrid x:Name="ExpenseData" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100" CanUserAddRows="True"
+                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False"
                   SelectedItem="{Binding Path=SelectedExpense}"
-                  Grid.Column="4" Grid.Row="1" Grid.RowSpan="7" Margin="0,0,0,0">
+                  Grid.Column="10" Grid.Row="1" Grid.RowSpan="8" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                 <DataGridTextColumn Header="Expense" Binding="{Binding Path=Category, Mode=TwoWay}"/>
