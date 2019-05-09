@@ -40,7 +40,6 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             DataElement.ValueChanged += this.DataElement_ValueChanged;
         }
-
         #endregion
 
         #region - Methods
@@ -176,6 +175,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _selectedExpense = value;
+                NotifyOfPropertyChange(() => SelectedExpense);
             }
         }
 

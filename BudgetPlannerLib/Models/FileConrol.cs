@@ -67,6 +67,9 @@ namespace BudgetPlannerLib.Models
                     index++;
                 }
             }
+
+            parser.Close();
+            parser.Dispose();
             
         }
 
