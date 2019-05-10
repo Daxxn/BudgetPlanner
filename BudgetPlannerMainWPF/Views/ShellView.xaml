@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
         mc:Ignorable="d" Icon="C:\Users\Daxxn\Desktop\CustomOpenIcon.png"
-        Title="Budget Planner" Height="500" Width="800">
+        Title="Budget Planner" Height="500" Width="900" SizeToContent="Width"
+        WindowStyle="SingleBorderWindow" Topmost="True">
     
-    <Grid>
+    <Grid Name="Base_Grid">
         <!--#region ::Base Grid Definitions::-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -30,7 +31,7 @@
         <!--#endregion-->
 
         <!--#region ::Menu::-->
-        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <Menu Name="Menu_Bar" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <MenuItem x:Name="NewFile" Header="New"/>
             <MenuItem x:Name="OpenFile" Header="Open"/>
             <MenuItem x:Name="SaveFile" Header="Save"/>
@@ -38,7 +39,7 @@
         <!--#endregion-->
 
         <!--#region ::Control Buttons::-->
-        <Grid Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Margin="0,10,0,10">
+        <Grid Name="Row_Manipulation_Grid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Margin="0,10,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -49,24 +50,22 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+            <StackPanel Name="Add_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2"/>
-                <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2"/>
+                <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand"/>
+                <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2" Cursor="Hand"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+            <StackPanel Name="Remove_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                <Button x:Name="RemoveIncome" Margin="0,2,2,2">Remove Income</Button>
-                <Button x:Name="RemoveExpense" Margin="2,2,0,2">Remove Expense</Button>
+                <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">Remove Income</Button>
+                <Button x:Name="RemoveExpense" Margin="2,2,0,2" Cursor="Hand">Remove Expense</Button>
             </StackPanel>
         </Grid>
         <!--#endregion-->
 
-
-
         <!--#region ::Net Income Display::-->
-        <Grid Grid.Column="1" Grid.Row="3" Margin="0,10,0,10">
+        <Grid Name="Net_Income_Grid" Grid.Column="1" Grid.Row="3" Margin="0,10,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -82,9 +81,8 @@
         </Grid>
         <!--#endregion-->
 
-
         <!--#region ::Income Display::-->
-        <Grid Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="1" Margin="0,10,0,10">
+        <Grid Name="Selected_Income_Grid" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="1" Margin="0,10,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -97,23 +95,27 @@
             </Grid.RowDefinitions>
 
             <!--#region ::Income Text::-->
-            <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                    HorizontalAlignment="Center"
                    > Income Selection Information</TextBlock>
 
-            <TextBlock Grid.Column="0" Grid.Row="2">Name:</TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
             <TextBlock Text="{Binding Path=SelectedIncome.Category}" Background="AliceBlue"
-                       Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
+                       Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3">Amount:</TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
             <TextBlock Text="{Binding Path=SelectedIncome.Value}" Background="AliceBlue"
-                   Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
+                   Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+            <TextBlock Text="{Binding Path=SelectedIncome.SelectedCategory.CategoryName}" Background="AliceBlue"
+                       Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
 
         <!--#region ::Expense Display::-->
-        <Grid Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" Margin="0,10,0,10">
+        <Grid Name="Selected_Expense_Grid" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" Margin="0,10,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -122,10 +124,11 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!--#region ::Expense Text::-->
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                    HorizontalAlignment="Center" 
                    >Expense Selection information</TextBlock>
 
@@ -136,12 +139,16 @@
             <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
             <TextBlock Text="{Binding Path=SelectedExpense.Value}" Background="AliceBlue"
                    Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+            <TextBlock Text="{Binding Path=SelectedExpense.SelectedCategory.CategoryName}" Background="AliceBlue"
+                       Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
 
         <!--#region ::Data Grid::-->
-        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="8" Margin="10,0,0,0">
+        <Grid Name="Income_Expense_DataGrid_Grid" Grid.Column="2" Grid.Row="1" Grid.RowSpan="8" Margin="10,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -163,6 +170,26 @@
                     <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                     <DataGridTextColumn Header="Income" Binding="{Binding Path=Category, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay}"/>
+                    <DataGridTemplateColumn Header="Sub-Category">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=SelectedCategory.CategoryName, Mode=TwoWay}" 
+                                           ToolTip="Specifies the Sub-Category. Press Enter to save." Cursor="Hand"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=AllIncomeCategories}" SelectedItem="{Binding Path=SelectedCategory, Mode=TwoWay}" 
+                                          Cursor="Hand" MaxDropDownHeight="200">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=CategoryName, Mode=TwoWay}" ToolTip="Press Enter to save. (BUG)" Cursor="Hand"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <!--#endregion-->
@@ -176,6 +203,26 @@
                     <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                     <DataGridTextColumn Header="Expense" Binding="{Binding Path=Category, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay}"/>
+                    <DataGridTemplateColumn Header="Sub-Category">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=SelectedCategory.CategoryName, Mode=TwoWay}" 
+                                           ToolTip="Specifies the Sub-Category. Press Enter to save." Cursor="Hand"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=AllExpenseCategories}" SelectedItem="{Binding Path=SelectedCategory, Mode=TwoWay}" 
+                                          Cursor="Hand" MaxDropDownHeight="200">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=CategoryName, Mode=TwoWay}" ToolTip="Press Enter to save. (BUG)" Cursor="Hand"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <!--#endregion-->

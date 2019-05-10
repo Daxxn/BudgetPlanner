@@ -17,8 +17,10 @@ namespace BudgetPlannerLib
             "houshold furnishings", "car payment", "fuel", "car repairs/maintenance", "food & groceries", "snacks", "non-food products", "child care", "personal allowances",
             "phone bill", "cell phone", "internet", "cable/satelite", "computer expenses", "medical care", "dental care", "eye care", "medications" };
 
-        private string[] incomeSubCategories = { "Earned Income", "Unearned Income", "Other" };
-        private string[] expenseSubCategories = { "Deductions", "Heathcare", "Food", "Insurance", "Transportation" };
+        public string[] incomeSubCategories = { "Earned Income", "Unearned Income", "Other" };
+        public string[] expenseSubCategories = { "Deductions", "Heathcare", "Food", "Insurance", "Transportation" };
+
+        private List<SubCategory> _incomeSubCats;
 
         private List<string> _incomeCategories;
         private List<double> _incomeValues;
@@ -39,9 +41,47 @@ namespace BudgetPlannerLib
         {
             SetRandomData(incomeCategories, expenseCategories);
         }
+
+        public TestDataAccesser(int selector)
+        {
+            switch (selector)
+            {
+                default:
+                    SetRandomData();
+                    break;
+                case 1:
+                    SetStaticData();
+                    break;
+            }
+        }
         #endregion
 
         #region - Methods
+        private void SetStaticData()
+        {
+            IncomeCategories = incomeCategories.ToList();
+            IncomeValues = SetSampleNumbers(incomeCategories.Length);
+
+            ExpenseCategories = expenseCategories.ToList();
+            ExpenseValues = SetSampleNumbers(expenseCategories.Length);
+
+            IncomeList = new List<Income>();
+            ExpenseList = new List<Expense>();
+
+            Income.AllIncomeCategories = SetSubCategories(incomeSubCategories);
+            Expense.AllExpenseCategories = SetSubCategories(expenseSubCategories);
+
+            for (int i = 0; i < IncomeCategories.Count; i++)
+            {
+                IncomeList.Add(new Income(GetRandomItem(incomeSubCategories), IncomeCategories[i], IncomeValues[i], i + 1));
+            }
+
+            for (int i = 0; i < ExpenseCategories.Count; i++)
+            {
+                ExpenseList.Add(new Expense(GetRandomItem(expenseSubCategories), ExpenseCategories[i], ExpenseValues[i], i + 1));
+            }
+        }
+
         private void SetRandomData(int incAmount = 8, int expAmount = 12)
         {
             IncomeCategories = SetCategories(incomeCategories, incAmount);
@@ -64,7 +104,7 @@ namespace BudgetPlannerLib
             for (int i = 0; i < length; i++)
             {
                 int whole = roll.Next(1, 10 * 10);
-                int dec = roll.Next(0, 1000);
+                int dec = roll.Next(0, 99);
                 string tempNum = $"{whole}.{dec}";
                 tempNums.Add(Double.Parse(tempNum));
             }
@@ -82,6 +122,18 @@ namespace BudgetPlannerLib
             }
 
             return tempStr;
+        }
+
+        private List<SubCategory> SetSubCategories(string[] array)
+        {
+            List<SubCategory> subCats = new List<SubCategory>();
+
+            foreach (var item in array)
+            {
+                subCats.Add(new SubCategory(item));
+            }
+
+            return subCats;
         }
         #endregion
 
@@ -137,6 +189,15 @@ namespace BudgetPlannerLib
             set
             {
                 _expenses = value;
+            }
+        }
+
+        public List<SubCategory> IncomeSubCategories
+        {
+            get { return _incomeSubCats; }
+            set
+            {
+                _incomeSubCats = value;
             }
         }
         #endregion

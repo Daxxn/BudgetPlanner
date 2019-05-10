@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BudgetPlannerLib.Models
 {
     public class Expense : DataElement
     {
         #region - Fields
-        private static int AllExpenses { get; set; } = 0;
+        private static int NumOfExpenses { get; set; } = 0;
         private int _idNum;
+
+        private static List<SubCategory> _allExpenseCategories = new List<SubCategory>();
+        private SubCategory _selectedCategory;
         #endregion
 
         #region - Constructors
@@ -20,7 +21,15 @@ namespace BudgetPlannerLib.Models
             Category = categ;
             Value = val;
             IdNumber = id;
-            AllExpenses++;
+            NumOfExpenses++;
+        }
+        public Expense(string subCat, string categ, double val, int id) : base(categ, val)
+        {
+            SelectedCategory = new SubCategory(subCat);
+            Category = categ;
+            Value = val;
+            IdNumber = id;
+            NumOfExpenses++;
         }
         #endregion
 
@@ -43,6 +52,24 @@ namespace BudgetPlannerLib.Models
             set
             {
                 _idNum = value;
+            }
+        }
+
+        public static List<SubCategory> AllExpenseCategories
+        {
+            get { return _allExpenseCategories; }
+            set
+            {
+                _allExpenseCategories = value;
+            }
+        }
+
+        public SubCategory SelectedCategory
+        {
+            get { return _selectedCategory; }
+            set
+            {
+                _selectedCategory = value;
             }
         }
         #endregion

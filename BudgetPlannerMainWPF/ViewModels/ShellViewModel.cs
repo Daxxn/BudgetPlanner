@@ -28,14 +28,18 @@ namespace BudgetPlannerMainWPF.ViewModels
         private FileConrol _openControl;
 
         public string FilePath { get; set; }
+        
         #endregion
 
         #region - Constructors
         public ShellViewModel()
         {
-            TestDataAccesser testData = new TestDataAccesser(8, 20);
-            AddCategories(testData.IncomeCategories, testData.IncomeValues, 1);
-            AddCategories(testData.ExpenseCategories, testData.ExpenseValues, 2);
+            //TestDataAccesser testData = new TestDataAccesser(8, 20);
+            //AddCategories(testData.IncomeCategories, testData.IncomeValues, 1);
+            //AddCategories(testData.ExpenseCategories, testData.ExpenseValues, 2);
+
+            AddStaticCategories();
+
             UpdateData();
 
             DataElement.ValueChanged += this.DataElement_ValueChanged;
@@ -62,6 +66,13 @@ namespace BudgetPlannerMainWPF.ViewModels
                     ExpenseData.Add(new Expense(cats[i], vals[i], i));
                 }
             }
+        }
+
+        public void AddStaticCategories()
+        {
+            TestDataAccesser testData = new TestDataAccesser(1);
+            IncomeData = new BindableCollection<Income>(testData.IncomeList);
+            ExpenseData = new BindableCollection<Expense>(testData.ExpenseList);
         }
 
         private void DataElement_ValueChanged(object sender, EventArgs e)
@@ -91,6 +102,10 @@ namespace BudgetPlannerMainWPF.ViewModels
             ExpenseData.Remove(SelectedExpense);
             SelectedExpense = null;
         }
+        #endregion
+
+        #region SubCategories
+        
         #endregion
 
         public void OpenFile()
@@ -228,6 +243,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 _openControl = value;
             }
         }
+        
         #endregion
     }
 }
