@@ -7,12 +7,15 @@ using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
 using Caliburn.Micro;
 using Microsoft.Win32;
+using BudgetPlannerMainWPF.Views;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class ShellViewModel : Screen
+    public class ShellViewModel : Conductor<object>
     {
         #region - Fields
+        // ***\/ Moved to DataViewModel! \/***
+        /*
         private BindableCollection<Income> _incomeDataList = new BindableCollection<Income>();
         private BindableCollection<Expense> _expenseDataList = new BindableCollection<Expense>();
 
@@ -24,29 +27,28 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private double _netDifference;
 
+        */
         private FileConrol _saveControl;
         private FileConrol _openControl;
 
         public string FilePath { get; set; }
-        
+
+        private DataViewModel _dataViewModel = new DataViewModel();
+        private SubCategoryViewModel _categoryViewModel = new SubCategoryViewModel();
         #endregion
 
         #region - Constructors
         public ShellViewModel()
         {
-            //TestDataAccesser testData = new TestDataAccesser(8, 20);
-            //AddCategories(testData.IncomeCategories, testData.IncomeValues, 1);
-            //AddCategories(testData.ExpenseCategories, testData.ExpenseValues, 2);
+            DataViewModel.AddStaticCategories();
 
-            AddStaticCategories();
-
-            UpdateData();
-
-            DataElement.ValueChanged += this.DataElement_ValueChanged;
+            ActivateItem(DataViewModel);
         }
         #endregion
 
         #region - Methods
+        // ***\/ Moved to DataViewModel! \/***
+        /*
         /// <summary>
         /// Initializes a random list from TestDataAccesser
         /// </summary>
@@ -67,45 +69,49 @@ namespace BudgetPlannerMainWPF.ViewModels
                 }
             }
         }
-
+        
         public void AddStaticCategories()
         {
             TestDataAccesser testData = new TestDataAccesser(1);
             IncomeData = new BindableCollection<Income>(testData.IncomeList);
             ExpenseData = new BindableCollection<Expense>(testData.ExpenseList);
         }
-
-        private void DataElement_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
+        */
 
         #region Add/Remove
         public void AddIncomeColumn()
         {
-            IncomeData.Add(new Income("", 0, IncomeData.Count));
+            DataViewModel.IncomeDataList.Add(new Income("", 0, DataViewModel.IncomeDataList.Count));
         }
 
         public void AddExpenseColumn()
         {
-            ExpenseData.Add(new Expense("New Expense", 0.0, ExpenseData.Count));
+            DataViewModel.ExpenseDataList.Add(new Expense("New Expense", 0.0, DataViewModel.ExpenseDataList.Count));
         }
 
         public void RemoveIncome()
         {
-            IncomeData.Remove(SelectedIncome);
-            SelectedIncome = null;
+            DataViewModel.IncomeDataList.Remove(DataViewModel.SelectedIncome);
+            DataViewModel.SelectedIncome = null;
         }
 
         public void RemoveExpense()
         {
-            ExpenseData.Remove(SelectedExpense);
-            SelectedExpense = null;
+            DataViewModel.ExpenseDataList.Remove(DataViewModel.SelectedExpense);
+            DataViewModel.SelectedExpense = null;
         }
         #endregion
 
         #region SubCategories
-        
+        public void ViewData()
+        {
+            ActivateItem(DataViewModel);
+        }
+
+        public void ViewSubCategories()
+        {
+            ActivateItem(SubCategoryViewModel);
+        }
         #endregion
 
         public void OpenFile()
@@ -119,8 +125,8 @@ namespace BudgetPlannerMainWPF.ViewModels
                 OpenController = new FileConrol(openFile.FileName);
                 OpenController.OpenFile();
 
-                IncomeData = new BindableCollection<Income>(OpenController.IncomeData);
-                ExpenseData = new BindableCollection<Expense>(OpenController.ExpenseData);
+                //IncomeData = new BindableCollection<Income>(OpenController.IncomeData);
+                //ExpenseData = new BindableCollection<Expense>(OpenController.ExpenseData);
             }
         }
 
@@ -134,7 +140,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             if(saveFile.ShowDialog() == true)
             {
-                SaveController = new FileConrol(saveFile.FileName, IncomeData.ToList(), ExpenseData.ToList());
+                //SaveController = new FileConrol(saveFile.FileName, IncomeData.ToList(), ExpenseData.ToList());
                 SaveController.SaveFile();
             }
         }
@@ -144,23 +150,29 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataElement.Exit();
         }
 
+        // ***\/ Moved to DataViewModel! \/***
+        /*
         public void UpdateData()
         {
             IncomeTotal = IncomeData.Sum(x => x.Value);
             ExpenseTotal = ExpenseData.Sum(x => x.Value);
             NetDifference = IncomeTotal - ExpenseTotal;
         }
+        */
         #endregion
 
         #region - Properties
+        // ***\/ Moved to DataViewModel! \/***
+        /*
         public BindableCollection<Income> IncomeData
         {
             get { return _incomeDataList; }
             set
             {
                 _incomeDataList = value;
-                UpdateData();
+                //UpdateData();
                 NotifyOfPropertyChange(() => IncomeData);
+                NotifyOfPropertyChange(() => DataViewModel.IncomeDataList);
             }
         }
 
@@ -171,6 +183,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _expenseDataList = value;
                 NotifyOfPropertyChange(() => ExpenseData);
+                NotifyOfPropertyChange(() => DataViewModel.ExpenseDataList);
             }
         }
 
@@ -225,7 +238,8 @@ namespace BudgetPlannerMainWPF.ViewModels
                 NotifyOfPropertyChange(() => ExpenseData);
             }
         }
-        
+        */
+
         public FileConrol SaveController
         {
             get { return _saveControl; }
@@ -243,7 +257,24 @@ namespace BudgetPlannerMainWPF.ViewModels
                 _openControl = value;
             }
         }
-        
+
+        public DataViewModel DataViewModel
+        {
+            get { return _dataViewModel; }
+            set
+            {
+                _dataViewModel = value;
+            }
+        }
+
+        public SubCategoryViewModel SubCategoryViewModel
+        {
+            get { return _categoryViewModel; }
+            set
+            {
+                _categoryViewModel = value;
+            }
+        }
         #endregion
     }
 }
