@@ -16,6 +16,9 @@ namespace BudgetPlannerLib.Models
         private List<Income> _incomeData;
         private List<Expense> _expenseData;
 
+        private List<SubCategory> _incomeSubCategories;
+        private List<SubCategory> _expenseSubCategories;
+
         private List<int> _ids;
         private List<string> _categories;
         private List<double> _values;
@@ -113,6 +116,24 @@ namespace BudgetPlannerLib.Models
             set
             {
                 _expenseData = value;
+            }
+        }
+
+        public List<SubCategory> IncomeSubCateories
+        {
+            get { return _incomeSubCategories; }
+            set
+            {
+                _incomeSubCategories = value;
+            }
+        }
+
+        public List<SubCategory> ExpenseSubCategories
+        {
+            get { return _expenseSubCategories; }
+            set
+            {
+                _expenseSubCategories = value;
             }
         }
 

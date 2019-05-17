@@ -7,165 +7,183 @@
         mc:Ignorable="d" Icon="C:\Users\Daxxn\Desktop\CustomOpenIcon.png"
         Title="Budget Planner" Height="500" Width="910"
         WindowStyle="SingleBorderWindow" Topmost="True" SizeToContent="Width">
-    
-    <Grid Name="Base_Grid">
-        <!--#region ::Base Grid Definitions::-->
+
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MaxHeight="40"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MaxHeight="40"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MaxHeight="40"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MaxHeight="40"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <!--#endregion-->
 
         <!--#region ::Menu::-->
-        <Menu Name="Menu_Bar" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <Menu Name="Menu_Bar" Grid.Column="0" Grid.Row="0">
             <MenuItem x:Name="NewFile" Header="New"/>
             <MenuItem x:Name="OpenFile" Header="Open"/>
             <MenuItem x:Name="SaveFile" Header="Save"/>
         </Menu>
         <!--#endregion-->
 
-        <!--#region ::Control Buttons::-->
-        <Grid Name="Row_Manipulation_Grid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Margin="0,10,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Name="Add_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      Grid.Column="0" Grid.Row="1" Grid.RowSpan="1">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MaxHeight="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MaxHeight="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MaxHeight="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MaxHeight="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                
+
+                <!--#region ::Control Buttons::-->
+                <Grid Name="Row_Manipulation_Grid" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Name="Add_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand"/>
-                <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2" Cursor="Hand"/>
-            </StackPanel>
+                        <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand"/>
+                        <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2" Cursor="Hand"/>
+                    </StackPanel>
 
-            <StackPanel Name="Remove_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
+                    <StackPanel Name="Remove_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
                     Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">Remove Income</Button>
-                <Button x:Name="RemoveExpense" Margin="2,2,0,2" Cursor="Hand">Remove Expense</Button>
-            </StackPanel>
-        </Grid>
-        <!--#endregion-->
-        
-        <!--#region ::Switch Views::-->
-        <Grid Grid.Column="1" Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                        <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">Remove Income</Button>
+                        <Button x:Name="RemoveExpense" Margin="2,2,0,2" Cursor="Hand">Remove Expense</Button>
+                    </StackPanel>
+                </Grid>
+                <!--#endregion-->
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="ViewData" Margin="0,0,2,0">View Data</Button>
-                <Button x:Name="ViewSubCategories" Margin="2,0,0,0">View Categories</Button>
-            </StackPanel>
-        </Grid>
-        <!--#endregion-->
+                <!--#region ::Switch Views::-->
+                <Grid Grid.Column="1" Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-        <!--#region ::Net Income Display::-->
-        <Grid Name="Net_Income_Grid" Grid.Column="1" Grid.Row="6" Margin="0,10,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,10,0,10"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="ViewData" Margin="0,0,2,0">View Data</Button>
+                        <Button x:Name="ViewSubCategories" Margin="2,0,0,0">View Categories</Button>
+                    </StackPanel>
+                </Grid>
+                <!--#endregion-->
+
+                <!--#region ::Net Income Display::-->
+                <Grid Name="Net_Income_Grid" Grid.Column="1" Grid.Row="5" Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,10,0,10"
                    >Net Income:</TextBlock>
 
-            <TextBlock x:Name="DataViewModel_NetDifference" Background="AliceBlue" IsEnabled="False" Margin="0,10,0,10"
+                    <TextBlock x:Name="DataViewModel_NetDifference" Background="AliceBlue" IsEnabled="False" Margin="0,10,0,10"
                    Grid.Column="1" Grid.Row="0"/>
-        </Grid>
-        <!--#endregion-->
+                </Grid>
+                <!--#endregion-->
 
-        <!--#region ::Income Display::-->
-        <Grid Name="Selected_Income_Grid" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="1" Margin="0,10,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <!--#region ::Income Display::-->
+                <Grid Name="Selected_Income_Grid" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-            <!--#region ::Income Text::-->
-            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                    <!--#region ::Income Text::-->
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                    HorizontalAlignment="Center"
                    > Income Selection Information</TextBlock>
 
-            <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Category}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Category}" Background="AliceBlue"
                        Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Value}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Value}" Background="AliceBlue"
                    Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.SelectedCategory.CategoryName}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.SelectedCategory.CategoryName}" Background="AliceBlue"
                        Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
-            <!--#endregion-->
-        </Grid>
-        <!--#endregion-->
+                    <!--#endregion-->
+                </Grid>
+                <!--#endregion-->
 
-        <!--#region ::Expense Display::-->
-        <Grid Name="Selected_Expense_Grid" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="1" Margin="0,10,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <!--#region ::Expense Display::-->
+                <Grid Name="Selected_Expense_Grid" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="1" Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-            <!--#region ::Expense Text::-->
-            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                    <!--#region ::Expense Text::-->
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                    HorizontalAlignment="Center" 
                    >Expense Selection information</TextBlock>
 
-            <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Category}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Category}" Background="AliceBlue"
                            Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Value}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Value}" Background="AliceBlue"
                    Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
-            <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.CategoryName}" Background="AliceBlue"
+                    <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.CategoryName}" Background="AliceBlue"
                        Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
-            <!--#endregion-->
-        </Grid>
-        <!--#endregion-->
+                    <!--#endregion-->
+                </Grid>
+                <!--#endregion-->
+            </Grid>
+        </ScrollViewer>
 
-        <!--#region ::Sub Views::-->
-        <ContentControl x:Name="ActiveItem" Margin="10,4,0,4"
-                        Grid.Column="2" Grid.Row="1" Grid.RowSpan="11"/>
-        <!--#endregion-->
+
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="0,4,0,4"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid>
+                <!--#region ::Sub Views::-->
+                <ContentControl x:Name="ActiveItem"/>
+                <!--#endregion-->
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

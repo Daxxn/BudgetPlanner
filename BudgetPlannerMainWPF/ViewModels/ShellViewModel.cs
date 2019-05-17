@@ -14,20 +14,6 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class ShellViewModel : Conductor<object>
     {
         #region - Fields
-        // ***\/ Moved to DataViewModel! \/***
-        /*
-        private BindableCollection<Income> _incomeDataList = new BindableCollection<Income>();
-        private BindableCollection<Expense> _expenseDataList = new BindableCollection<Expense>();
-
-        private Income _selecetedIncome;
-        private Expense _selectedExpense;
-
-        private double _incomeTotal;
-        private double _expenseTotal;
-
-        private double _netDifference;
-
-        */
         private FileConrol _saveControl;
         private FileConrol _openControl;
 
@@ -47,30 +33,6 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
-        // ***\/ Moved to DataViewModel! \/***
-        /*
-        /// <summary>
-        /// Initializes a random list from TestDataAccesser
-        /// </summary>
-        public void AddCategories(List<string> cats, List<double> vals, int type)
-        {
-            if(type == 1)
-            {
-                for (int i = 0; i < cats.Count; i++)
-                {
-                    IncomeData.Add(new Income(cats[i], vals[i], i));
-                }
-            }
-            else if (type == 2)
-            {
-                for (int i = 0; i < cats.Count; i++)
-                {
-                    ExpenseData.Add(new Expense(cats[i], vals[i], i));
-                }
-            }
-        }
-        */
-
         #region Add/Remove
         public void AddIncomeColumn()
         {
@@ -155,97 +117,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             DataElement.Exit();
         }
-
-        // ***\/ Moved to DataViewModel! \/***
-        /*
-        public void UpdateData()
-        {
-            IncomeTotal = IncomeData.Sum(x => x.Value);
-            ExpenseTotal = ExpenseData.Sum(x => x.Value);
-            NetDifference = IncomeTotal - ExpenseTotal;
-        }
-        */
         #endregion
 
         #region - Properties
-        // ***\/ Moved to DataViewModel! \/***
-        /*
-        public BindableCollection<Income> IncomeData
-        {
-            get { return _incomeDataList; }
-            set
-            {
-                _incomeDataList = value;
-                //UpdateData();
-                NotifyOfPropertyChange(() => IncomeData);
-                NotifyOfPropertyChange(() => DataViewModel.IncomeDataList);
-            }
-        }
-
-        public BindableCollection<Expense> ExpenseData
-        {
-            get { return _expenseDataList; }
-            set
-            {
-                _expenseDataList = value;
-                NotifyOfPropertyChange(() => ExpenseData);
-                NotifyOfPropertyChange(() => DataViewModel.ExpenseDataList);
-            }
-        }
-
-        public Income SelectedIncome
-        {
-            get { return _selecetedIncome; }
-            set
-            {
-                _selecetedIncome = value;
-                NotifyOfPropertyChange(() => SelectedIncome);
-            }
-        }
-
-        public Expense SelectedExpense
-        {
-            get { return _selectedExpense; }
-            set
-            {
-                _selectedExpense = value;
-                NotifyOfPropertyChange(() => SelectedExpense);
-            }
-        }
-
-        public double NetDifference
-        {
-            get { return _netDifference; }
-            set
-            {
-                _netDifference = value;
-                NotifyOfPropertyChange(() => NetDifference);
-            }
-        }
-
-        public double IncomeTotal
-        {
-            get { return _incomeTotal; }
-            set
-            {
-                _incomeTotal = value;
-                NotifyOfPropertyChange(() => IncomeTotal);
-                NotifyOfPropertyChange(() => IncomeData);
-            }
-        }
-
-        public double ExpenseTotal
-        {
-            get { return _expenseTotal; }
-            set
-            {
-                _expenseTotal = value;
-                NotifyOfPropertyChange(() => ExpenseTotal);
-                NotifyOfPropertyChange(() => ExpenseData);
-            }
-        }
-        */
-
         public FileConrol SaveController
         {
             get { return _saveControl; }
