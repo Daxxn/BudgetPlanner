@@ -69,13 +69,6 @@ namespace BudgetPlannerMainWPF.ViewModels
                 }
             }
         }
-        
-        public void AddStaticCategories()
-        {
-            TestDataAccesser testData = new TestDataAccesser(1);
-            IncomeData = new BindableCollection<Income>(testData.IncomeList);
-            ExpenseData = new BindableCollection<Expense>(testData.ExpenseList);
-        }
         */
 
         #region Add/Remove
@@ -111,6 +104,19 @@ namespace BudgetPlannerMainWPF.ViewModels
         public void ViewSubCategories()
         {
             ActivateItem(SubCategoryViewModel);
+            SendCategories();
+        }
+
+        public void SendCategories()
+        {
+            SubCategoryViewModel.IncomeCategories = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+            SubCategoryViewModel.ExpenseCategories = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+        }
+
+        public void RetrieveCategories()
+        {
+            Income.AllIncomeCategories = SubCategoryViewModel.IncomeCategories.ToList();
+            Expense.AllExpenseCategories = SubCategoryViewModel.ExpenseCategories.ToList();
         }
         #endregion
 

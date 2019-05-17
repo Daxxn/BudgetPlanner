@@ -47,7 +47,6 @@
     <Compile Include="Models\FileConrol.cs" />
     <Compile Include="Models\Income.cs" />
     <Compile Include="Models\SubCategory.cs" />
-    <Compile Include="Models\SubCategoryEventArgs.cs" />
     <Compile Include="TestDataAccesser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

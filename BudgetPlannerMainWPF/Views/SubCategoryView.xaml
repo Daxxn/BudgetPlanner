@@ -5,19 +5,172 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
              mc:Ignorable="d" Background="White"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="500">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="20"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid x:Name="IncomeCategories"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding Path=SelectedIncomeCategory, Mode=TwoWay}"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  Margin="0,0,2,2"
+                  Grid.Column="0" Grid.Row="0" Grid.RowSpan="7">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Income Categories" Binding="{Binding Path=CategoryName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid x:Name="ExpenseCategories" 
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding Path=SelectedExpenseCategory, Mode=TwoWay}"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  Margin="2,0,0,2"
+                  Grid.Column="1" Grid.Row="0" Grid.RowSpan="7">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Expense Categories" Binding="{Binding Path=CategoryName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--#region ::Income Category Editer::-->
+            <Border BorderBrush="Blue" BorderThickness="2" 
+                Padding="4" Background="AliceBlue"
+                CornerRadius="2"
+                Grid.Column="3" Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock HorizontalAlignment="Center"
+                           FontWeight="Bold"
+                           Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                           Margin="0,0,0,2"
+                           >Edit Income</TextBlock>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0,2,2,0">Current Income Name:</TextBlock>
+                    <TextBlock Text="{Binding Path=SelectedIncomeCategory.CategoryName}" 
+                           MinWidth="64" Background="#FFB8DEFF"
+                           Margin="2,2,0,0"
+                           Grid.Column="1" Grid.Row="1"/>
+
+                    <Button x:Name="AddIncomeCategory"
+                        Grid.Column="0" Grid.Row="3"
+                        Margin="0,0,4,2"
+                        >New</Button>
+
+                    <Button x:Name="RemoveIncomeCategory"
+                        Grid.Column="1" Grid.Row="3"
+                        Margin="0,0,0,2"
+                        >Remove Selected</Button>
+
+                    <TextBlock Grid.Column="0" Grid.Row="4">New Income Name:</TextBlock>
+                    <TextBox x:Name="NewIncomeName" Background="#FFB8DEFF"
+                         Grid.Column="1" Grid.Row="4"/>
+                </Grid>
+            </Border>
+
+
+            <!--#region ::Expense Editer::-->
+            <Border BorderBrush="Blue" BorderThickness="2" 
+                Padding="4" Background="AliceBlue"
+                CornerRadius="2"
+                Grid.Column="3" Grid.Row="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold"
+                           Margin="0,0,0,2"
+                           >Edit Expense</TextBlock>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0,2,2,0">Current Expense Name:</TextBlock>
+                    <TextBlock Text="{Binding Path=SelectedExpenseCategory.CategoryName}"
+                           MinWidth="64" Background="#FFB8DEFF"
+                           Margin="2,2,0,0"
+                           Grid.Column="1" Grid.Row="1"/>
+
+                    <Button x:Name="AddExpenseCategory"
+                        Margin="0,0,4,2"
+                        Grid.Column="0" Grid.Row="3"
+                        >New</Button>
+
+                    <Button x:Name="RemoveExpenseCategory"
+                        Margin="0,0,0,2"
+                        Grid.Column="1" Grid.Row="3"
+                        >Remove Selected</Button>
+
+                    <TextBlock Grid.Column="0" Grid.Row="4">New Expense Name:</TextBlock>
+                    <TextBox x:Name="NewExpenseName" Background="#FFB8DEFF"
+                         Grid.Column="1" Grid.Row="4"/>
+                </Grid>
+            </Border>
+            <!--#endregion-->
+
+            <!--#region ::Category Display::-->
+            <Grid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,0,2,0">Income Name:</TextBlock>
+
+                <TextBlock Text="{Binding Path=SelectedIncomeCategory.CategoryName}" 
+                       MinWidth="64" Background="AliceBlue"
+                       Grid.Column="0" Grid.Row="1" Margin="0,0,2,0"/>
+
+                <TextBlock Grid.Column="1" Grid.Row="0" Margin="2,0,0,0">Expense Name:</TextBlock>
+
+                <TextBlock Text="{Binding Path=SelectedExpenseCategory.CategoryName}"
+                       MinWidth="64" Background="AliceBlue"
+                       Grid.Column="1" Grid.Row="1" Margin="2,0,0,0"/>
+            </Grid>
+            <!--#endregion-->
+
+            <Button x:Name="FinishCategories"
+                    Grid.Column="3" Grid.Row="7"
+                    >Finished</Button>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
