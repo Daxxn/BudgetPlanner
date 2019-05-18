@@ -7,7 +7,7 @@
         mc:Ignorable="d" Icon="C:\Users\Daxxn\Desktop\CustomOpenIcon.png"
         Title="Budget Planner" Height="500" Width="910"
         WindowStyle="SingleBorderWindow" Topmost="True" SizeToContent="Width">
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -28,8 +28,8 @@
         <!--#endregion-->
 
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                      Grid.Column="0" Grid.Row="1" Grid.RowSpan="1">
-            <Grid >
+                            Grid.Column="0" Grid.Row="1" Grid.RowSpan="1">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
@@ -50,8 +50,6 @@
                     <RowDefinition Height="10"/>
                 </Grid.RowDefinitions>
 
-                
-
                 <!--#region ::Control Buttons::-->
                 <Grid Name="Row_Manipulation_Grid" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
@@ -65,13 +63,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Name="Add_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
-                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                          Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                         <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand"/>
                         <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2" Cursor="Hand"/>
                     </StackPanel>
 
                     <StackPanel Name="Remove_StackPannel" Orientation="Horizontal" HorizontalAlignment="Center"
-                    Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                          Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                         <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">Remove Income</Button>
                         <Button x:Name="RemoveExpense" Margin="2,2,0,2" Cursor="Hand">Remove Expense</Button>
                     </StackPanel>
@@ -101,10 +99,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,10,0,10"
-                   >Net Income:</TextBlock>
+                         >Net Income:</TextBlock>
 
                     <TextBlock x:Name="DataViewModel_NetDifference" Background="AliceBlue" IsEnabled="False" Margin="0,10,0,10"
-                   Grid.Column="1" Grid.Row="0"/>
+                         Grid.Column="1" Grid.Row="0"/>
                 </Grid>
                 <!--#endregion-->
 
@@ -123,20 +121,20 @@
 
                     <!--#region ::Income Text::-->
                     <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
-                   HorizontalAlignment="Center"
-                   > Income Selection Information</TextBlock>
+                         HorizontalAlignment="Center"
+                         > Income Selection Information</TextBlock>
 
                     <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Category}" Background="AliceBlue"
-                       Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
+                             Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.Value}" Background="AliceBlue"
-                   Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
+                         Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.SelectedCategory.Name}" Background="AliceBlue"
-                       Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
+                             Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
                     <!--#endregion-->
                 </Grid>
                 <!--#endregion-->
@@ -156,20 +154,20 @@
 
                     <!--#region ::Expense Text::-->
                     <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
-                   HorizontalAlignment="Center" 
-                   >Expense Selection information</TextBlock>
+                         HorizontalAlignment="Center" 
+                         >Expense Selection information</TextBlock>
 
                     <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Category}" Background="AliceBlue"
-                           Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
+                                 Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.Value}" Background="AliceBlue"
-                   Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
+                         Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
                     <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.Name}" Background="AliceBlue"
-                       Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
+                             Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
                     <!--#endregion-->
                 </Grid>
                 <!--#endregion-->
@@ -178,12 +176,13 @@
 
 
         <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="0,4,0,4"
-                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <Grid>
                 <!--#region ::Sub Views::-->
                 <ContentControl x:Name="ActiveItem"/>
                 <!--#endregion-->
             </Grid>
         </ScrollViewer>
+        
     </Grid>
 </Window>

@@ -6,7 +6,7 @@ namespace BudgetPlannerLib.Models
     {
         #region - Fields
         private string _name;
-        private double _value;
+        private double _value = 0;
         #endregion
 
         #region - Constructors
@@ -14,13 +14,6 @@ namespace BudgetPlannerLib.Models
         public SubCategory(string subCat)
         {
             Name = subCat;
-        }
-
-        // not really usable...
-        public SubCategory(string name, double value)
-        {
-            Name = name;
-            Value = value;
         }
         #endregion
 
