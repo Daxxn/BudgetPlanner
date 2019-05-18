@@ -22,6 +22,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         private double _expenseTotal;
 
         private double _netDifference;
+
+        private BindableCollection<SubCategory> _incomeSubCategoryDisplay;
+        private BindableCollection<SubCategory> _expenseSubCategoryDisplay;
         #endregion
 
         #region - Constructors
@@ -29,6 +32,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             DataElement.ValueChanged += this.DataElement_ValueChanged;
         }
+
         public DataViewModel(BindableCollection<Income> incomes, BindableCollection<Expense> expenses)
         {
             IncomeDataList = incomes;
@@ -56,12 +60,49 @@ namespace BudgetPlannerMainWPF.ViewModels
                 IncomeTotal = IncomeDataList.Sum(x => x.Value);
                 ExpenseTotal = ExpenseDataList.Sum(x => x.Value); 
                 NetDifference = IncomeTotal - ExpenseTotal;
+
+                if (Income.AllIncomeCategories != null && Expense.AllExpenseCategories != null)
+                {
+                    SortCategories();
+                    IncomeSubCategoryDisplay = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+                    ExpenseSubCategoryDisplay = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+                }
             }
         }
+
+        #region Sorting Categories and summing
+
+        public void SortCategories()
+        {
+            // Soring Income SubCategories:
+            foreach (var subCategory in Income.AllIncomeCategories)
+            {
+                foreach (var item in IncomeDataList)
+                {
+                    if (subCategory.Name == item.SelectedCategory.Name)
+                    {
+                        subCategory.Value += item.Value;
+                    }
+                }
+            }
+
+            // Sorting Expense SubCategories:
+            foreach (var subCategory in Expense.AllExpenseCategories)
+            {
+                foreach (var item in ExpenseDataList)
+                {
+                    if (subCategory.Name == item.SelectedCategory.Name)
+                    {
+                        subCategory.Value += item.Value;
+                    }
+                }
+            }
+
+        }
+        #endregion
         #endregion
 
         #region - Properties
-
         public BindableCollection<Income> IncomeDataList
         {
             get { return _incomeDataList; }
@@ -90,6 +131,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _selectedIncome = value;
+                UpdateData();
                 NotifyOfPropertyChange(() => SelectedIncome);
             }
         }
@@ -100,6 +142,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _selectedExpense = value;
+                UpdateData();
                 NotifyOfPropertyChange(() => SelectedExpense);
             }
         }
@@ -131,6 +174,26 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _netDifference = value;
                 NotifyOfPropertyChange(() => NetDifference);
+            }
+        }
+
+        public BindableCollection<SubCategory> IncomeSubCategoryDisplay
+        {
+            get { return _incomeSubCategoryDisplay; }
+            set
+            {
+                _incomeSubCategoryDisplay = value;
+                NotifyOfPropertyChange(() => IncomeSubCategoryDisplay);
+            }
+        }
+
+        public BindableCollection<SubCategory> ExpenseSubCategoryDisplay
+        {
+            get { return _expenseSubCategoryDisplay; }
+            set
+            {
+                _expenseSubCategoryDisplay = value;
+                NotifyOfPropertyChange(() => ExpenseSubCategoryDisplay);
             }
         }
         #endregion

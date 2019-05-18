@@ -19,6 +19,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
+        
         #endregion
 
         #region - Constructors

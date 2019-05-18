@@ -5,14 +5,22 @@ namespace BudgetPlannerLib.Models
     public class SubCategory
     {
         #region - Fields
-        private string _categoryName;
+        private string _name;
+        private double _value;
         #endregion
 
         #region - Constructors
         public SubCategory() { }
         public SubCategory(string subCat)
         {
-            CategoryName = subCat;
+            Name = subCat;
+        }
+
+        // not really usable...
+        public SubCategory(string name, double value)
+        {
+            Name = name;
+            Value = value;
         }
         #endregion
 
@@ -21,12 +29,22 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Properties
-        public string CategoryName
+        public string Name
         {
-            get { return _categoryName; }
+            get { return _name; }
             set
             {
-                _categoryName = value;
+                _name = value;
+
+            }
+        }
+
+        public double Value
+        {
+            get { return _value; }
+            set
+            {
+                _value = value;
             }
         }
         #endregion

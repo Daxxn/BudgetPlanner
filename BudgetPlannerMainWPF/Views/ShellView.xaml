@@ -135,7 +135,7 @@
                    Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
-                    <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.SelectedCategory.CategoryName}" Background="AliceBlue"
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedIncome.SelectedCategory.Name}" Background="AliceBlue"
                        Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
                     <!--#endregion-->
                 </Grid>
@@ -168,7 +168,7 @@
                    Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
-                    <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.CategoryName}" Background="AliceBlue"
+                    <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.Name}" Background="AliceBlue"
                        Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"/>
                     <!--#endregion-->
                 </Grid>

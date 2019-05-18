@@ -29,19 +29,22 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel.AddStaticCategories();
 
             ActivateItem(DataViewModel);
+
+            DataViewModel.SortCategories();
         }
+
         #endregion
 
         #region - Methods
         #region Add/Remove
         public void AddIncomeColumn()
         {
-            DataViewModel.IncomeDataList.Add(new Income("", 0, DataViewModel.IncomeDataList.Count));
+            DataViewModel.IncomeDataList.Add(new Income("New Income", 0.0, DataViewModel.IncomeDataList.Count + 1));
         }
 
         public void AddExpenseColumn()
         {
-            DataViewModel.ExpenseDataList.Add(new Expense("New Expense", 0.0, DataViewModel.ExpenseDataList.Count));
+            DataViewModel.ExpenseDataList.Add(new Expense("New Expense", 0.0, DataViewModel.ExpenseDataList.Count + 1));
         }
 
         public void RemoveIncome()
@@ -61,6 +64,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         public void ViewData()
         {
             ActivateItem(DataViewModel);
+            DataViewModel.SortCategories();
+            SubCategoryViewModel.FinishCategories();
+            DataViewModel.UpdateData();
         }
 
         public void ViewSubCategories()
