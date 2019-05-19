@@ -39,7 +39,8 @@ namespace BudgetPlannerLib.Models
             {
                 IdNumber = Int32.Parse(fields[0]),
                 Category = fields[1],
-                Value = Double.Parse(fields[2])
+                Value = Double.Parse(fields[2]),
+                SelectedCategory = new SubCategory(fields[3])
             };
         }
         #endregion

@@ -18,7 +18,14 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Methods
-
+        public static SubCategory FromFields(string[] fields)
+        {
+            return new SubCategory()
+            {
+                Name = fields[0],
+                Value = 0
+            };
+        }
         #endregion
 
         #region - Properties

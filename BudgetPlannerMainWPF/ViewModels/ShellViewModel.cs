@@ -114,7 +114,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             if(saveFile.ShowDialog() == true)
             {
-                //SaveController = new FileConrol(saveFile.FileName, IncomeData.ToList(), ExpenseData.ToList());
+                SaveController = new FileConrol(saveFile.FileName, DataViewModel.IncomeDataList.ToList(), DataViewModel.ExpenseDataList.ToList(), Income.AllIncomeCategories, Expense.AllExpenseCategories);
                 SaveController.SaveFile();
             }
         }

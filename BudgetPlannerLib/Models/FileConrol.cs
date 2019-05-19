@@ -35,6 +35,15 @@ namespace BudgetPlannerLib.Models
             ExpenseData = expenses;
         }
 
+        public FileConrol(string filePath, List<Income> incomes, List<Expense> expenses, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
+        {
+            FilePath = filePath;
+            IncomeData = incomes;
+            ExpenseData = expenses;
+            IncomeSubCateories = incomeSubs;
+            ExpenseSubCategories = expenseSubs;
+        }
+
         /// <summary>
         /// For Loading Income & Expense Data.
         /// </summary>
@@ -47,7 +56,8 @@ namespace BudgetPlannerLib.Models
         #region - Methods
         public void OpenFile()
         {
-            int index = 1;
+            int index = 0;
+            string dataDivider = "***";
 
             TextFieldParser parser = new TextFieldParser(FilePath);
             parser.SetDelimiters(new string[] { ":" });
@@ -57,6 +67,7 @@ namespace BudgetPlannerLib.Models
 
             while (!parser.EndOfData)
             {
+                /*
                 if(index == parser.LineNumber)
                 {
                     IncomeData.Add(Income.FromFields(parser.ReadFields()));
@@ -66,6 +77,28 @@ namespace BudgetPlannerLib.Models
                 {
                     ExpenseData.Add(Expense.FromFields(parser.ReadFields()));
                     index++;
+                }*/
+
+                if(parser.PeekChars(3) == dataDivider)
+                {
+                    index++;
+                    switch (index)
+                    {
+                        default:
+                            throw new Exception("Index outside data bounds");
+                        case 1:
+                            IncomeData.Add(Income.FromFields(parser.ReadFields()));
+                            break;
+                        case 2:
+                            ExpenseData.Add(Expense.FromFields(parser.ReadFields()));
+                            break;
+                        case 3:
+                            IncomeSubCateories.Add(SubCategory.FromFields(parser.ReadFields()));
+                            break;
+                        case 4:
+                            ExpenseSubCategories.Add(SubCategory.FromFields(parser.ReadFields()));
+                            break;
+                    }
                 }
             }
 
@@ -80,17 +113,31 @@ namespace BudgetPlannerLib.Models
             StreamWriter writer = new StreamWriter(FilePath);
             writer.AutoFlush = true;
 
+            writer.WriteLine("***Income Data");
             foreach (var item in IncomeData)
             {
-                line = $"{item.IdNumber}:{item.Category}:{item.Value}";
+                line = $"{item.IdNumber}:{item.Category}:{item.Value}:{item.SelectedCategory.Name}";
                 writer.WriteLine(line);
             }
 
-            writer.WriteLine();
-
+            writer.WriteLine("***Expense Data");
             foreach (var item in ExpenseData)
             {
-                line = $"{item.IdNumber}:{item.Category}:{item.Value}";
+                line = $"{item.IdNumber}:{item.Category}:{item.Value}:{item.SelectedCategory.Name}";
+                writer.WriteLine(line);
+            }
+
+            writer.WriteLine("***Income SubCategories");
+            foreach (var item in IncomeSubCateories)
+            {
+                line = $"{item.Name}";
+                writer.WriteLine(line);
+            }
+
+            writer.WriteLine("***Expense SubCategories");
+            foreach (var item in ExpenseSubCategories)
+            {
+                line = $"{item.Name}";
                 writer.WriteLine(line);
             }
 
