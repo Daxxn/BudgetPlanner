@@ -44,6 +44,11 @@ namespace BudgetPlannerLib.Models
                 SelectedCategory = new SubCategory(fields[3])
             };
         }
+
+        public static void ClearData()
+        {
+            AllExpenseCategories.Clear();
+        }
         #endregion
 
         #region - Properties

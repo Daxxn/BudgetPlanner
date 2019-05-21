@@ -18,6 +18,11 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Returns a new SubCategory from the opened file.
+        /// </summary>
+        /// <param name="fields">String array from the Parser.</param>
+        /// <returns>Fresh SubCategory</returns>
         public static SubCategory FromFields(string[] fields)
         {
             return new SubCategory()
@@ -29,6 +34,9 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Properties
+        /// <summary>
+        /// SubCategory Name
+        /// </summary>
         public string Name
         {
             get { return _name; }
@@ -39,6 +47,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// SubCategory Total Value
+        /// </summary>
         public double Value
         {
             get { return _value; }

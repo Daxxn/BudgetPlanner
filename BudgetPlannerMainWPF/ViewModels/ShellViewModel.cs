@@ -36,6 +36,23 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        public void NewFile()
+        {
+            MessageBoxResult contin = MessageBox.Show("Are you sure? This will erase all unsaved data.", "New File", MessageBoxButton.OKCancel);
+            if (contin == MessageBoxResult.OK)
+            {
+                ClearData();
+            }
+        }
+
+        private void ClearData()
+        {
+            DataViewModel.ClearData();
+            SubCategoryViewModel.ClearData();
+            Income.ClearData();
+            Expense.ClearData();
+        }
+
         #region Add/Remove
         public void AddIncomeColumn()
         {
@@ -93,14 +110,18 @@ namespace BudgetPlannerMainWPF.ViewModels
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Multiselect = false;
             openFile.Title = "Open Budget Plan";
+            openFile.DefaultExt = ".bpn";
+            openFile.Filter = ".bpn";
             if(openFile.ShowDialog() == true)
             {
                 FilePath = openFile.FileName;
                 OpenController = new FileConrol(openFile.FileName);
                 OpenController.OpenFile();
 
-                //IncomeData = new BindableCollection<Income>(OpenController.IncomeData);
-                //ExpenseData = new BindableCollection<Expense>(OpenController.ExpenseData);
+                DataViewModel.IncomeDataList = new BindableCollection<Income>(OpenController.IncomeData);
+                DataViewModel.ExpenseDataList = new BindableCollection<Expense>(OpenController.ExpenseData);
+                Income.AllIncomeCategories = new List<SubCategory>(OpenController.IncomeSubCateories);
+                Expense.AllExpenseCategories = new List<SubCategory>(OpenController.ExpenseSubCategories);
             }
         }
 
@@ -110,7 +131,8 @@ namespace BudgetPlannerMainWPF.ViewModels
             saveFile.Title = "Save Budget Plan";
             saveFile.OverwritePrompt = true;
             saveFile.AddExtension = true;
-            saveFile.DefaultExt = ".txt";
+            saveFile.DefaultExt = ".bpn";
+            saveFile.Filter = ".bpn";
 
             if(saveFile.ShowDialog() == true)
             {

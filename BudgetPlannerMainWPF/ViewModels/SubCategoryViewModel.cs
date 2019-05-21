@@ -25,6 +25,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         #region - Constructors
         public SubCategoryViewModel()
         {
+            #region Test Data. Should get replaced.
             IncomeCategories.Add(new SubCategory("Temp Income Category 1"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 2"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 3"));
@@ -34,10 +35,19 @@ namespace BudgetPlannerMainWPF.ViewModels
             ExpenseCategories.Add(new SubCategory("Temp Expense Category 2"));
             ExpenseCategories.Add(new SubCategory("Temp Expense Category 3"));
             ExpenseCategories.Add(new SubCategory("Should not be shown."));
+            #endregion
         }
         #endregion
 
         #region - Methods
+        public void ClearData()
+        {
+            IncomeCategories.Clear();
+            ExpenseCategories.Clear();
+
+            SelectedIncomeCategory = new SubCategory();
+            SelectedExpenseCategory = new SubCategory();
+        }
 
         #region -- Buttons
         public void AddIncomeCategory()

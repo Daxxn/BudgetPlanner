@@ -53,6 +53,22 @@ namespace BudgetPlannerMainWPF.ViewModels
             UpdateData();
         }
 
+        public void ClearData()
+        {
+            IncomeDataList.Clear();
+            ExpenseDataList.Clear();
+
+            SelectedIncome = new Income();
+            SelectedExpense = new Expense();
+
+            IncomeTotal = 0;
+            ExpenseTotal = 0;
+            NetDifference = 0;
+
+            IncomeSubCategoryDisplay.Clear();
+            ExpenseSubCategoryDisplay.Clear();
+        }
+
         public void UpdateData()
         {
             if (ExpenseDataList != null)
@@ -70,34 +86,89 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        #region Sorting Categories and summing
-
+        #region Sorting Categories and summing Total
+        /// <summary>
+        /// Sums AllSubCategories. Replaces the old list with a new one.
+        /// </summary>
         public void SortCategories()
         {
-            // Soring Income SubCategories:
-            foreach (var subCategory in Income.AllIncomeCategories)
+            Income.AllIncomeCategories = SortCategories(IncomeDataList.ToList(), Income.AllIncomeCategories);
+            Expense.AllExpenseCategories = SortCategories(ExpenseDataList.ToList(), Expense.AllExpenseCategories);
+        }
+        
+        /// <summary>
+        /// Places all occurences of the SubCategory into a new list and returns the totals.
+        /// </summary>
+        /// <param name="dataList">Income DataList</param>
+        /// <param name="AllsubCategories">Static Income SubCategories</param>
+        /// <returns>New SubCategory List With Totals</returns>
+        public List<SubCategory> SortCategories(List<Income> dataList, List<SubCategory> AllsubCategories)
+        {
+            List<SubCategory> tempCategories = new List<SubCategory>();
+
+            foreach (var subCategory in AllsubCategories)
             {
-                foreach (var item in IncomeDataList)
+                List<double> tempSum = new List<double>();
+
+                foreach (var selected in dataList)
                 {
-                    if (subCategory.Name == item.SelectedCategory.Name)
+                    if (subCategory.Name == selected.SelectedCategory.Name)
                     {
-                        subCategory.Value += item.Value;
+                        tempSum.Add(selected.Value);
                     }
                 }
+
+                if (tempSum.Count > 0)
+                {
+                    subCategory.Value = tempSum.Sum();
+                }
+                else { subCategory.Value = 0; }
+
+                tempCategories.Add(subCategory);
             }
 
-            // Sorting Expense SubCategories:
-            foreach (var subCategory in Expense.AllExpenseCategories)
+            return tempCategories;
+        }
+
+        /// <summary>
+        /// Places all occurences of the SubCategory into a new list and returns the totals.
+        /// </summary>
+        /// <param name="dataList">Income DataList</param>
+        /// <param name="AllsubCategories">Static Income SubCategories</param>
+        /// <returns>New SubCategory List With Totals</returns>
+        public List<SubCategory> SortCategories(List<Expense> dataList, List<SubCategory> AllsubCategories)
+        {
+            // Final list to replace the old static list.
+            List<SubCategory> tempCategories = new List<SubCategory>();
+
+            // Loops through the static SubCategory list.
+            foreach (var subCategory in AllsubCategories)
             {
-                foreach (var item in ExpenseDataList)
+                // Sums all occurences of the SubCategory in the DataList.
+                List<double> tempSum = new List<double>();
+
+                // mathces all occurences of subCategory and adds to tempSum.
+                foreach (var selected in dataList)
                 {
-                    if (subCategory.Name == item.SelectedCategory.Name)
+                    if (subCategory.Name == selected.SelectedCategory.Name)
                     {
-                        subCategory.Value += item.Value;
+                        tempSum.Add(selected.Value);
                     }
                 }
+
+                // Checks for an empty List.
+                // if not epmty, Sums the list and throws it into subCategory.Value.
+                if (tempSum.Count > 0)
+                {
+                    subCategory.Value = tempSum.Sum();
+                }
+                else { subCategory.Value = 0; }
+
+                // Finally adds the SubCategory to the main list, repeat.
+                tempCategories.Add(subCategory);
             }
 
+            return tempCategories;
         }
         #endregion
         #endregion

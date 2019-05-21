@@ -35,6 +35,14 @@ namespace BudgetPlannerLib.Models
             ExpenseData = expenses;
         }
 
+        /// <summary>
+        /// Up to date Constructor for saving SubCategories.
+        /// </summary>
+        /// <param name="filePath">Sent from Open/SaveFileDialog Box</param>
+        /// <param name="incomes">Saving - IncomeDataList</param>
+        /// <param name="expenses">Saving - ExpenseDataList</param>
+        /// <param name="incomeSubs">Saving - Income.AllSubCategories</param>
+        /// <param name="expenseSubs">Saving - Expense.AllSubCategories</param>
         public FileConrol(string filePath, List<Income> incomes, List<Expense> expenses, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
         {
             FilePath = filePath;
@@ -54,6 +62,9 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Opens a ".txt" file thats been saved by the Budget Planner.
+        /// </summary>
         public void OpenFile()
         {
             int index = 0;
@@ -65,40 +76,33 @@ namespace BudgetPlannerLib.Models
             IncomeData = new List<Income>();
             ExpenseData = new List<Expense>();
 
+            IncomeSubCateories = new List<SubCategory>();
+            ExpenseSubCategories = new List<SubCategory>();
+
             while (!parser.EndOfData)
             {
-                /*
-                if(index == parser.LineNumber)
-                {
-                    IncomeData.Add(Income.FromFields(parser.ReadFields()));
-                    index++;
-                }
-                else
-                {
-                    ExpenseData.Add(Expense.FromFields(parser.ReadFields()));
-                    index++;
-                }*/
-
                 if(parser.PeekChars(3) == dataDivider)
                 {
                     index++;
-                    switch (index)
-                    {
-                        default:
-                            throw new Exception("Index outside data bounds");
-                        case 1:
-                            IncomeData.Add(Income.FromFields(parser.ReadFields()));
-                            break;
-                        case 2:
-                            ExpenseData.Add(Expense.FromFields(parser.ReadFields()));
-                            break;
-                        case 3:
-                            IncomeSubCateories.Add(SubCategory.FromFields(parser.ReadFields()));
-                            break;
-                        case 4:
-                            ExpenseSubCategories.Add(SubCategory.FromFields(parser.ReadFields()));
-                            break;
-                    }
+                    parser.ReadLine();
+                }
+
+                switch (index)
+                {
+                    default:
+                        throw new Exception("Index outside data bounds");
+                    case 1:
+                        IncomeData.Add(Income.FromFields(parser.ReadFields()));
+                        break;
+                    case 2:
+                        ExpenseData.Add(Expense.FromFields(parser.ReadFields()));
+                        break;
+                    case 3:
+                        IncomeSubCateories.Add(SubCategory.FromFields(parser.ReadFields()));
+                        break;
+                    case 4:
+                        ExpenseSubCategories.Add(SubCategory.FromFields(parser.ReadFields()));
+                        break;
                 }
             }
 
@@ -107,12 +111,17 @@ namespace BudgetPlannerLib.Models
             
         }
 
+        /// <summary>
+        /// Formats the file and saves to disk.
+        /// </summary>
         public void SaveFile()
         {
+            // Instansiates the Writer:
             string line = String.Empty;
             StreamWriter writer = new StreamWriter(FilePath);
             writer.AutoFlush = true;
 
+            // Writes the header and the Income DataList:
             writer.WriteLine("***Income Data");
             foreach (var item in IncomeData)
             {
@@ -120,6 +129,7 @@ namespace BudgetPlannerLib.Models
                 writer.WriteLine(line);
             }
 
+            // Writes the header and the Expense DataList:
             writer.WriteLine("***Expense Data");
             foreach (var item in ExpenseData)
             {
@@ -127,6 +137,7 @@ namespace BudgetPlannerLib.Models
                 writer.WriteLine(line);
             }
 
+            // Writes the header and the Income SubCategories:
             writer.WriteLine("***Income SubCategories");
             foreach (var item in IncomeSubCateories)
             {
@@ -134,6 +145,7 @@ namespace BudgetPlannerLib.Models
                 writer.WriteLine(line);
             }
 
+            // Writes the header and the Expense SubCategories:
             writer.WriteLine("***Expense SubCategories");
             foreach (var item in ExpenseSubCategories)
             {
@@ -141,6 +153,7 @@ namespace BudgetPlannerLib.Models
                 writer.WriteLine(line);
             }
 
+            // Disposes of the Writer Instance:
             writer.Close();
             writer.Dispose();
         }
@@ -148,6 +161,9 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Properties
+        /// <summary>
+        /// Saving - Income DataList from the DataViewModel
+        /// </summary>
         public List<Income> IncomeData
         {
             get { return _incomeData; }
@@ -157,6 +173,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Saving - Expense DataList from the DataViewModel
+        /// </summary>
         public List<Expense> ExpenseData
         {
             get { return _expenseData; }
@@ -166,6 +185,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Saving - Static SubCategories from Income
+        /// </summary>
         public List<SubCategory> IncomeSubCateories
         {
             get { return _incomeSubCategories; }
@@ -175,6 +197,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Saving - Static SubCategories from Expense
+        /// </summary>
         public List<SubCategory> ExpenseSubCategories
         {
             get { return _expenseSubCategories; }
