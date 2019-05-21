@@ -16,13 +16,13 @@ namespace BudgetPlannerLib.Models
 
         #region - Constructors
         public Income() : base() { }
-        public Income(string categ, double val, int id) : base(categ, val)
+        public Income(string categ, decimal val, int id) : base(categ, val)
         {
             Category = categ;
             Value = val;
             IdNumber = id;
         }
-        public Income(string subCat, string categ, double val, int id) : base(categ, val)
+        public Income(string subCat, string categ, decimal val, int id) : base(categ, val)
         {
             SelectedCategory = new SubCategory(subCat);
             Category = categ;
@@ -39,7 +39,7 @@ namespace BudgetPlannerLib.Models
             {
                 IdNumber = Int32.Parse(fields[0]),
                 Category = fields[1],
-                Value = Double.Parse(fields[2]),
+                Value = Decimal.Parse(fields[2], System.Globalization.NumberStyles.Currency),
                 SelectedCategory = new SubCategory(fields[3])
             };
         }

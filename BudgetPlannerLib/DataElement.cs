@@ -6,14 +6,14 @@ namespace BudgetPlannerLib
     {
         #region - Fields
         private string _category;
-        private double _value;
+        private decimal _value;
 
         public static event EventHandler<EventArgs> ValueChanged;
         #endregion
 
         #region - Constructors
         public DataElement() { }
-        public DataElement(string category, double value)
+        public DataElement(string category, decimal value)
         {
             Category = category;
             Value = value;
@@ -37,7 +37,7 @@ namespace BudgetPlannerLib
             }
         }
 
-        public virtual double Value
+        public virtual decimal Value
         {
             get { return _value; }
             set
