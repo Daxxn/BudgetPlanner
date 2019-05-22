@@ -129,6 +129,18 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        public void ConvertNetDifference(decimal valueIn)
+        {
+            if (valueIn < 0)
+            {
+                NetNegative = "-";
+            }
+            else
+            {
+                NetNegative = String.Empty;
+            }
+        }
+
         #region Sorting Categories and summing Total
         /// <summary>
         /// Sums AllSubCategories. Replaces the old list with a new one.
