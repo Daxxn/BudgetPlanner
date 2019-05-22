@@ -60,7 +60,7 @@
 
                 <!--#region ::Income DataGrid::-->
                 <DataGrid x:Name="IncomeDataList" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False"
+                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False" KeyDown="IncomeDataList_KeyDown"
                   SelectedItem="{Binding Path=SelectedIncome}"
                   Grid.Column="0" Grid.Row="0" Margin="0,0,0,4">
                     <DataGrid.Columns>
@@ -93,7 +93,7 @@
 
                 <!--#region ::Expense DataGrid::-->
                 <DataGrid x:Name="ExpenseDataList" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
-                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False"
+                  MinWidth="100" CanUserAddRows="False" CanUserDeleteRows="False" KeyDown="ExpenseDataList_KeyDown"
                   SelectedItem="{Binding Path=SelectedExpense}"
                   Grid.Column="1" Grid.Row="0" Margin="4,0,0,4">
                     <DataGrid.Columns>

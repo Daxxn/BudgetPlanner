@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
+using BudgetPlannerMainWPF.Views;
 using Caliburn.Micro;
 
 namespace BudgetPlannerMainWPF.ViewModels
@@ -25,13 +25,16 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private BindableCollection<SubCategory> _incomeSubCategoryDisplay;
         private BindableCollection<SubCategory> _expenseSubCategoryDisplay;
+        
         #endregion
 
         #region - Constructors
         public DataViewModel()
         {
             DataElement.ValueChanged += this.DataElement_ValueChanged;
+            DataView.SendEnter += this.DataView_SendEnter;
         }
+
 
         public DataViewModel(BindableCollection<Income> incomes, BindableCollection<Expense> expenses)
         {
@@ -41,6 +44,18 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        private void DataView_SendEnter(Object sender, SimpleKeyEventAgrs e)
+        {
+            if(e.SenderId == 1)
+            {
+                UpdateIncome();
+            }
+            else if(e.SenderId == 2)
+            {
+                UpdateExpense();
+            }
+        }
+
         public void AddStaticCategories()
         {
             TestDataAccesser testData = new TestDataAccesser(1);
@@ -80,9 +95,36 @@ namespace BudgetPlannerMainWPF.ViewModels
                 if (Income.AllIncomeCategories != null && Expense.AllExpenseCategories != null)
                 {
                     SortCategories();
-                    IncomeSubCategoryDisplay = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
-                    ExpenseSubCategoryDisplay = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+                    IncomeSubCategoryDisplay = 
+                        new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+
+                    ExpenseSubCategoryDisplay = 
+                        new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
                 }
+            }
+        }
+
+        public void UpdateIncome()
+        {
+            IncomeTotal = IncomeDataList.Sum(x => x.Value);
+            NetDifference = IncomeTotal - ExpenseTotal;
+
+            if(Income.AllIncomeCategories != null)
+            {
+                Income.AllIncomeCategories = 
+                    SortCategories(IncomeDataList.ToList(), Income.AllIncomeCategories);
+            }
+        }
+
+        public void UpdateExpense()
+        {
+            ExpenseTotal = ExpenseDataList.Sum(x => x.Value);
+            NetDifference = IncomeTotal - ExpenseTotal;
+
+            if(Expense.AllExpenseCategories != null)
+            {
+                Expense.AllExpenseCategories = 
+                    SortCategories(ExpenseDataList.ToList(), Expense.AllExpenseCategories);
             }
         }
 
@@ -92,8 +134,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void SortCategories()
         {
-            Income.AllIncomeCategories = SortCategories(IncomeDataList.ToList(), Income.AllIncomeCategories);
-            Expense.AllExpenseCategories = SortCategories(ExpenseDataList.ToList(), Expense.AllExpenseCategories);
+            Income.AllIncomeCategories = 
+                SortCategories(IncomeDataList.ToList(), Income.AllIncomeCategories);
+
+            Expense.AllExpenseCategories = 
+                SortCategories(ExpenseDataList.ToList(), Expense.AllExpenseCategories);
         }
         
         /// <summary>

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using BudgetPlannerLib.Models;
+using BudgetPlannerMainWPF.Views;
 using Caliburn.Micro;
 
 namespace BudgetPlannerMainWPF.ViewModels
@@ -36,10 +39,25 @@ namespace BudgetPlannerMainWPF.ViewModels
             ExpenseCategories.Add(new SubCategory("Temp Expense Category 3"));
             ExpenseCategories.Add(new SubCategory("Should not be shown."));
             #endregion
+
+            SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
         }
+
         #endregion
 
         #region - Methods
+        private void SubCategoryView_SendKeyPress(Object sender, SimpleKeyEventAgrs e)
+        {
+            if (e.SenderId == 1)
+            {
+                AddIncomeCategory();
+            }
+            else if(e.SenderId == 2)
+            {
+                AddExpenseCategory();
+            }
+        }
+
         public void ClearData()
         {
             IncomeCategories.Clear();
@@ -59,6 +77,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             else
             {
                 IncomeCategories.Add(new SubCategory(NewIncomeName));
+                NewIncomeName = String.Empty;
             }
         }
 
@@ -76,6 +95,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             else
             {
                 ExpenseCategories.Add(new SubCategory(NewExpenseName));
+                NewExpenseName = String.Empty;
             }
         }
 
@@ -139,6 +159,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _newIncomeName = value;
+                NotifyOfPropertyChange(() => NewIncomeName);
             }
         }
 
@@ -148,6 +169,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _newExpenseName = value;
+                NotifyOfPropertyChange(() => NewExpenseName);
             }
         }
         #endregion

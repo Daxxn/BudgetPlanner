@@ -91,7 +91,7 @@
                         >Remove Selected</Button>
 
                     <TextBlock Grid.Column="0" Grid.Row="4">New Income Name:</TextBlock>
-                    <TextBox x:Name="NewIncomeName" Background="#FFB8DEFF"
+                    <TextBox x:Name="NewIncomeName" Background="#FFB8DEFF" KeyDown="NewIncomeName_KeyDown"
                          Grid.Column="1" Grid.Row="4"/>
                 </Grid>
             </Border>
@@ -139,7 +139,7 @@
                         >Remove Selected</Button>
 
                     <TextBlock Grid.Column="0" Grid.Row="4">New Expense Name:</TextBlock>
-                    <TextBox x:Name="NewExpenseName" Background="#FFB8DEFF"
+                    <TextBox x:Name="NewExpenseName" Background="#FFB8DEFF" KeyDown="NewExpenseName_KeyDown"
                          Grid.Column="1" Grid.Row="4"/>
                 </Grid>
             </Border>
