@@ -23,11 +23,11 @@ namespace BudgetPlannerLib
         private List<SubCategory> _incomeSubCats;
 
         private List<string> _incomeCategories;
-        private List<double> _incomeValues;
+        private List<decimal> _incomeValues;
         private List<Income> _incomes;
 
         private List<string> _expenseCategories;
-        private List<double> _expenseValues;
+        private List<decimal> _expenseValues;
         private List<Expense> _expenses;
         #endregion
 
@@ -96,9 +96,9 @@ namespace BudgetPlannerLib
             return data[roll.Next(0, data.Length)];
         }
 
-        private List<double> SetSampleNumbers(int length)
+        private List<decimal> SetSampleNumbers(int length)
         {
-            List<double> tempNums = new List<double>();
+            List<decimal> tempNums = new List<decimal>();
 
             // A silly way to get positive doubles.
             for (int i = 0; i < length; i++)
@@ -106,7 +106,7 @@ namespace BudgetPlannerLib
                 int whole = roll.Next(1, 10 * 10);
                 int dec = roll.Next(0, 99);
                 string tempNum = $"{whole}.{dec}";
-                tempNums.Add(Double.Parse(tempNum));
+                tempNums.Add(Decimal.Parse(tempNum, System.Globalization.NumberStyles.Currency));
             }
 
             return tempNums;
@@ -147,7 +147,7 @@ namespace BudgetPlannerLib
             }
         }
 
-        public List<double> IncomeValues
+        public List<decimal> IncomeValues
         {
             get { return _incomeValues; }
             set
@@ -165,7 +165,7 @@ namespace BudgetPlannerLib
             }
         }
 
-        public List<double> ExpenseValues
+        public List<decimal> ExpenseValues
         {
             get { return _expenseValues; }
             set

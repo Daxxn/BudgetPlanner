@@ -18,10 +18,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         private Income _selectedIncome;
         private Expense _selectedExpense;
 
-        private double _incomeTotal;
-        private double _expenseTotal;
+        private decimal _incomeTotal;
+        private decimal _expenseTotal;
 
-        private double _netDifference;
+        private decimal _netDifference;
+        private string _netNegative;
 
         private BindableCollection<SubCategory> _incomeSubCategoryDisplay;
         private BindableCollection<SubCategory> _expenseSubCategoryDisplay;
@@ -153,7 +154,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             foreach (var subCategory in AllsubCategories)
             {
-                List<double> tempSum = new List<double>();
+                List<decimal> tempSum = new List<decimal>();
 
                 foreach (var selected in dataList)
                 {
@@ -190,7 +191,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             foreach (var subCategory in AllsubCategories)
             {
                 // Sums all occurences of the SubCategory in the DataList.
-                List<double> tempSum = new List<double>();
+                List<decimal> tempSum = new List<decimal>();
 
                 // mathces all occurences of subCategory and adds to tempSum.
                 foreach (var selected in dataList)
@@ -263,7 +264,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public double IncomeTotal
+        public decimal IncomeTotal
         {
             get { return _incomeTotal; }
             set
@@ -273,7 +274,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public double ExpenseTotal
+        public decimal ExpenseTotal
         {
             get { return _expenseTotal; }
             set
@@ -283,13 +284,24 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public double NetDifference
+        public decimal NetDifference
         {
             get { return _netDifference; }
             set
             {
-                _netDifference = value;
+                ConvertNetDifference(value);
+                _netDifference = Math.Abs(value);
                 NotifyOfPropertyChange(() => NetDifference);
+            }
+        }
+
+        public string NetNegative
+        {
+            get { return _netNegative; }
+            set
+            {
+                _netNegative = value;
+                NotifyOfPropertyChange(() => NetNegative);
             }
         }
 

@@ -6,7 +6,7 @@ namespace BudgetPlannerLib.Models
     {
         #region - Fields
         private string _name;
-        private double _value = 0;
+        private decimal _value = 0;
         #endregion
 
         #region - Constructors
@@ -50,7 +50,7 @@ namespace BudgetPlannerLib.Models
         /// <summary>
         /// SubCategory Total Value
         /// </summary>
-        public double Value
+        public decimal Value
         {
             get { return _value; }
             set
