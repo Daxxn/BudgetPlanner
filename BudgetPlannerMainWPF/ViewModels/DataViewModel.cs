@@ -22,6 +22,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         private decimal _expenseTotal;
 
         private decimal _netDifference;
+        private string _netNegative;
 
         private BindableCollection<SubCategory> _incomeSubCategoryDisplay;
         private BindableCollection<SubCategory> _expenseSubCategoryDisplay;
@@ -83,6 +84,18 @@ namespace BudgetPlannerMainWPF.ViewModels
                     IncomeSubCategoryDisplay = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
                     ExpenseSubCategoryDisplay = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
                 }
+            }
+        }
+
+        public void ConvertNetDifference(decimal valueIn)
+        {
+            if(valueIn < 0)
+            {
+                NetNegative = "-";
+            }
+            else
+            {
+                NetNegative = String.Empty;
             }
         }
 
@@ -243,8 +256,19 @@ namespace BudgetPlannerMainWPF.ViewModels
             get { return _netDifference; }
             set
             {
-                _netDifference = value;
+                ConvertNetDifference(value);
+                _netDifference = Math.Abs(value);
                 NotifyOfPropertyChange(() => NetDifference);
+            }
+        }
+
+        public string NetNegative
+        {
+            get { return _netNegative; }
+            set
+            {
+                _netNegative = value;
+                NotifyOfPropertyChange(() => NetNegative);
             }
         }
 
