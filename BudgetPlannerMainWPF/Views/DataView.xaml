@@ -33,7 +33,7 @@
                           Grid.Column="0" Grid.Row="0" Margin="0,0,2,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Income" Binding="{Binding Path=Name, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay, StringFormat=C}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -42,7 +42,7 @@
                           Grid.Column="1" Grid.Row="0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Expense" Binding="{Binding Path=Name, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay, StringFormat=C}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <!--#endregion-->
@@ -66,7 +66,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                         <DataGridTextColumn Header="Income" Binding="{Binding Path=Category, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay, StringFormat=C}"/>
                         <DataGridTemplateColumn Header="Sub-Category">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -99,7 +99,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
                         <DataGridTextColumn Header="Expense" Binding="{Binding Path=Category, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay, StringFormat=C}"/>
                         <DataGridTemplateColumn Header="Sub-Category">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -138,11 +138,11 @@
 
                 <!--#region ::Totals Display::-->
                 <TextBlock Grid.Column="0" Margin="0,0,2,0">Total Income:</TextBlock>
-                <TextBox x:Name="IncomeTotal" Background="AliceBlue" IsReadOnly="True" 
+                <TextBox Text="{Binding Path=IncomeTotal, Mode=OneWay, StringFormat=C}" Background="AliceBlue" IsReadOnly="True" 
                  Grid.Column="1"/>
 
                 <TextBlock Grid.Column="2" Margin="4,0,2,0">Total Expense:</TextBlock>
-                <TextBox x:Name="ExpenseTotal" Background="AliceBlue" IsReadOnly="True"
+                <TextBox Text="{Binding Path=ExpenseTotal, Mode=OneWay, StringFormat=C}" Background="AliceBlue" IsReadOnly="True"
                  Grid.Column="3"/>
                 <!--#endregion-->
             </Grid>
