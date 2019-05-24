@@ -107,12 +107,14 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void OpenFile()
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Multiselect = false;
-            openFile.Title = "Open Budget Plan";
-            openFile.DefaultExt = ".bpn";
-            openFile.Filter = ".bpn";
-            if(openFile.ShowDialog() == true)
+            OpenFileDialog openFile = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = "Open Budget Plan",
+                DefaultExt = ".bpn"
+            };
+
+            if (openFile.ShowDialog() == true)
             {
                 FilePath = openFile.FileName;
                 OpenController = new FileConrol(openFile.FileName);
@@ -127,14 +129,15 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void SaveFile()
         {
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Title = "Save Budget Plan";
-            saveFile.OverwritePrompt = true;
-            saveFile.AddExtension = true;
-            saveFile.DefaultExt = ".bpn";
-            saveFile.Filter = ".bpn";
+            SaveFileDialog saveFile = new SaveFileDialog
+            {
+                Title = "Save Budget Plan",
+                OverwritePrompt = true,
+                AddExtension = true,
+                DefaultExt = ".bpn"
+            };
 
-            if(saveFile.ShowDialog() == true)
+            if (saveFile.ShowDialog() == true)
             {
                 SaveController = new FileConrol(saveFile.FileName, DataViewModel.IncomeDataList.ToList(), DataViewModel.ExpenseDataList.ToList(), Income.AllIncomeCategories, Expense.AllExpenseCategories);
                 SaveController.SaveFile();

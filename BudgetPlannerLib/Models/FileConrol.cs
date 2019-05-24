@@ -118,7 +118,9 @@ namespace BudgetPlannerLib.Models
         {
             // Instansiates the Writer:
             string line = String.Empty;
+#pragma warning disable IDE0017 // Simplify object initialization
             StreamWriter writer = new StreamWriter(FilePath);
+#pragma warning restore IDE0017 // Simplify object initialization
             writer.AutoFlush = true;
 
             // Writes the header and the Income DataList:
