@@ -118,9 +118,9 @@ namespace BudgetPlannerLib.Models
         {
             // Instansiates the Writer:
             string line = String.Empty;
-#pragma warning disable IDE0017 // Simplify object initialization
+            #pragma warning disable IDE0017 // Simplify object initialization
             StreamWriter writer = new StreamWriter(FilePath);
-#pragma warning restore IDE0017 // Simplify object initialization
+            #pragma warning restore IDE0017 // Simplify object initialization
             writer.AutoFlush = true;
 
             // Writes the header and the Income DataList:
@@ -188,7 +188,7 @@ namespace BudgetPlannerLib.Models
         }
 
         /// <summary>
-        /// Saving - Static SubCategories from Income
+        /// Save - Static SubCategories from Income
         /// </summary>
         public List<SubCategory> IncomeSubCateories
         {
@@ -200,7 +200,7 @@ namespace BudgetPlannerLib.Models
         }
 
         /// <summary>
-        /// Saving - Static SubCategories from Expense
+        /// Save - Static SubCategories from Expense
         /// </summary>
         public List<SubCategory> ExpenseSubCategories
         {
@@ -211,6 +211,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Open - Loaded Categories from the file.
+        /// </summary>
         public List<string> Categories
         {
             get { return _categories; }
@@ -220,6 +223,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Open - Loaded Values for the categories.
+        /// </summary>
         public List<double> Values
         {
             get { return _values; }
@@ -229,6 +235,9 @@ namespace BudgetPlannerLib.Models
             }
         }
 
+        /// <summary>
+        /// Open - Id Numbers pulled from the file.
+        /// </summary>
         public List<int> IDs
         {
             get { return _ids; }

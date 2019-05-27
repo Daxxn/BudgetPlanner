@@ -30,6 +30,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Constructors
+        /// <summary>
+        /// Base Constructor, Subscribes to needed Events.
+        /// </summary>
         public DataViewModel()
         {
             DataElement.ValueChanged += this.DataElement_ValueChanged;
@@ -45,6 +48,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Triggers the SendEnter Event for confirming changes to the DataList.
+        /// </summary>
         private void DataView_SendEnter(Object sender, SimpleKeyEventAgrs e)
         {
             if(e.SenderId == 1)
@@ -57,6 +63,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Pulls data from the TestDataAccesser. For Testing Purposes.
+        /// </summary>
         public void AddStaticCategories()
         {
             TestDataAccesser testData = new TestDataAccesser(1);
@@ -69,6 +78,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             UpdateData();
         }
 
+        /// <summary>
+        /// Clears all the data from the DataLists and SubCategories.
+        /// </summary>
         public void ClearData()
         {
             IncomeDataList.Clear();
@@ -85,6 +97,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             ExpenseSubCategoryDisplay.Clear();
         }
 
+        /// <summary>
+        /// Sums both Income & Expense DataLists. Casts Income & Expense SubCategory Lists to BindableCollections.
+        /// </summary>
         public void UpdateData()
         {
             if (ExpenseDataList != null)
@@ -105,6 +120,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sums the Income DataList Values. Sorts all Income SubCategories.
+        /// </summary>
         public void UpdateIncome()
         {
             IncomeTotal = IncomeDataList.Sum(x => x.Value);
@@ -117,6 +135,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sums the Expense DataList Values. Sorts all Expense SubCategories.
+        /// </summary>
         public void UpdateExpense()
         {
             ExpenseTotal = ExpenseDataList.Sum(x => x.Value);
@@ -129,6 +150,10 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Checks for a negative Net Difference, Sets NetNegative TextBox.
+        /// </summary>
+        /// <param name="valueIn">NetDifference Value</param>
         public void ConvertNetDifference(decimal valueIn)
         {
             if (valueIn < 0)
@@ -189,7 +214,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         /// <summary>
-        /// Places all occurences of the SubCategory into a new list and returns the totals.
+        /// Places all occurences of a SubCategory into a new list and returns the totals.
         /// </summary>
         /// <param name="dataList">Income DataList</param>
         /// <param name="AllsubCategories">Static Income SubCategories</param>

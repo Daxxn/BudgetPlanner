@@ -5,6 +5,9 @@ using BudgetPlannerLib.Models;
 
 namespace BudgetPlannerLib
 {
+    /// <summary>
+    /// Probably not Going to save this class. Use as demo??
+    /// </summary>
     public class TestDataAccesser
     {
         #region - Fields
@@ -32,15 +35,24 @@ namespace BudgetPlannerLib
         #endregion
 
         #region - Constructors
+        /// <summary>
+        /// Constructs from nothing. Uses all Random.
+        /// </summary>
         public TestDataAccesser()
         {
             SetRandomData();
         }
 
+        /// <summary>
+        /// Constructs from a max Income & Expense amount. Uses all Random.
+        /// </summary>
+        /// <param name="incomeCategories">Max Income Categories</param>
+        /// <param name="expenseCategories">Max Expense Categories</param>
         public TestDataAccesser(int incomeCategories, int expenseCategories)
         {
             SetRandomData(incomeCategories, expenseCategories);
         }
+
 
         public TestDataAccesser(int selector)
         {

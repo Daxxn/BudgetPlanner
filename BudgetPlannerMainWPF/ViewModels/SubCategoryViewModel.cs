@@ -26,9 +26,12 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Constructors
+        /// <summary>
+        /// Base Constructor, Subscribes to the SendEnter Event.
+        /// </summary>
         public SubCategoryViewModel()
         {
-            #region Test Data. Should get replaced.
+            #region Test Data. Should get replaced on startup.
             IncomeCategories.Add(new SubCategory("Temp Income Category 1"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 2"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 3"));
@@ -46,6 +49,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Triggeres the KeyPress Event from the SubCategoryView Backend.
+        /// </summary>
         private void SubCategoryView_SendKeyPress(Object sender, SimpleKeyEventAgrs e)
         {
             if (e.SenderId == 1)
@@ -58,6 +64,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Clears data from the SubCategories.
+        /// </summary>
         public void ClearData()
         {
             IncomeCategories.Clear();
@@ -68,6 +77,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         #region -- Buttons
+        /// <summary>
+        /// Adds a new Income SubCategory with the name in the NewIncomeName TextBox.
+        /// </summary>
         public void AddIncomeCategory()
         {
             if(NewIncomeName == String.Empty)
@@ -81,11 +93,17 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Removes the selected Income SubCategory from the SubCategory List.
+        /// </summary>
         public void RemoveIncomeCategory()
         {
             IncomeCategories.Remove(SelectedIncomeCategory);
         }
 
+        /// <summary>
+        /// Adds a new Expense SubCategory with the name in the NewExpenseName TextBox.
+        /// </summary>
         public void AddExpenseCategory()
         {
             if(NewExpenseName == String.Empty)
@@ -99,11 +117,17 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Removes the selected Expense SubCategory from the SubCategory List.
+        /// </summary>
         public void RemoveExpenseCategory()
         {
             ExpenseCategories.Remove(SelectedExpenseCategory);
         }
 
+        /// <summary>
+        /// Sends all edits to the Income & Expense SubCategory Lists.
+        /// </summary>
         public void FinishCategories()
         {
             Income.AllIncomeCategories = IncomeCategories.ToList();

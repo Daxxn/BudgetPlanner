@@ -36,6 +36,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Erases all current data to set up for a new file.
+        /// </summary>
         public void NewFile()
         {
             MessageBoxResult contin = MessageBox.Show("Are you sure? This will erase all unsaved data.", "New File", MessageBoxButton.OKCancel);
@@ -45,6 +48,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Clears all data from the DataLists and SubCategory Lists.
+        /// </summary>
         private void ClearData()
         {
             DataViewModel.ClearData();
@@ -54,22 +60,34 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         #region Add/Remove
+        /// <summary>
+        /// Adds a new Income Column with Default Data.
+        /// </summary>
         public void AddIncomeColumn()
         {
             DataViewModel.IncomeDataList.Add(new Income("Default", "New Income", 0.0M, DataViewModel.IncomeDataList.Count + 1));
         }
 
+        /// <summary>
+        /// Adds a new Expense Column with Default Data.
+        /// </summary>
         public void AddExpenseColumn()
         {
             DataViewModel.ExpenseDataList.Add(new Expense("default", "New Expense", 0.0M, DataViewModel.ExpenseDataList.Count + 1));
         }
 
+        /// <summary>
+        /// Removes the selected Income Column.
+        /// </summary>
         public void RemoveIncome()
         {
             DataViewModel.IncomeDataList.Remove(DataViewModel.SelectedIncome);
             DataViewModel.SelectedIncome = null;
         }
 
+        /// <summary>
+        /// Removes the selected Expense Column.
+        /// </summary>
         public void RemoveExpense()
         {
             DataViewModel.ExpenseDataList.Remove(DataViewModel.SelectedExpense);
@@ -78,6 +96,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region SubCategories
+        /// <summary>
+        /// Switches to DataView.xaml. Updates the SubCategory Data.
+        /// </summary>
         public void ViewData()
         {
             ActivateItem(DataViewModel);
@@ -86,18 +107,27 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel.UpdateData();
         }
 
+        /// <summary>
+        /// Switches to SubCategoryView.xaml. Sends the SubCategories.
+        /// </summary>
         public void ViewSubCategories()
         {
             ActivateItem(SubCategoryViewModel);
             SendCategories();
         }
 
+        /// <summary>
+        /// Casts SubCategories to a BindableCollection for sending data.
+        /// </summary>
         public void SendCategories()
         {
             SubCategoryViewModel.IncomeCategories = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
             SubCategoryViewModel.ExpenseCategories = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
         }
 
+        /// <summary>
+        /// Casts SubCategories to a List for data return.
+        /// </summary>
         public void RetrieveCategories()
         {
             Income.AllIncomeCategories = SubCategoryViewModel.IncomeCategories.ToList();
@@ -105,6 +135,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// Opens the OpenFileDialog and creates a new FileControl Instance.
+        /// </summary>
         public void OpenFile()
         {
             OpenFileDialog openFile = new OpenFileDialog
@@ -127,6 +160,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Opens the SaveFileDialog and creates a new FileControl Instance.
+        /// </summary>
         public void SaveFile()
         {
             SaveFileDialog saveFile = new SaveFileDialog
@@ -144,6 +180,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Called on close. Unsusbscribes from events.
+        /// </summary>
         public static void Exit()
         {
             DataElement.Exit();

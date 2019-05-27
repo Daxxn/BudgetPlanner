@@ -33,6 +33,11 @@ namespace BudgetPlannerLib.Models
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Reads string on file open.
+        /// </summary>
+        /// <param name="fields">OpenFile - String array from the FileControl.OpenFile Parser</param>
+        /// <returns></returns>
         public static Income FromFields(string[] fields)
         {
             return new Income()
@@ -44,6 +49,9 @@ namespace BudgetPlannerLib.Models
             };
         }
 
+        /// <summary>
+        /// Clears the SubCategories.
+        /// </summary>
         public static void ClearData()
         {
             AllIncomeCategories.Clear();
