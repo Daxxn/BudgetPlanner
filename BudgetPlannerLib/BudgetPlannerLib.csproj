@@ -45,7 +45,7 @@
     <Compile Include="DataElement.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\Expense.cs" />
-    <Compile Include="Models\FileConrol.cs" />
+    <Compile Include="Models\FileControl.cs" />
     <Compile Include="Models\Income.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="TestDataAccesser.cs" />

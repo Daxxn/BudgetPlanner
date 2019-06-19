@@ -17,7 +17,7 @@ using BudgetPlannerMainWPF.ViewModels;
 namespace BudgetPlannerMainWPF.Views
 {
     /// <summary>
-    /// Interaction logic for DataView.xaml Only Forwards Events.
+    /// Interaction logic for DataView.xaml : Only Forwards Events :
     /// </summary>
     public partial class DataView : UserControl
     {

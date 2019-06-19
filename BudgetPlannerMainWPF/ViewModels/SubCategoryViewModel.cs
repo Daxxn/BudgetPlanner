@@ -50,6 +50,15 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         #region - Methods
         /// <summary>
+        /// Runs on startup only.
+        /// </summary>
+        public void Initialize()
+        {
+            IncomeCategories = new BindableCollection<SubCategory>();
+            ExpenseCategories = new BindableCollection<SubCategory>();
+        }
+
+        /// <summary>
         /// Triggeres the KeyPress Event from the SubCategoryView Backend.
         /// </summary>
         private void SubCategoryView_SendKeyPress(Object sender, SimpleKeyEventAgrs e)

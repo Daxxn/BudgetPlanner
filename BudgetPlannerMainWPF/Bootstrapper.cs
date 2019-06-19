@@ -16,14 +16,25 @@ namespace BudgetPlannerMainWPF
             Initialize();
         }
 
+        /// <summary>
+        /// Connects the ShellViewModel & ShellView together and displays them.
+        /// </summary>
+        /// <param name="sender">Application startup sender</param>
+        /// <param name="e">Application startup event arguments</param>
         protected override void OnStartup(Object sender, StartupEventArgs e)
         {
             DisplayRootViewFor<ShellViewModel>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected override void OnExit(Object sender, EventArgs e)
         {
             ShellViewModel.Exit();
+            base.OnExit(sender, e);
         }
     }
 }

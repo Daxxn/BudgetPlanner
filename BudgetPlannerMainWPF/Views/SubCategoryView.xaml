@@ -82,17 +82,36 @@
 
                     <Button x:Name="AddIncomeCategory"
                         Grid.Column="0" Grid.Row="3"
-                        Margin="0,0,4,2"
-                        >New</Button>
+                        Margin="0,0,4,2">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        New</Button>
 
                     <Button x:Name="RemoveIncomeCategory"
                         Grid.Column="1" Grid.Row="3"
-                        Margin="0,0,0,2"
-                        >Remove Selected</Button>
+                        Margin="0,0,0,2" Padding="4">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        Remove Selected</Button>
 
-                    <TextBlock Grid.Column="0" Grid.Row="4">New Income Name:</TextBlock>
-                    <TextBox x:Name="NewIncomeName" Background="#FFB8DEFF" KeyDown="NewIncomeName_KeyDown"
-                         Grid.Column="1" Grid.Row="4"/>
+                    <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="0,2,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Margin="0,0,4,0">New Income Name:</TextBlock>
+                        <TextBox x:Name="NewIncomeName" Background="#FFB8DEFF" KeyDown="NewIncomeName_KeyDown"
+                         Grid.Column="1"/>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -130,17 +149,36 @@
 
                     <Button x:Name="AddExpenseCategory"
                         Margin="0,0,4,2"
-                        Grid.Column="0" Grid.Row="3"
-                        >New</Button>
+                        Grid.Column="0" Grid.Row="3">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        New</Button>
 
                     <Button x:Name="RemoveExpenseCategory"
-                        Margin="0,0,0,2"
-                        Grid.Column="1" Grid.Row="3"
-                        >Remove Selected</Button>
+                        Margin="0,0,0,2" Padding="4"
+                        Grid.Column="1" Grid.Row="3">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        Remove Selected</Button>
 
-                    <TextBlock Grid.Column="0" Grid.Row="4">New Expense Name:</TextBlock>
-                    <TextBox x:Name="NewExpenseName" Background="#FFB8DEFF" KeyDown="NewExpenseName_KeyDown"
-                         Grid.Column="1" Grid.Row="4"/>
+                    <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="0,2,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Margin="0,0,4,0">New Expense Name:</TextBlock>
+                        <TextBox x:Name="NewExpenseName" Background="#FFB8DEFF" KeyDown="NewExpenseName_KeyDown"
+                         Grid.Column="1"/>
+                    </Grid>
                 </Grid>
             </Border>
             <!--#endregion-->
