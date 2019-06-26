@@ -14,6 +14,8 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class SubCategoryViewModel : Screen
     {
         #region - Fields
+        private IEventAggregator _eventAggregator;
+
         private BindableCollection<SubCategory> _incomeCategories = new BindableCollection<SubCategory>();
         private BindableCollection<SubCategory> _expenseCategories = new BindableCollection<SubCategory>();
 
@@ -50,6 +52,11 @@ namespace BudgetPlannerMainWPF.ViewModels
             #endregion
 
             SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
+        }
+        public SubCategoryViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
         }
         #endregion
 

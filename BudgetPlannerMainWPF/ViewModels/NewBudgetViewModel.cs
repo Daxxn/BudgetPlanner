@@ -14,6 +14,8 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class NewBudgetViewModel : Caliburn.Micro.Screen
     {
         #region - Fields
+        private IEventAggregator _eventAggregator;
+
         private string _budgetName = String.Empty;
         private string _directoryPath = String.Empty;
         private string _subCategoryPath = String.Empty;
@@ -30,6 +32,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         public NewBudgetViewModel()
         {
             ShellViewModel.CancellingNewBudget += this.CancelNewBudget;
+        }
+        public NewBudgetViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
         }
 
         private void CancelNewBudget(Object sender, EventArgs e)

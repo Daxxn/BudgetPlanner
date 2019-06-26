@@ -12,6 +12,8 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class DataViewModel : Screen
     {
         #region - Fields
+        private IEventAggregator _eventAggregator;
+
         private BindableCollection<Income> _incomeDataList;
         private BindableCollection<Expense> _expenseDataList;
 
@@ -39,6 +41,11 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataView.SendEnter += this.DataView_SendEnter;
         }
 
+        public DataViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+        }
 
         public DataViewModel(BindableCollection<Income> incomes, BindableCollection<Expense> expenses)
         {

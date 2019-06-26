@@ -11,26 +11,48 @@ namespace BudgetPlannerMainWPF
 {
     public class Bootstrapper : BootstrapperBase
     {
+        private readonly SimpleContainer _container = new SimpleContainer();
+
         public Bootstrapper()
         {
             Initialize();
         }
 
-        /// <summary>
-        /// Connects the ShellViewModel & ShellView together and displays them.
-        /// </summary>
-        /// <param name="sender">Application startup sender</param>
-        /// <param name="e">Application startup event arguments</param>
+        protected override void Configure()
+        {
+            _container.Instance(_container);
+
+            _container
+                .Singleton<IWindowManager, WindowManager>()
+                .Singleton<IEventAggregator, EventAggregator>();
+
+            GetType().Assembly.GetTypes().Where(type => type.IsClass)
+                .Where(type => type.Name.EndsWith("ViewModel"))
+                .ToList()
+                .ForEach(viewModelType => _container.RegisterPerRequest(
+                    viewModelType, viewModelType.ToString(), viewModelType));
+        }
+
         protected override void OnStartup(Object sender, StartupEventArgs e)
         {
             DisplayRootViewFor<ShellViewModel>();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        protected override Object GetInstance(Type service, String key)
+        {
+            return _container.GetInstance(service, key);
+        }
+
+        protected override IEnumerable<Object> GetAllInstances(Type service)
+        {
+            return _container.GetAllInstances(service);
+        }
+
+        protected override void BuildUp(Object instance)
+        {
+            _container.BuildUp(instance);
+        }
+
         protected override void OnExit(Object sender, EventArgs e)
         {
             ShellViewModel.Exit();

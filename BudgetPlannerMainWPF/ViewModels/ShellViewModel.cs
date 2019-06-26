@@ -14,6 +14,8 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class ShellViewModel : Conductor<object>
     {
         #region - Fields
+        private IEventAggregator _eventAggregator;
+
         private string _WindowTitle = "Budget Planner";
         private string _budgetName = String.Empty;
         private string _budgetDir = String.Empty;
@@ -49,6 +51,18 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             NewBudgetViewModel.CreatingNewBudget += this.CreatingNewBudget_Event;
             SubCategoryViewModel.SubCatEventManager += this.SubCatEventManager_Event;
+        }
+        public ShellViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+
+            InitializeAll();
+
+            ActivateItem(NewBudgetViewModel);
+            lastScreenIsNF = true;
+
+            DataViewModel.SortCategories();
         }
 
         private void SubCatEventManager_Event(Object sender, SubCategoryEventArgs e)
