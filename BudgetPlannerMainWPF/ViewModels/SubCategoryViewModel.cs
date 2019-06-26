@@ -22,7 +22,13 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
-        
+
+        private string _subCategoryDirectory;
+        private bool _goodSubCatPath;
+
+        private string _subCatFileName;
+
+        public event EventHandler<SubCategoryEventArgs> SubCatEventManager;
         #endregion
 
         #region - Constructors
@@ -45,7 +51,6 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
         }
-
         #endregion
 
         #region - Methods
@@ -142,10 +147,74 @@ namespace BudgetPlannerMainWPF.ViewModels
             Income.AllIncomeCategories = IncomeCategories.ToList();
             Expense.AllExpenseCategories = ExpenseCategories.ToList();
         }
+
+        public void NewSubCatPath()
+        {
+            SubCategoryDirectory = NewBudgetViewModel.OpenFolderDialog(
+                "Select Sub-Category Save Location"
+                );
+
+            SubCatEventManager?.Invoke(this, 
+                new SubCategoryEventArgs(3, SubCategoryDirectory, SubCatFileName));
+        }
+
+        public void OpenSubCats()
+        {
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(2));
+        }
+
+        public void SaveSubCats()
+        {
+            FinishCategories();
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(1));
+        }
+
+        public void SaveSubCatsAs()
+        {
+            FinishCategories();
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(0));
+        }
         #endregion
         #endregion
 
         #region - Properties
+        public string SubCategoryDirectory
+        {
+            get { return _subCategoryDirectory; }
+            set
+            {
+                _subCategoryDirectory = value;
+
+                if (ShellViewModel.CheckDirectory(value))
+                {
+                    GoodSubCatPath = true;
+                }
+                else GoodSubCatPath = false;
+
+                NotifyOfPropertyChange(() => SubCategoryDirectory);
+            }
+        }
+
+        public bool GoodSubCatPath
+        {
+            get { return _goodSubCatPath; }
+            set
+            {
+                _goodSubCatPath = value;
+                NotifyOfPropertyChange(() => GoodSubCatPath);
+            }
+        }
+
+        public string SubCatFileName
+        {
+            get { return _subCatFileName; }
+            set
+            {
+                _subCatFileName = value;
+                NotifyOfPropertyChange(() => SubCatFileName);
+            }
+        }
+
         public BindableCollection<SubCategory> IncomeCategories
         {
             get { return _incomeCategories; }

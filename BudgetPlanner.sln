@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerMainWPF", "Bud
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerLib", "BudgetPlannerLib\BudgetPlannerLib.csproj", "{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AECE9AAF-F66C-47D5-A4D5-71A1B7FDDF90}"
+	ProjectSection(SolutionItems) = preProject
+		Messages.txt = Messages.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

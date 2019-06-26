@@ -20,6 +20,8 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// Name entered by the user in the NewBudgetViewModel
         /// </summary>
         public string BudgetName { get; private set; }
+        public string SubCatPath { get; private set; }
+        public bool OpenSubCategories { get; private set; } = false;
         #endregion
 
         #region - Constructors
@@ -28,6 +30,19 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             FolderPath = folder;
             BudgetName = name;
+        }
+        public FolderEventArgs(string folder, string name, string subFolder)
+        {
+            FolderPath = folder;
+            BudgetName = name;
+            SubCatPath = subFolder;
+        }
+        public FolderEventArgs(string folder, string name, string subFolder, bool openSubs)
+        {
+            FolderPath = folder;
+            BudgetName = name;
+            SubCatPath = subFolder;
+            OpenSubCategories = openSubs;
         }
         #endregion
     }

@@ -10,12 +10,9 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <Color x:Key="GridSplitterColor">#FFB9DEFF</Color>
-            <Color x:Key="ButtonBackgroundGradient">#FFF1F9FF</Color>
-            <LinearGradientBrush x:Key="ButtonBackGrade" EndPoint="0.5,1" SpreadMethod="Repeat">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="#FFA7D7FF" Offset="1"/>
-                <GradientStop Color="#FFF1F9FF" Offset="2"/>
-            </LinearGradientBrush>
+            <Color x:Key="BackGround_Main">#FFDDE4E8</Color>
+            <Color x:Key="BorderColor_1">#FF99CCFF</Color>
+            <Color x:Key="Border_2">#FF81AACD</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

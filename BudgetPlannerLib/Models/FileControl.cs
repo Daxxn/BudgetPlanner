@@ -19,10 +19,6 @@ namespace BudgetPlannerLib.Models
 
         private List<SubCategory> _incomeSubCategories;
         private List<SubCategory> _expenseSubCategories;
-
-        private List<int> _ids;
-        private List<string> _categories;
-        private List<double> _values;
         #endregion
 
         #region - Constructors
@@ -96,6 +92,7 @@ namespace BudgetPlannerLib.Models
         {
             int index = 0;
             string dataDivider = "***";
+            string nameMarker = "###";
 
             TextFieldParser parser = new TextFieldParser(FilePath);
             parser.SetDelimiters(new string[] { ":" });
@@ -108,7 +105,13 @@ namespace BudgetPlannerLib.Models
 
             while (!parser.EndOfData)
             {
-                if(parser.PeekChars(3) == dataDivider)
+                if (parser.PeekChars(3) == nameMarker)
+                {
+                    index++;
+                    ProjectName = parser.ReadLine();
+                }
+
+                if (parser.PeekChars(3) == dataDivider)
                 {
                     index++;
                     parser.ReadLine();
@@ -149,6 +152,9 @@ namespace BudgetPlannerLib.Models
             StreamWriter writer = new StreamWriter(FilePath);
             #pragma warning restore IDE0017 // Simplify object initialization
             writer.AutoFlush = true;
+
+            // Writes the name of the project:
+            writer.WriteLine($"###{ProjectName}");
 
             // Writes the header and the Income DataList:
             writer.WriteLine("***Income Data");
@@ -256,7 +262,7 @@ namespace BudgetPlannerLib.Models
                 }
             }
 
-            // Dispose of allocated memory.
+            // Open allocated memory.
             parser.Close();
             parser.Dispose();
         }
@@ -308,42 +314,6 @@ namespace BudgetPlannerLib.Models
             set
             {
                 _expenseSubCategories = value;
-            }
-        }
-
-        /// <summary>
-        /// Open - Loaded Categories from the file.
-        /// </summary>
-        public List<string> Categories
-        {
-            get { return _categories; }
-            set
-            {
-                _categories = value;
-            }
-        }
-
-        /// <summary>
-        /// Open - Loaded Values for the categories.
-        /// </summary>
-        public List<double> Values
-        {
-            get { return _values; }
-            set
-            {
-                _values = value;
-            }
-        }
-
-        /// <summary>
-        /// Open - Id Numbers pulled from the file.
-        /// </summary>
-        public List<int> IDs
-        {
-            get { return _ids; }
-            set
-            {
-                _ids = value;
             }
         }
         #endregion

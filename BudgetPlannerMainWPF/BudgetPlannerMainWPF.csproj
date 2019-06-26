@@ -77,6 +77,7 @@
     <Compile Include="ViewModels\NewBudgetViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SimpleKeyEventAgrs.cs" />
+    <Compile Include="ViewModels\SubCategoryEventArgs.cs" />
     <Compile Include="ViewModels\SubCategoryViewModel.cs" />
     <Compile Include="Views\DataView.xaml.cs">
       <DependentUpon>DataView.xaml</DependentUpon>

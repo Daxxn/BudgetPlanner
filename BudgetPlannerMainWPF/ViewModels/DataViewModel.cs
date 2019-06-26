@@ -48,6 +48,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Runs during OnStartUp()
+        /// </summary>
         public void Initialize()
         {
             IncomeDataList = new BindableCollection<Income>();

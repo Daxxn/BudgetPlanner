@@ -23,37 +23,9 @@ namespace BudgetPlannerMainWPF.Views
     /// </summary>
     public partial class NewBudgetView : System.Windows.Controls.UserControl
     {
-        //private bool fileOpened = false;
-        //private string FolderName { get; set; }
-
-        //public event EventHandler<FolderEventArgs> FolderSelected;
-
         public NewBudgetView()
         {
             InitializeComponent();
         }
-
-        /// <summary>
-        /// Needs to be tested!!!
-        /// </summary>
-        //private void NewSavePath_Click(Object sender, RoutedEventArgs e)
-        //{
-        //    FolderBrowserDialog folderBrowser = new FolderBrowserDialog
-        //    {
-        //        ShowNewFolderButton = true,
-        //        Description = "Select a path for the new project:"
-        //    };
-
-        //    DialogResult result = folderBrowser.ShowDialog();
-
-        //    if (result == DialogResult.OK)
-        //    {
-        //        FolderName = folderBrowser.SelectedPath;
-        //        if (Directory.Exists(FolderName))
-        //        {
-        //            FolderSelected?.Invoke(this, new FolderEventArgs(FolderName));
-        //        }
-        //    }
-        //}
     }
 }
