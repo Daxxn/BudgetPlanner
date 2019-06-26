@@ -7,10 +7,11 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace BudgetPlannerLib.Models
 {
-    public class FileConrol
+    public class FileControl
     {
         #region - Fields
         public string FilePath { get; set; }
+        public string ProjectName { get; private set; }
         public bool IsFileSuccess { get; set; }
 
         private List<Income> _incomeData;
@@ -18,17 +19,16 @@ namespace BudgetPlannerLib.Models
 
         private List<SubCategory> _incomeSubCategories;
         private List<SubCategory> _expenseSubCategories;
-
-        private List<int> _ids;
-        private List<string> _categories;
-        private List<double> _values;
         #endregion
 
         #region - Constructors
         /// <summary>
-        /// For Saving Income & Expense Data.
+        /// Depriciated - Saves Income & Expense DataLists.
         /// </summary>
-        public FileConrol(string filePath, List<Income> incomes, List<Expense> expenses)
+        /// <param name="filePath">Sent from SaveFileDialog</param>
+        /// <param name="incomes">Save - IncomeDataList</param>
+        /// <param name="expenses">Save - ExpenseDataList</param>
+        public FileControl(string filePath, List<Income> incomes, List<Expense> expenses)
         {
             FilePath = filePath;
             IncomeData = incomes;
@@ -39,11 +39,11 @@ namespace BudgetPlannerLib.Models
         /// Up to date Constructor for saving SubCategories.
         /// </summary>
         /// <param name="filePath">Sent from Open/SaveFileDialog Box</param>
-        /// <param name="incomes">Saving - IncomeDataList</param>
-        /// <param name="expenses">Saving - ExpenseDataList</param>
-        /// <param name="incomeSubs">Saving - Income.AllSubCategories</param>
-        /// <param name="expenseSubs">Saving - Expense.AllSubCategories</param>
-        public FileConrol(string filePath, List<Income> incomes, List<Expense> expenses, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
+        /// <param name="incomes">Save - IncomeDataList</param>
+        /// <param name="expenses">Save - ExpenseDataList</param>
+        /// <param name="incomeSubs">Save - Income.AllSubCategories</param>
+        /// <param name="expenseSubs">Save - Expense.AllSubCategories</param>
+        public FileControl(string filePath, List<Income> incomes, List<Expense> expenses, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
         {
             FilePath = filePath;
             IncomeData = incomes;
@@ -55,20 +55,44 @@ namespace BudgetPlannerLib.Models
         /// <summary>
         /// For Loading Income & Expense Data.
         /// </summary>
-        public FileConrol(string filePath)
+        public FileControl(string filePath)
         {
             FilePath = filePath;
+        }
+
+        /// <summary>
+        /// FOr Saving SubCategory Data to a seperate file.
+        /// </summary>
+        /// <param name="filePath">Sent from Open/SaveFileDialog Box</param>
+        /// <param name="incomeSubs">Save - Income.AllSubCategories</param>
+        /// <param name="expenseSubs">Save - Expense.AllSubCategories</param>
+        public FileControl(string filePath, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
+        {
+            FilePath = filePath;
+            IncomeSubCateories = incomeSubs;
+            ExpenseSubCategories = expenseSubs;
+        }
+
+        public FileControl(string projectName, string filePath, List<Income> incomes, List<Expense> expenses, List<SubCategory> incomeSubs, List<SubCategory> expenseSubs)
+        {
+            ProjectName = projectName;
+            FilePath = filePath;
+            IncomeData = incomes;
+            ExpenseData = expenses;
+            IncomeSubCateories = incomeSubs;
+            ExpenseSubCategories = expenseSubs;
         }
         #endregion
 
         #region - Methods
         /// <summary>
-        /// Opens a ".txt" file thats been saved by the Budget Planner.
+        /// Opens a ".bpn" file thats been saved by the Budget Planner.
         /// </summary>
         public void OpenFile()
         {
             int index = 0;
             string dataDivider = "***";
+            string nameMarker = "###";
 
             TextFieldParser parser = new TextFieldParser(FilePath);
             parser.SetDelimiters(new string[] { ":" });
@@ -81,7 +105,13 @@ namespace BudgetPlannerLib.Models
 
             while (!parser.EndOfData)
             {
-                if(parser.PeekChars(3) == dataDivider)
+                if (parser.PeekChars(3) == nameMarker)
+                {
+                    index++;
+                    ProjectName = parser.ReadLine();
+                }
+
+                if (parser.PeekChars(3) == dataDivider)
                 {
                     index++;
                     parser.ReadLine();
@@ -106,22 +136,25 @@ namespace BudgetPlannerLib.Models
                 }
             }
 
+            // Dispose of allocated memory.
             parser.Close();
             parser.Dispose();
-            
         }
 
         /// <summary>
-        /// Formats the file and saves to disk.
+        /// Formats the data and saves to disk.
         /// </summary>
         public void SaveFile()
         {
             // Instansiates the Writer:
             string line = String.Empty;
-#pragma warning disable IDE0017 // Simplify object initialization
+            #pragma warning disable IDE0017 // Simplify object initialization
             StreamWriter writer = new StreamWriter(FilePath);
-#pragma warning restore IDE0017 // Simplify object initialization
+            #pragma warning restore IDE0017 // Simplify object initialization
             writer.AutoFlush = true;
+
+            // Writes the name of the project:
+            writer.WriteLine($"###{ProjectName}");
 
             // Writes the header and the Income DataList:
             writer.WriteLine("***Income Data");
@@ -160,6 +193,79 @@ namespace BudgetPlannerLib.Models
             writer.Dispose();
         }
 
+        /// <summary>
+        /// Formats the SubCategory data and saves to disk.
+        /// </summary>
+        public void SaveSubCategories()
+        {
+            // Instansiates the Writer:
+            string line = String.Empty;
+            #pragma warning disable IDE0017 // Simplify object initialization
+            StreamWriter writer = new StreamWriter(FilePath);
+            #pragma warning restore IDE0017 // Simplify object initialization
+            writer.AutoFlush = true;
+
+            // Writes the header and the Income SubCategories:
+            writer.WriteLine("***Income SubCategories");
+            foreach (var item in IncomeSubCateories)
+            {
+                line = $"{item.Name}";
+                writer.WriteLine(line);
+            }
+
+            // Writes the header and the Expense SubCategories:
+            writer.WriteLine("***Expense SubCategories");
+            foreach (var item in ExpenseSubCategories)
+            {
+                line = $"{item.Name}";
+                writer.WriteLine(line);
+            }
+
+            // Disposes of the Writer Instance:
+            writer.Close();
+            writer.Dispose();
+        }
+
+        /// <summary>
+        /// Pulls SubCategory Data from a file.
+        /// </summary>
+        public void OpenSubCategories()
+        {
+            int index = 0;
+            string dataDivider = "***";
+
+            TextFieldParser parser = new TextFieldParser(FilePath);
+            parser.SetDelimiters(new string[] { ":" });
+
+            IncomeSubCateories = new List<SubCategory>();
+            ExpenseSubCategories = new List<SubCategory>();
+
+            // Parser reading loop.
+            while (!parser.EndOfData)
+            {
+                if (parser.PeekChars(3) == dataDivider)
+                {
+                    index++;
+                    parser.ReadLine();
+                }
+
+                switch (index)
+                {
+                    default:
+                        throw new Exception("Index outside data bounds");
+                    case 1:
+                        IncomeSubCateories.Add(SubCategory.FromFields(parser.ReadFields()));
+                        break;
+                    case 2:
+                        ExpenseSubCategories.Add(SubCategory.FromFields(parser.ReadFields()));
+                        break;
+                }
+            }
+
+            // Open allocated memory.
+            parser.Close();
+            parser.Dispose();
+        }
         #endregion
 
         #region - Properties
@@ -188,7 +294,7 @@ namespace BudgetPlannerLib.Models
         }
 
         /// <summary>
-        /// Saving - Static SubCategories from Income
+        /// Save - Static SubCategories from Income
         /// </summary>
         public List<SubCategory> IncomeSubCateories
         {
@@ -200,7 +306,7 @@ namespace BudgetPlannerLib.Models
         }
 
         /// <summary>
-        /// Saving - Static SubCategories from Expense
+        /// Save - Static SubCategories from Expense
         /// </summary>
         public List<SubCategory> ExpenseSubCategories
         {
@@ -208,33 +314,6 @@ namespace BudgetPlannerLib.Models
             set
             {
                 _expenseSubCategories = value;
-            }
-        }
-
-        public List<string> Categories
-        {
-            get { return _categories; }
-            set
-            {
-                _categories = value;
-            }
-        }
-
-        public List<double> Values
-        {
-            get { return _values; }
-            set
-            {
-                _values = value;
-            }
-        }
-
-        public List<int> IDs
-        {
-            get { return _ids; }
-            set
-            {
-                _ids = value;
             }
         }
         #endregion

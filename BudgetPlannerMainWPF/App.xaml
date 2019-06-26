@@ -9,6 +9,10 @@
                     <local:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <Color x:Key="GridSplitterColor">#FFB9DEFF</Color>
+            <Color x:Key="BackGround_Main">#FFDDE4E8</Color>
+            <Color x:Key="BorderColor_1">#FF99CCFF</Color>
+            <Color x:Key="Border_2">#FF81AACD</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

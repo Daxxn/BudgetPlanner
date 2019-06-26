@@ -22,13 +22,22 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
-        
+
+        private string _subCategoryDirectory;
+        private bool _goodSubCatPath;
+
+        private string _subCatFileName;
+
+        public event EventHandler<SubCategoryEventArgs> SubCatEventManager;
         #endregion
 
         #region - Constructors
+        /// <summary>
+        /// Base Constructor, Subscribes to the SendEnter Event.
+        /// </summary>
         public SubCategoryViewModel()
         {
-            #region Test Data. Should get replaced.
+            #region Test Data. Should get replaced on startup.
             IncomeCategories.Add(new SubCategory("Temp Income Category 1"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 2"));
             IncomeCategories.Add(new SubCategory("Temp Income Category 3"));
@@ -42,10 +51,21 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
         }
-
         #endregion
 
         #region - Methods
+        /// <summary>
+        /// Runs on startup only.
+        /// </summary>
+        public void Initialize()
+        {
+            IncomeCategories = new BindableCollection<SubCategory>();
+            ExpenseCategories = new BindableCollection<SubCategory>();
+        }
+
+        /// <summary>
+        /// Triggeres the KeyPress Event from the SubCategoryView Backend.
+        /// </summary>
         private void SubCategoryView_SendKeyPress(Object sender, SimpleKeyEventAgrs e)
         {
             if (e.SenderId == 1)
@@ -58,6 +78,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Clears data from the SubCategories.
+        /// </summary>
         public void ClearData()
         {
             IncomeCategories.Clear();
@@ -68,6 +91,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         #region -- Buttons
+        /// <summary>
+        /// Adds a new Income SubCategory with the name in the NewIncomeName TextBox.
+        /// </summary>
         public void AddIncomeCategory()
         {
             if(NewIncomeName == String.Empty)
@@ -81,11 +107,17 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Removes the selected Income SubCategory from the SubCategory List.
+        /// </summary>
         public void RemoveIncomeCategory()
         {
             IncomeCategories.Remove(SelectedIncomeCategory);
         }
 
+        /// <summary>
+        /// Adds a new Expense SubCategory with the name in the NewExpenseName TextBox.
+        /// </summary>
         public void AddExpenseCategory()
         {
             if(NewExpenseName == String.Empty)
@@ -99,20 +131,90 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Removes the selected Expense SubCategory from the SubCategory List.
+        /// </summary>
         public void RemoveExpenseCategory()
         {
             ExpenseCategories.Remove(SelectedExpenseCategory);
         }
 
+        /// <summary>
+        /// Sends all edits to the Income & Expense SubCategory Lists.
+        /// </summary>
         public void FinishCategories()
         {
             Income.AllIncomeCategories = IncomeCategories.ToList();
             Expense.AllExpenseCategories = ExpenseCategories.ToList();
         }
+
+        public void NewSubCatPath()
+        {
+            SubCategoryDirectory = NewBudgetViewModel.OpenFolderDialog(
+                "Select Sub-Category Save Location"
+                );
+
+            SubCatEventManager?.Invoke(this, 
+                new SubCategoryEventArgs(3, SubCategoryDirectory, SubCatFileName));
+        }
+
+        public void OpenSubCats()
+        {
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(2));
+        }
+
+        public void SaveSubCats()
+        {
+            FinishCategories();
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(1));
+        }
+
+        public void SaveSubCatsAs()
+        {
+            FinishCategories();
+            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(0));
+        }
         #endregion
         #endregion
 
         #region - Properties
+        public string SubCategoryDirectory
+        {
+            get { return _subCategoryDirectory; }
+            set
+            {
+                _subCategoryDirectory = value;
+
+                if (ShellViewModel.CheckDirectory(value))
+                {
+                    GoodSubCatPath = true;
+                }
+                else GoodSubCatPath = false;
+
+                NotifyOfPropertyChange(() => SubCategoryDirectory);
+            }
+        }
+
+        public bool GoodSubCatPath
+        {
+            get { return _goodSubCatPath; }
+            set
+            {
+                _goodSubCatPath = value;
+                NotifyOfPropertyChange(() => GoodSubCatPath);
+            }
+        }
+
+        public string SubCatFileName
+        {
+            get { return _subCatFileName; }
+            set
+            {
+                _subCatFileName = value;
+                NotifyOfPropertyChange(() => SubCatFileName);
+            }
+        }
+
         public BindableCollection<SubCategory> IncomeCategories
         {
             get { return _incomeCategories; }
