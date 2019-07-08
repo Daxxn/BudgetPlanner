@@ -72,6 +72,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EventModels\AccessDirectoryEvent.cs" />
+    <Compile Include="EventModels\CancelNewEvent.cs" />
+    <Compile Include="EventModels\ChangeViewEvent.cs" />
+    <Compile Include="EventModels\EnterEvent.cs" />
+    <Compile Include="EventModels\NewBudgetEvent.cs" />
+    <Compile Include="EventModels\SaveSubCategoryEvent.cs" />
+    <Compile Include="EventModels\UpdateDataEvent.cs" />
+    <Compile Include="EventModels\UpdateDataListEvent.cs" />
+    <Compile Include="EventModels\UpdateSubCatEvent.cs" />
+    <Compile Include="FileBrowser.cs" />
+    <Compile Include="IFileBrowser.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\FolderEventArgs.cs" />
     <Compile Include="ViewModels\NewBudgetViewModel.cs" />
@@ -120,9 +131,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\DataView.xaml">
       <SubType>Designer</SubType>

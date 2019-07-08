@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using BudgetPlannerLib.Models;
+using BudgetPlannerMainWPF.EventModels;
 using BudgetPlannerMainWPF.Views;
 using Caliburn.Micro;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class SubCategoryViewModel : Screen
+    public class SubCategoryViewModel : Screen, IHandle<UpdateDataListEvent>, IHandle<UpdateSubCatEvent>
     {
         #region - Fields
         private IEventAggregator _eventAggregator;
@@ -25,7 +26,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
 
-        private string _subCategoryDirectory;
+        private string _subCategoryPath;
         private bool _goodSubCatPath;
 
         private string _subCatFileName;
@@ -157,40 +158,58 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void NewSubCatPath()
         {
-            SubCategoryDirectory = NewBudgetViewModel.OpenFolderDialog(
+            // Old Version
+            SubCategoryPath = NewBudgetViewModel.OpenFolderDialog(
                 "Select Sub-Category Save Location"
                 );
 
-            SubCatEventManager?.Invoke(this, 
-                new SubCategoryEventArgs(3, SubCategoryDirectory, SubCatFileName));
+            _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(4, SubCategoryPath));
+            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(3, SubCategoryPath, SubCatFileName));
         }
 
         public void OpenSubCats()
         {
-            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(2));
+            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(2));
+            _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(3, SubCategoryPath));
         }
 
         public void SaveSubCats()
         {
             FinishCategories();
-            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(1));
+            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(1));
+            _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(2, SubCategoryPath));
         }
 
         public void SaveSubCatsAs()
         {
             FinishCategories();
-            SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(0));
+            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(0));
+            _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(1, SubCategoryPath));
+        }
+        #endregion
+
+        #region -- Event Handlers
+        public void Handle(UpdateDataListEvent message)
+        {
+            Income.AllIncomeCategories = IncomeCategories.ToList();
+            Expense.AllExpenseCategories = ExpenseCategories.ToList();
+        }
+
+        public void Handle(UpdateSubCatEvent message)
+        {
+            IncomeCategories = new BindableCollection<SubCategory>(message.IncomeSubs);
+            ExpenseCategories = new BindableCollection<SubCategory>(message.ExpenseSubs);
         }
         #endregion
         #endregion
 
         #region - Properties
-        public string SubCategoryDirectory
+        public string SubCategoryPath
         {
-            get { return _subCategoryDirectory; }
+            get { return _subCategoryPath; }
             set
             {
-                _subCategoryDirectory = value;
+                _subCategoryPath = value;
 
                 if (ShellViewModel.CheckDirectory(value))
                 {
@@ -198,7 +217,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 }
                 else GoodSubCatPath = false;
 
-                NotifyOfPropertyChange(() => SubCategoryDirectory);
+                NotifyOfPropertyChange(() => SubCategoryPath);
             }
         }
 

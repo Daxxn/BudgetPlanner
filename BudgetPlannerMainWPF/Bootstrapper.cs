@@ -26,6 +26,8 @@ namespace BudgetPlannerMainWPF
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>();
 
+            _container.PerRequest<IFileBrowser, FileBrowser>();
+
             GetType().Assembly.GetTypes().Where(type => type.IsClass)
                 .Where(type => type.Name.EndsWith("ViewModel"))
                 .ToList()

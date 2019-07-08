@@ -208,6 +208,48 @@ namespace BudgetPlannerLib.Models
                 parser?.Dispose();
             }
         }
+
+        public static bool OpenSubsFile(string path, out List<SubCategory> incomeSubs, out List<SubCategory> expenseSubs)
+        {
+            int index = 0;
+            bool success = true;
+
+            incomeSubs = new List<SubCategory>();
+            expenseSubs = new List<SubCategory>();
+
+            if (File.Exists(path))
+            {
+                TextFieldParser parser = new TextFieldParser(path);
+
+                while (!parser.EndOfData)
+                {
+                    if(parser.PeekChars(3) == DataDivider)
+                    {
+                        index++;
+                        parser.ReadLine();
+                    }
+
+                    switch (index)
+                    {
+                        default:
+                            success = false;
+                            break;
+                        case 1:
+                            incomeSubs.Add(new SubCategory(parser.ReadLine()));
+                            break;
+                        case 2:
+                            expenseSubs.Add(new SubCategory(parser.ReadLine()));
+                            break;
+                    }
+                }
+
+                // Dispose of allocated memory, if needed.
+                parser?.Close();
+                parser?.Dispose();
+            }
+            
+            return success;
+        }
         #endregion
     }
 }

@@ -8,13 +8,15 @@ using BudgetPlannerLib.Models;
 using Caliburn.Micro;
 using Microsoft.Win32;
 using BudgetPlannerMainWPF.Views;
+using BudgetPlannerMainWPF.EventModels;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class ShellViewModel : Conductor<object>
+    public class ShellViewModel : Conductor<object>, IHandle<NewBudgetEvent>, IHandle<SaveSubCategoryEvent>
     {
         #region - Fields
         private IEventAggregator _eventAggregator;
+        private IFileBrowser _fileBrowser;
 
         private string _WindowTitle = "Budget Planner";
         private string _budgetName = String.Empty;
@@ -30,7 +32,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         
         public string FileName { get; set; }
 
-        private DataViewModel _dataViewModel = new DataViewModel();
+        private DataViewModel _dataViewModel;
         private SubCategoryViewModel _categoryViewModel = new SubCategoryViewModel();
         private NewBudgetViewModel _newBudgetViewModel = new NewBudgetViewModel();
 
@@ -48,23 +50,34 @@ namespace BudgetPlannerMainWPF.ViewModels
             lastScreenIsNF = true;
 
             DataViewModel.SortCategories();
-
-            NewBudgetViewModel.CreatingNewBudget += this.CreatingNewBudget_Event;
+            
             SubCategoryViewModel.SubCatEventManager += this.SubCatEventManager_Event;
         }
-        public ShellViewModel(IEventAggregator eventAggregator)
+        public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser)
         {
+            _fileBrowser = fileBrowser;
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
+
+            DataViewModel = new DataViewModel(eventAggregator);
+            SubCategoryViewModel = new SubCategoryViewModel(eventAggregator);
+            NewBudgetViewModel = new NewBudgetViewModel(eventAggregator, fileBrowser);
 
             InitializeAll();
 
             ActivateItem(NewBudgetViewModel);
             lastScreenIsNF = true;
 
-            DataViewModel.SortCategories();
+            //DataViewModel.SortCategories();
+            _eventAggregator.PublishOnUIThread(new UpdateDataListEvent());
         }
+        #endregion
 
+        #region - Methods
+
+        #region -- Access FileBrowser
+
+        #endregion
         private void SubCatEventManager_Event(Object sender, SubCategoryEventArgs e)
         {
             if (e.SaveCode == 0)
@@ -85,9 +98,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 SubCatFileName = e.SubCatFileName;
             }
         }
-        #endregion
 
-        #region - Methods
         /// <summary>
         /// Confirms the existance of the entered string
         /// </summary>
@@ -115,6 +126,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+
         /// <summary>
         /// Creates a new budget, clears the old budget and directs a new path.
         /// </summary>
@@ -128,7 +140,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 WindowTitle = $"Budget Planner - {budgetName}";
                 BudgetDirectory = budgetDir;
                 SubCategoryDirectory = subDir;
-                ActivateItem(DataViewModel);
+                Activate_DataView();
             }
             else
             {
@@ -143,16 +155,16 @@ namespace BudgetPlannerMainWPF.ViewModels
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
-                    ActivateItem(DataViewModel);
+                    Activate_DataView();
                     isFileOpen = true;
                 }
                 else if (contin == MessageBoxResult.Cancel)
                 {
-                    CancellingNewBudget?.Invoke(this, new EventArgs());
-                    ActivateItem(DataViewModel);
+                    //CancellingNewBudget?.Invoke(this, new EventArgs());
+                    _eventAggregator.PublishOnUIThread(new CancelNewEvent());
+                    Activate_DataView();
                 }
             }
-
         }
 
         private void CreateNewBudget(string budgetName, string budgetDir, string subDir, bool openSubs)
@@ -161,12 +173,21 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 if (openSubs)
                 {
+                    // Need to fix. The IF statements drop without doing anything.
                     BudgetName = budgetName;
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
                     OpenSubs();
-                    ActivateItem(DataViewModel);
+                    Activate_DataView();
+                }
+                else if (!openSubs)
+                {
+                    BudgetName = budgetName;
+                    WindowTitle = $"Budget Planner - {budgetName}";
+                    BudgetDirectory = budgetDir;
+                    SubCategoryDirectory = subDir;
+                    Activate_DataView();
                 }
             }
             else
@@ -182,13 +203,13 @@ namespace BudgetPlannerMainWPF.ViewModels
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
-                    ActivateItem(DataViewModel);
+                    Activate_DataView();
                     isFileOpen = true;
                 }
                 else if (contin == MessageBoxResult.Cancel)
                 {
-                    CancellingNewBudget?.Invoke(this, new EventArgs());
-                    ActivateItem(DataViewModel);
+                    _eventAggregator.PublishOnUIThread(new CancelNewEvent());
+                    Activate_DataView();
                 }
             }
 
@@ -218,6 +239,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 }
             }
         }
+
         
         /// <summary>
         /// Clears all data from the DataLists and SubCategory Lists.
@@ -278,9 +300,10 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if (lastScreenIsNF)
             {
-                CancellingNewBudget?.Invoke(this, new EventArgs());
+                _eventAggregator.PublishOnUIThread(new CancelNewEvent());
+                //CancellingNewBudget?.Invoke(this, new EventArgs());
             }
-            ActivateItem(DataViewModel);
+            Activate_DataView();
             DataViewModel.SortCategories();
             SubCategoryViewModel.FinishCategories();
             DataViewModel.UpdateData();
@@ -293,12 +316,13 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if (lastScreenIsNF)
             {
-                CancellingNewBudget?.Invoke(this, new EventArgs());
+                _eventAggregator.PublishOnUIThread(new CancelNewEvent());
+                //CancellingNewBudget?.Invoke(this, new EventArgs());
             }
-            ActivateItem(SubCategoryViewModel);
+            Activate_SubCategoryView();
             if(SubCategoryDirectory != null)
             {
-                SubCategoryViewModel.SubCategoryDirectory = SubCategoryDirectory;
+                SubCategoryViewModel.SubCategoryPath = SubCategoryDirectory;
             }
             SendCategories();
         }
@@ -320,6 +344,28 @@ namespace BudgetPlannerMainWPF.ViewModels
             Income.AllIncomeCategories = SubCategoryViewModel.IncomeCategories.ToList();
             Expense.AllExpenseCategories = SubCategoryViewModel.ExpenseCategories.ToList();
         }
+
+        #region -- ViewControl
+        public void Activate_DataView()
+        {
+            _eventAggregator.PublishOnUIThread(new UpdateDataListEvent(
+                SubCategoryViewModel.IncomeCategories,
+                SubCategoryViewModel.ExpenseCategories
+                ));
+
+            ActivateItem(DataViewModel);
+        }
+
+        public void Activate_SubCategoryView()
+        {
+            _eventAggregator.PublishOnUIThread(new UpdateSubCatEvent(
+                Income.AllIncomeCategories, 
+                Expense.AllExpenseCategories
+                ));
+
+            ActivateItem(SubCategoryViewModel);
+        }
+        #endregion
         #endregion
 
         #region -- File Management
@@ -332,30 +378,22 @@ namespace BudgetPlannerMainWPF.ViewModels
             List<Income> tempIncomeData = new List<Income>();
             List<Expense> tempExpenseData = new List<Expense>();
 
-            OpenFileDialog openFile = new OpenFileDialog
-            {
-                Multiselect = false,
-                Title = "Open Budget Plan",
-                DefaultExt = ".bpn"
-            };
+            string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory, "Open Budget Plan", true);
 
-            if (openFile.ShowDialog() == true)
-            {
-                FileControl_2.OpenMainFile(
-                    openFile.FileName, 
-                    out tempBudgetName, 
-                    out tempIncomeData, 
+            FileControl_2.OpenMainFile(
+                    selectedFile, 
+                    out tempBudgetName,
+                    out tempIncomeData,
                     out tempExpenseData
                     );
 
-                BudgetName = tempBudgetName;
-                DataViewModel.IncomeDataList = new BindableCollection<Income>(tempIncomeData);
-                DataViewModel.ExpenseDataList = new BindableCollection<Expense>(tempExpenseData);
+            BudgetName = tempBudgetName;
+            DataViewModel.IncomeDataList = new BindableCollection<Income>(tempIncomeData);
+            DataViewModel.ExpenseDataList = new BindableCollection<Expense>(tempExpenseData);
 
-                isFileOpen = true;
-                FileName = openFile.FileName;
-                ActivateItem(DataViewModel);
-            }
+            isFileOpen = true;
+            FileName = selectedFile;
+            Activate_DataView();
         }
 
         private void AssignFile()
@@ -368,26 +406,42 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void OpenSubs()
         {
-            if (isFileOpen)
+            string selectedPath = _fileBrowser.OpenFileAccess(
+                SubCategoryDirectory,
+                "Open Category File",
+                false);
+
+            List<SubCategory> incSub = new List<SubCategory>();
+            List<SubCategory> expSub = new List<SubCategory>();
+
+            // Unproven Syntax... Handle with care!
+            if(FileControl_2.OpenSubsFile(selectedPath, out incSub, out expSub))
             {
-                OpenFileDialog openFile = new OpenFileDialog
-                {
-                    Multiselect = false,
-                    Title = "Open Budget Plan",
-                    DefaultExt = ".bpn",
-                    InitialDirectory = SubCategoryDirectory
-                };
-
-                if (openFile.ShowDialog() == true)
-                {
-                    FileName = openFile.FileName;
-                    OpenController = new FileControl(FileName);
-                    OpenController.OpenSubCategories();
-
-                    Income.AllIncomeCategories = new List<SubCategory>(OpenController.IncomeSubCateories);
-                    Expense.AllExpenseCategories = new List<SubCategory>(OpenController.ExpenseSubCategories);
-                }
+                Income.AllIncomeCategories = incSub;
+                Expense.AllExpenseCategories = expSub;
             }
+
+            // Old
+            //if (isFileOpen)
+            //{
+            //    OpenFileDialog openFile = new OpenFileDialog
+            //    {
+            //        Multiselect = false,
+            //        Title = "Open Budget Plan",
+            //        DefaultExt = ".bpn",
+            //        InitialDirectory = SubCategoryDirectory
+            //    };
+
+            //    if (openFile.ShowDialog() == true)
+            //    {
+            //        FileName = openFile.FileName;
+            //        OpenController = new FileControl(FileName);
+            //        OpenController.OpenSubCategories();
+
+            //        Income.AllIncomeCategories = new List<SubCategory>(OpenController.IncomeSubCateories);
+            //        Expense.AllExpenseCategories = new List<SubCategory>(OpenController.ExpenseSubCategories);
+            //    }
+            //}
         }
 
         /// <summary>
@@ -395,26 +449,13 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void SaveFileAs()
         {
-            SaveFileDialog saveFile = new SaveFileDialog
-            {
-                Title = "Save Budget Plan",
-                OverwritePrompt = true,
-                AddExtension = true,
-                DefaultExt = ".bpn",
-                InitialDirectory = BudgetDirectory
-            };
+            string selectedPath = _fileBrowser.SaveFileAccess(BudgetDirectory, "Save Budget Plan", true);
 
-            if (saveFile.ShowDialog() == true)
-            {
-                //SaveController = new FileControl(saveFile.FileName, DataViewModel.IncomeDataList.ToList(), DataViewModel.ExpenseDataList.ToList(), Income.AllIncomeCategories, Expense.AllExpenseCategories);
-                //SaveController.SaveFile();
-
-                FileControl_2.SaveMainFile(saveFile.FileName, BudgetName,
+            FileControl_2.SaveMainFile(selectedPath, BudgetName,
                     DataViewModel.IncomeDataList.ToList(),
                     DataViewModel.ExpenseDataList.ToList());
 
-                FileName = saveFile.FileName;
-            }
+            FileName = selectedPath;
         }
 
         public void SaveFile()
@@ -429,27 +470,30 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void SaveSubsAs()
         {
-            SaveFileDialog saveFile = new SaveFileDialog
-            {
-                Title = "Save Sub Categories",
-                OverwritePrompt = true,
-                AddExtension = true,
-                DefaultExt = ".bps",
-                InitialDirectory = SubCategoryDirectory
-            };
+            string selectedFile = _fileBrowser.SaveFileAccess(
+                SubCategoryDirectory,
+                "Save Sub Categories",
+                false);
 
-            if(saveFile.ShowDialog() == true)
-            {
-                //SaveController = new FileControl(saveFile.FileName, Income.AllIncomeCategories, Expense.AllExpenseCategories);
-                //SaveController.SaveSubCategories();
-                
-                FileControl_2.SaveSubFile(SubCategoryDirectory,
-                    Income.AllIncomeCategories, 
+            FileControl_2.SaveSubFile(selectedFile,
+                    Income.AllIncomeCategories,
                     Expense.AllExpenseCategories);
 
-                SubCatFileName = saveFile.FileName;
+            SubCatFileName = selectedFile;
+        }
 
-            }
+        public void SaveSubsAs(string subsPath)
+        {
+            string selectedFile = _fileBrowser.SaveFileAccess(
+                SubCategoryDirectory,
+                "Save Sub Categories",
+                false);
+            
+            FileControl_2.SaveSubFile(selectedFile,
+                    Income.AllIncomeCategories,
+                    Expense.AllExpenseCategories);
+
+            SubCatFileName = selectedFile;
         }
 
         public void SaveSubs()
@@ -458,6 +502,64 @@ namespace BudgetPlannerMainWPF.ViewModels
                 Income.AllIncomeCategories,
                 Expense.AllExpenseCategories);
         }
+
+        public void SaveSubs(string path)
+        {
+            FileControl_2.SaveSubFile(path,
+                Income.AllIncomeCategories,
+                Expense.AllExpenseCategories);
+        }
+
+        #region -- Event Handles
+        public void Handle(SaveSubCategoryEvent message)
+        {
+            if(message.ActionCode == 1)
+            {
+                if (message.Path != String.Empty)
+                {
+                    SaveSubsAs(message.Path);
+                }
+                else
+                {
+                    SaveSubsAs();
+                }
+            }
+            else if(message.ActionCode == 2)
+            {
+                SaveSubs(message.Path);
+            }
+            else if (message.ActionCode == 3)
+            {
+                OpenSubs();
+            }
+            else if (message.ActionCode == 4)
+            {
+
+            }
+        }
+
+        public void Handle(NewBudgetEvent message)
+        {
+            // This IF is useless. Need to rethink.
+            if (message.OpenSubCategories_E)
+            {
+                CreateNewBudget(
+                    message.BudgetName_E,
+                    message.MainFolder_E,
+                    message.MainFolder_E,
+                    message.OpenSubCategories_E);
+            }
+            else if (!message.OpenSubCategories_E)
+            {
+                CreateNewBudget(
+                    message.BudgetName_E,
+                    message.MainFolder_E,
+                    message.MainFolder_E,
+                    message.OpenSubCategories_E);
+            }
+        }
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -467,6 +569,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             DataElement.Exit();
         }
+
         #endregion
 
         #region - Properties
@@ -505,7 +608,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _SubCatDir = value;
-                NotifyOfPropertyChange(() => SubCategoryViewModel.SubCategoryDirectory);
+                NotifyOfPropertyChange(() => SubCategoryViewModel.SubCategoryPath);
             }
         }
 

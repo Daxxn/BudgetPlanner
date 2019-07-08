@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d" Icon="C:\Users\Daxxn\Desktop\BudgetPlannerIcon_1.png"
         Title="{Binding Path=WindowTitle}" Height="520" Width="920" FontSize="14"
         WindowStyle="SingleBorderWindow" SizeToContent="Width">
@@ -15,26 +16,52 @@
     </Window.Background>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--#region ::Menu::-->
-        <Menu Name="Menu_Bar" Grid.Column="0" Grid.Row="0" Background="LightGray">
+        <Menu Name="Menu_Bar" Grid.Row="0" Background="LightGray">
             <MenuItem x:Name="NewFile" Header="New"/>
             <MenuItem x:Name="OpenFile" Header="Open"/>
             <MenuItem x:Name="SaveFile" Header="Save"/>
             <MenuItem x:Name="SaveFileAs" Header="Save As"/>
         </Menu>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <SolidColorBrush Color="{DynamicResource BackGround_Main}"/>
+            </Grid.Background>
+
+            <Button x:Name="Activate_DataView" Grid.Column="0" Padding="20,5,20,5" Margin="0,0,2,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF4F7F7" Offset="0"/>
+                        <GradientStop Color="#FF7C90BB" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                Budget
+            </Button>
+            <Button x:Name="Activate_SubCategoryView" Grid.Column="1" Padding="20,0,20,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF4F7F7"/>
+                        <GradientStop Color="#FF7C90BB" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                Categories
+            </Button>
+        </Grid>
         <!--#endregion-->
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+        <!--#region !!Moved to DataView!!-->
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                             Grid.Column="0" Grid.Row="1" Grid.RowSpan="1">
             <Border BorderThickness="2" Margin="4" CornerRadius="6">
                 <Border.BorderBrush>
@@ -64,7 +91,9 @@
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
 
-                    <!--#region ::Switch Views::-->
+                    -->
+        <!--#region ::Switch Views::-->
+        <!--
                     <Border Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"
                             BorderThickness="2" CornerRadius="4" Padding="1">
                         <Border.BorderBrush>
@@ -104,9 +133,11 @@
                             </StackPanel>
                         </Grid>
                     </Border>
-                    <!--#endregion-->
+                    -->
+        <!--#endregion-->
 
-                    <!--#region ::Control Buttons::-->
+        <!--#region ::Control Buttons::-->
+        <!--
                     <Border Grid.Column="1" Grid.Row="3" Margin="0,0,0,10"
                             BorderThickness="2" CornerRadius="4" Padding="1">
                         <Border.BorderBrush>
@@ -125,7 +156,9 @@
                             Data Controls
                             </TextBlock>
 
-                            <!--#region ::Income Contorls::-->
+                            -->
+        <!--#region ::Income Contorls::-->
+        <!--
                             <StackPanel Name="Add_StackPannel" Orientation="Horizontal"
                                     HorizontalAlignment="Center" Grid.Row="1">
                                 <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand">
@@ -145,9 +178,11 @@
                                     </Button.Background>
                                 </Button>
                             </StackPanel>
-                            <!--#endregion-->
+                            -->
+        <!--#endregion-->
 
-                            <!--#region ::Expense Controls::-->
+        <!--#region ::Expense Controls::-->
+        <!--
                             <StackPanel Name="Remove_StackPannel" Orientation="Horizontal"
                                     HorizontalAlignment="Center" Grid.Row="2">
                                 <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">
@@ -169,12 +204,16 @@
                                     Remove Expense
                                 </Button>
                             </StackPanel>
-                            <!--#endregion-->
+                            -->
+        <!--#endregion-->
+        <!--
                         </Grid>
                     </Border>
-                    <!--#endregion-->
+                    -->
+        <!--#endregion-->
 
-                    <!--#region ::Income Display::-->
+        <!--#region ::Income Display::-->
+        <!--
                     <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="1" Margin="0,10,0,10"
                             BorderThickness="2" Padding="1" CornerRadius="4">
                         <Border.BorderBrush>
@@ -229,9 +268,11 @@
                             </Border>
                         </Grid>
                     </Border>
-                    <!--#endregion-->
+                    -->
+        <!--#endregion-->
 
-                    <!--#region ::Expense Display::-->
+        <!--#region ::Expense Display::-->
+        <!--
                     <Border Grid.Column="1" Grid.Row="7" Margin="0,10,0,10"
                             BorderThickness="2" Padding="1" CornerRadius="4">
                         <Border.BorderBrush>
@@ -249,7 +290,9 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!--#region ::Expense Text::-->
+                            -->
+        <!--#region ::Expense Text::-->
+        <!--
                             <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                                        HorizontalAlignment="Center">
                                 Expense Selection information
@@ -284,12 +327,16 @@
                                 <TextBlock Text="{Binding Path=DataViewModel.SelectedExpense.SelectedCategory.Name}" 
                                            Background="AliceBlue"/>
                             </Border>
-                            <!--#endregion-->
+                            -->
+        <!--#endregion-->
+        <!--
                         </Grid>
                     </Border>
-                    <!--#endregion-->
+                    -->
+        <!--#endregion-->
 
-                    <!--#region ::Net Income Display::-->
+        <!--#region ::Net Income Display::-->
+        <!--
                     <Border Grid.Column="1" Grid.Row="9" Margin="0,10,0,0"
                             BorderThickness="2" Padding="1" CornerRadius="4">
                         <Border.BorderBrush>
@@ -326,15 +373,20 @@
                             </Border>
                         </Grid>
                     </Border>
-                    <!--#endregion-->
+                    -->
+        <!--#endregion-->
+        <!--
                 </Grid>
             </Border>
-        </ScrollViewer>
+        </ScrollViewer>-->
+        <!--#endregion-->
 
-
-        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="0,4,0,4"
+        <ScrollViewer Grid.Row="2" Margin="0,4,0,4" Background="AliceBlue"
             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <Grid>
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource BackGround_Main}"/>
+                </Grid.Background>
                 <!--#region ::Sub Views::-->
                 <ContentControl x:Name="ActiveItem"/>
                 <!--#endregion-->

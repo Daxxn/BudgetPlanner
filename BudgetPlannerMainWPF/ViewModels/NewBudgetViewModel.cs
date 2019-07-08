@@ -7,44 +7,31 @@ using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
 using System.Windows.Forms;
 using System.Windows;
+using BudgetPlannerMainWPF.EventModels;
 using MessageBox = System.Windows.MessageBox;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class NewBudgetViewModel : Caliburn.Micro.Screen
+    public class NewBudgetViewModel : Caliburn.Micro.Screen, IHandle<CancelNewEvent>
     {
         #region - Fields
         private IEventAggregator _eventAggregator;
+        private IFileBrowser _fileBrowser;
 
         private string _budgetName = String.Empty;
         private string _directoryPath = String.Empty;
         private string _subCategoryPath = String.Empty;
         private bool _goodFolderPath = false;
         private bool _goodSubCatPath = false;
-
-        /// <summary>
-        /// Sends Data From the NewBudgetViewModel to the ShellViewModel
-        /// </summary>
-        public event EventHandler<FolderEventArgs> CreatingNewBudget;
         #endregion
 
         #region - Constructors
-        public NewBudgetViewModel()
+        public NewBudgetViewModel() { }
+        public NewBudgetViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser)
         {
-            ShellViewModel.CancellingNewBudget += this.CancelNewBudget;
-        }
-        public NewBudgetViewModel(IEventAggregator eventAggregator)
-        {
+            _fileBrowser = fileBrowser;
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
-        }
-
-        private void CancelNewBudget(Object sender, EventArgs e)
-        {
-            string empty = String.Empty;
-            BudgetName = empty;
-            DirectoryPath = empty;
-            SubCategoryPath = empty;
         }
         #endregion
 
@@ -80,12 +67,14 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void NewSavePath()
         {
-            DirectoryPath = OpenFolderDialog("Select Save Folder");
+            //DirectoryPath = OpenFolderDialog("Select Save Folder");
+            DirectoryPath = _fileBrowser.OpenFolderAccess("Select Save Folder");
         }
 
         public void GetSubCatPath()
         {
-            SubCategoryPath = OpenFolderDialog("Select Sub-Category File");
+            //SubCategoryPath = OpenFolderDialog("Select Sub-Category File");
+            SubCategoryPath = _fileBrowser.OpenFolderAccess("Select Sub-Category File");
         }
 
         /// <summary>
@@ -102,13 +91,13 @@ namespace BudgetPlannerMainWPF.ViewModels
                     {
                         if (SubCategoryPath == "")
                         {
-                            CreatingNewBudget?.Invoke(this, new FolderEventArgs(DirectoryPath, BudgetName, DirectoryPath));
+                            _eventAggregator.PublishOnUIThread(new NewBudgetEvent(BudgetName, DirectoryPath, DirectoryPath, false));
                         }
                         else
                         {
                             if (GoodSubCatPath)
                             {
-                                CreatingNewBudget?.Invoke(this, new FolderEventArgs(DirectoryPath, BudgetName, SubCategoryPath, true));
+                                _eventAggregator.PublishOnUIThread(new NewBudgetEvent(BudgetName, DirectoryPath, SubCategoryPath, true));
                             }
                             else
                             {
@@ -131,11 +120,16 @@ namespace BudgetPlannerMainWPF.ViewModels
                 MessageBox.Show("No Name Given.", Error);
             }
         }
-        #endregion
 
-        #region -- Private Methods
-
+        public void Handle(CancelNewEvent message)
+        {
+            string empty = String.Empty;
+            BudgetName = empty;
+            DirectoryPath = empty;
+            SubCategoryPath = empty;
+        }
         #endregion
+        
         #endregion
 
         #region - Properties

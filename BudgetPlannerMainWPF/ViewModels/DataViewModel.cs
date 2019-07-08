@@ -4,12 +4,13 @@ using System.Linq;
 using System.Windows;
 using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
+using BudgetPlannerMainWPF.EventModels;
 using BudgetPlannerMainWPF.Views;
 using Caliburn.Micro;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class DataViewModel : Screen
+    public class DataViewModel : Screen, IHandle<UpdateDataListEvent>, IHandle<UpdateSubCatEvent>
     {
         #region - Fields
         private IEventAggregator _eventAggregator;
@@ -89,6 +90,11 @@ namespace BudgetPlannerMainWPF.ViewModels
             ExpenseDataList = new BindableCollection<Expense>(testData.ExpenseList);
         }
 
+        /// <summary>
+        /// Old Event Call
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataElement_ValueChanged(object sender, EventArgs e)
         {
             UpdateData();
@@ -114,25 +120,31 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         /// <summary>
-        /// Sums both Income & Expense DataLists. Casts Income & Expense SubCategory Lists to BindableCollections.
+        /// Sums both Income & Expense DataLists. 
         /// </summary>
         public void UpdateData()
         {
-            if (ExpenseDataList != null)
+            if(ExpenseDataList != null)
             {
                 IncomeTotal = IncomeDataList.Sum(x => x.Value);
-                ExpenseTotal = ExpenseDataList.Sum(x => x.Value); 
+                ExpenseTotal = ExpenseDataList.Sum(x => x.Value);
                 NetDifference = IncomeTotal - ExpenseTotal;
+            }
+        }
 
-                if (Income.AllIncomeCategories != null && Expense.AllExpenseCategories != null)
-                {
-                    SortCategories();
-                    IncomeSubCategoryDisplay = 
-                        new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+        /// <summary>
+        /// Casts Income & Expense SubCategory Lists to BindableCollections.
+        /// </summary>
+        public void UpdateSubs()
+        {
+            if (Income.AllIncomeCategories != null && Expense.AllExpenseCategories != null)
+            {
+                SortCategories();
+                IncomeSubCategoryDisplay =
+                    new BindableCollection<SubCategory>(Income.AllIncomeCategories);
 
-                    ExpenseSubCategoryDisplay = 
-                        new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
-                }
+                ExpenseSubCategoryDisplay =
+                    new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
             }
         }
 
@@ -276,6 +288,65 @@ namespace BudgetPlannerMainWPF.ViewModels
             return tempCategories;
         }
         #endregion
+
+        public void Handle(UpdateDataListEvent message)
+        {
+            IncomeSubCategoryDisplay = message.IncomeCategories;
+            ExpenseSubCategoryDisplay = message.ExpenseCategories;
+            UpdateData();
+        }
+
+        public void Handle(UpdateSubCatEvent message)
+        {
+            UpdateSubs();
+        }
+
+        public void Handle(ChangeViewEvent message)
+        {
+            if (message.PreviousView != PrevView.DataView)
+            {
+                UpdateData();
+                IncomeSubCategoryDisplay = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+                ExpenseSubCategoryDisplay = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+            }
+        }
+
+        #region Add/Remove Data Controls
+        /// <summary>
+        /// Adds a new Income Column with Default Data.
+        /// </summary>
+        public void AddIncomeColumn()
+        {
+            IncomeDataList.Add(new Income("Default", "New Income", 0.0M, IncomeDataList.Count + 1));
+        }
+
+        /// <summary>
+        /// Adds a new Expense Column with Default Data.
+        /// </summary>
+        public void AddExpenseColumn()
+        {
+            ExpenseDataList.Add(new Expense("default", "New Expense", 0.0M, ExpenseDataList.Count + 1));
+        }
+
+        /// <summary>
+        /// Removes the selected Income Column.
+        /// </summary>
+        public void RemoveIncome()
+        {
+            IncomeDataList.Remove(SelectedIncome);
+            SelectedIncome = null;
+        }
+
+        /// <summary>
+        /// Removes the selected Expense Column.
+        /// </summary>
+        public void RemoveExpense()
+        {
+            ExpenseDataList.Remove(SelectedExpense);
+            SelectedExpense = null;
+        }
+        #endregion
+
         #endregion
 
         #region - Properties

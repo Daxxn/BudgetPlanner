@@ -4,17 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" FontSize="14"
-             d:DesignHeight="450" d:DesignWidth="700">
+             d:DesignHeight="600" d:DesignWidth="900">
     <UserControl.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFE1E9F1" Offset="0"/>
             <GradientStop Color="White" Offset="1"/>
         </LinearGradientBrush>
     </UserControl.Background>
+    
     <Grid>
-        <Grid Name="Income_Expense_DataGrid_Grid">
+        <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -25,11 +29,311 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!--#region ::Budget Tools::-->
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                            Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+                <Border BorderThickness="2" Margin="4" CornerRadius="6">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource GridSplitterColor}"/>
+                    </Border.BorderBrush>
+                    <Border.Background>
+                        <SolidColorBrush Color="{DynamicResource BackGround_Main}"/>
+                    </Border.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*" MaxHeight="40"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*" MaxHeight="40"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*" MaxHeight="40"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+
+                        <!--#region ::Switch Views::-->
+                        <!--<Border Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"
+                            BorderThickness="2" CornerRadius="4" Padding="1">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderColor_1}"/>
+                            </Border.BorderBrush>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" HorizontalAlignment="Center">Change view</TextBlock>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+                                    <Button x:Name="ViewData" Margin="0,0,2,0">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                        View Data
+                                    </Button>
+                                    <Button x:Name="ViewSubCategories" Margin="2,0,0,0">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                        View Categories
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>-->
+                        <!--#endregion-->
+
+                        <!--#region ::Control Buttons::-->
+                        <Border Grid.Column="1" Grid.Row="1" Margin="0,0,0,10"
+                            BorderThickness="2" CornerRadius="4" Padding="1">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderColor_1}"/>
+                            </Border.BorderBrush>
+
+                            <Grid Name="Row_Manipulation_Grid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                   HorizontalAlignment="Center">
+                                    Data Controls
+                                </TextBlock>
+
+                                <!--#region ::Income Contorls::-->
+                                <StackPanel Name="Add_StackPannel" Orientation="Horizontal"
+                                    HorizontalAlignment="Center" Grid.Row="1">
+                                    <Button x:Name="AddIncomeColumn" Content="New Income" Margin="0,2,2,2" Cursor="Hand">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                    </Button>
+                                    <Button x:Name="AddExpenseColumn" Content="New Expense" Margin="2,2,0,2" Cursor="Hand">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                    </Button>
+                                </StackPanel>
+                                <!--#endregion-->
+
+                                <!--#region ::Expense Controls::-->
+                                <StackPanel Name="Remove_StackPannel" Orientation="Horizontal"
+                                    HorizontalAlignment="Center" Grid.Row="2">
+                                    <Button x:Name="RemoveIncome" Margin="0,2,2,2" Cursor="Hand">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                        Remove Income
+                                    </Button>
+                                    <Button x:Name="RemoveExpense" Margin="2,2,0,2" Cursor="Hand">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                        Remove Expense
+                                    </Button>
+                                </StackPanel>
+                                <!--#endregion-->
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region ::Income Display::-->
+                        <Border Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Margin="0,10,0,10"
+                            BorderThickness="2" Padding="1" CornerRadius="4">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderColor_1}"/>
+                            </Border.BorderBrush>
+
+                            <Grid Name="Selected_Income_Grid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                                       HorizontalAlignment="Center">
+                                Income Selection Information
+                                </TextBlock>
+
+                                <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedIncome.Category}"
+                                       Background="AliceBlue"/>
+                                </Border>
+
+                                <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedIncome.Value, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                                </Border>
+
+                                <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedIncome.SelectedCategory.Name}"
+                                       Background="AliceBlue"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region ::Expense Display::-->
+                        <Border Grid.Column="1" Grid.Row="5" Margin="0,10,0,10"
+                            BorderThickness="2" Padding="1" CornerRadius="4">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderColor_1}"/>
+                            </Border.BorderBrush>
+                            <Grid Name="Selected_Expense_Grid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!--#region ::Expense Text::-->
+                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                                       HorizontalAlignment="Center">
+                                Expense Selection information
+                                </TextBlock>
+
+                                <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedExpense.Category}"
+                                       Background="AliceBlue"/>
+                                </Border>
+
+                                <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedExpense.Value, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                                </Border>
+
+                                <TextBlock Grid.Column="0" Grid.Row="3">Type</TextBlock>
+                                <Border Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=SelectedExpense.SelectedCategory.Name}" 
+                                           Background="AliceBlue"/>
+                                </Border>
+                                <!--#endregion-->
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region ::Net Income Display::-->
+                        <Border Grid.Column="1" Grid.Row="7" Margin="0,10,0,0"
+                            BorderThickness="2" Padding="1" CornerRadius="4">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderColor_1}"/>
+                            </Border.BorderBrush>
+                            <Grid Name="Net_Income_Grid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" MinWidth="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0">Net Income:</TextBlock>
+
+                                <Border Grid.Column="1" Grid.Row="0"
+                                    BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock x:Name="DataViewModel_NetNegative" Background="AliceBlue" 
+                                       VerticalAlignment="Center" FontWeight="Bold"/>
+                                </Border>
+
+
+                                <Border Grid.Column="2" Grid.Row="0" BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                                    </Border.BorderBrush>
+                                    <TextBlock Text="{Binding Path=NetDifference, Mode=OneWay, StringFormat=c}" IsEnabled="False"
+                                       Background="AliceBlue">
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+                    </Grid>
+                </Border>
+            </ScrollViewer>
+            <!--#endregion-->
+
+            <!--#region ::Title::-->
             <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16"
                        FontWeight="DemiBold" Padding="4,0,0,0"
                        >Budget Data:</TextBlock>
+            <!--#endregion-->
 
-            <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"
+            <!--#region ::DataView Divider::-->
+            <GridSplitter Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Stretch"
                           ShowsPreview="False"
@@ -38,9 +342,10 @@
                     <SolidColorBrush Color="{DynamicResource GridSplitterColor}"/>
                 </GridSplitter.Background>
             </GridSplitter>
+            <!--#endregion-->
 
             <!--#region ::Category Display Data::-->
-            <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2">
+            <Grid Grid.Column="3" Grid.Row="1" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -49,6 +354,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!--#region ::Income SubCategory::-->
                 <DataGrid x:Name="IncomeSubCategoryDisplay" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
                           CanUserAddRows="False" CanUserDeleteRows="False" FontSize="12"
                           Grid.Column="0" Grid.Row="0" Margin="0,0,2,0">
@@ -57,7 +363,9 @@
                         <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay, StringFormat=C}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <!--#endregion-->
 
+                <!--#region ::Expense SubCategory::-->
                 <DataGrid x:Name="ExpenseSubCategoryDisplay" AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
                           CanUserAddRows="False" CanUserDeleteRows="False" FontSize="12"
                           Grid.Column="1" Grid.Row="0">
@@ -70,7 +378,8 @@
             </Grid>
             <!--#endregion-->
 
-            <Grid Grid.Column="0" Grid.Row="1">
+            <!--#region ::Main DataGrid::-->
+            <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -146,7 +455,7 @@
                 <!--#endregion-->
             </Grid>
 
-            <Grid Grid.Column="0" Grid.Row="2">
+            <Grid Grid.Column="1" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -167,7 +476,7 @@
                     <TextBox Text="{Binding Path=IncomeTotal, Mode=OneWay, StringFormat=C}"
                          Background="AliceBlue" IsReadOnly="True"/>
                 </Border>
-                
+
                 <TextBlock Grid.Column="2" Margin="4,0,2,0">Total Expense:</TextBlock>
                 <Border Grid.Column="3" BorderThickness="1"
                         CornerRadius="2">
@@ -179,6 +488,7 @@
                 </Border>
                 <!--#endregion-->
             </Grid>
+            <!--#endregion-->
         </Grid>
     </Grid>
 </UserControl>
