@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Microsoft.Win32;
 using BudgetPlannerMainWPF.Views;
 using BudgetPlannerMainWPF.EventModels;
+using XMLParsingLibrary;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -292,7 +293,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
         #endregion
 
-        #region Views
+        #region -- Views
         /// <summary>
         /// Switches to DataView.xaml. Updates the SubCategory Data.
         /// </summary>
@@ -372,24 +373,44 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <summary>
         /// Opens the OpenFileDialog. Pulls data from a full .bpn file.
         /// </summary>
+        //public void OpenFile()
+        //{
+        //    string tempBudgetName = "";
+        //    List<Income> tempIncomeData = new List<Income>();
+        //    List<Expense> tempExpenseData = new List<Expense>();
+
+        //    string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory, "Open Budget Plan", true);
+
+        //    FileControl_2.OpenMainFile(
+        //            selectedFile, 
+        //            out tempBudgetName,
+        //            out tempIncomeData,
+        //            out tempExpenseData
+        //            );
+
+        //    BudgetName = tempBudgetName;
+        //    DataViewModel.IncomeDataList = new BindableCollection<Income>(tempIncomeData);
+        //    DataViewModel.ExpenseDataList = new BindableCollection<Expense>(tempExpenseData);
+
+        //    isFileOpen = true;
+        //    FileName = selectedFile;
+        //    Activate_DataView();
+        //}
+
         public void OpenFile()
         {
-            string tempBudgetName = "";
-            List<Income> tempIncomeData = new List<Income>();
-            List<Expense> tempExpenseData = new List<Expense>();
+            // Probably not needed...
+            IXMLData data = new XMLData();
 
-            string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory, "Open Budget Plan", true);
+            string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory, 
+                "Open Budget Plan", true);
 
-            FileControl_2.OpenMainFile(
-                    selectedFile, 
-                    out tempBudgetName,
-                    out tempIncomeData,
-                    out tempExpenseData
-                    );
+            XMLReader reader = new XMLReader(selectedFile, data);
+            reader.ParseData(MessageManager.DisplayMessage);
 
-            BudgetName = tempBudgetName;
-            DataViewModel.IncomeDataList = new BindableCollection<Income>(tempIncomeData);
-            DataViewModel.ExpenseDataList = new BindableCollection<Expense>(tempExpenseData);
+            BudgetName = reader.Data.ProjectName;
+            DataViewModel.IncomeDataList = new BindableCollection<Income>(reader.Data.IncomeData);
+            DataViewModel.ExpenseDataList = new BindableCollection<Expense>(reader.Data.ExpenseData);
 
             isFileOpen = true;
             FileName = selectedFile;
@@ -447,15 +468,29 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <summary>
         /// Opens the SaveFileDialog and saves a complete .bpn file.
         /// </summary>
+        //public void SaveFileAs()
+        //{
+        //    string selectedPath = _fileBrowser.SaveFileAccess(BudgetDirectory, "Save Budget Plan", true);
+
+        //    FileControl_2.SaveMainFile(selectedPath, BudgetName,
+        //            DataViewModel.IncomeDataList.ToList(),
+        //            DataViewModel.ExpenseDataList.ToList());
+
+        //    FileName = selectedPath;
+        //}
+
         public void SaveFileAs()
         {
-            string selectedPath = _fileBrowser.SaveFileAccess(BudgetDirectory, "Save Budget Plan", true);
+            string selectedFile = _fileBrowser.SaveFileAccess(BudgetDirectory, "Save Budget Plan", true);
 
-            FileControl_2.SaveMainFile(selectedPath, BudgetName,
-                    DataViewModel.IncomeDataList.ToList(),
-                    DataViewModel.ExpenseDataList.ToList());
-
-            FileName = selectedPath;
+            IXMLData data = new XMLData()
+            {
+                ProjectName = BudgetName,
+                IncomeData = DataViewModel.IncomeDataList.ToList(),
+                ExpenseData = DataViewModel.ExpenseDataList.ToList()
+            };
+            XMLWrtier writer = new XMLWrtier(selectedFile, data);
+            writer.WriteBudgetFile(MessageManager.DisplayMessageWithOK, MessageManager.DisplayMessage, MessageManager.DisplayMessage, true, true);
         }
 
         public void SaveFile()
