@@ -2,7 +2,7 @@
 
 namespace BudgetPlannerLib.Models
 {
-    public class SubCategory
+    public class SubCategory : IEquals
     {
         #region - Fields
         private string _name;
@@ -30,6 +30,14 @@ namespace BudgetPlannerLib.Models
                 Name = fields[0],
                 Value = 0
             };
+        }
+
+        public override Boolean Equals(Object obj)
+        {
+            var a = obj as SubCategory;
+            return a != null &&
+                this.Name == a.Name &&
+                this.Value == a.Value;
         }
         #endregion
 

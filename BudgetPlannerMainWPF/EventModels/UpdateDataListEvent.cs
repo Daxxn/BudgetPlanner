@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BudgetPlannerLib.Models;
+﻿using BudgetPlannerLib.Models;
 using Caliburn.Micro;
 
 namespace BudgetPlannerMainWPF.EventModels

@@ -52,8 +52,11 @@ namespace BudgetPlannerLib
         {
             SetRandomData(incomeCategories, expenseCategories);
         }
-
-
+        
+        /// <summary>
+        /// Constructs from either random or a set of data.
+        /// </summary>
+        /// <param name="selector"></param>
         public TestDataAccesser(int selector)
         {
             switch (selector)
@@ -62,14 +65,17 @@ namespace BudgetPlannerLib
                     SetRandomData();
                     break;
                 case 1:
-                    SetStaticData();
+                    SetStaticData_1();
+                    break;
+                case 2:
+                    SetStaticData_2();
                     break;
             }
         }
         #endregion
 
         #region - Methods
-        private void SetStaticData()
+        private void SetStaticData_1()
         {
             IncomeCategories = incomeCategories.ToList();
             IncomeValues = SetSampleNumbers(incomeCategories.Length);
@@ -92,6 +98,39 @@ namespace BudgetPlannerLib
             {
                 ExpenseList.Add(new Expense(GetRandomItem(expenseSubCategories), ExpenseCategories[i], ExpenseValues[i], i + 1));
             }
+        }
+
+        private void SetStaticData_2()
+        {
+            Income.AllIncomeCategories = new List<SubCategory>()
+            {
+                new SubCategory("Inc 1"),
+                new SubCategory("Inc 2")
+            };
+
+            Expense.AllExpenseCategories = new List<SubCategory>()
+            {
+                new SubCategory("Exp 1"),
+                new SubCategory("Exp 2"),
+                new SubCategory("Exp 3")
+            };
+
+            IncomeList = new List<Income>()
+            {
+                new Income("Inc 1", "Static Income 1", 20.20M, 1),
+                new Income("Inc 2", "Static Income 2", 42M, 2),
+                new Income("Inc 1", "Static Income 3", 500M, 3),
+                new Income("Inc 2", "Static Income 4", 250.99M, 4)
+            };
+
+            ExpenseList = new List<Expense>()
+            {
+                new Expense("Exp 1", "Static Expense 1", 49.99M, 1),
+                new Expense("Exp 2", "Static Expense 2", 246.54M, 2),
+                new Expense("Exp 1", "Static Expense 3", 12.19M, 3),
+                new Expense("Exp 3", "Static Expense 4", 50M, 4),
+                new Expense("Exp 2", "Static Expense 5", 200M, 5)
+            };
         }
 
         private void SetRandomData(int incAmount = 8, int expAmount = 12)

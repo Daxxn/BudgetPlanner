@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Caliburn.Micro;
-using Microsoft.Win32;
-using BudgetPlannerLib;
-using BudgetPlannerLib.Models;
 using System.Windows.Forms;
-using System.Windows;
 using BudgetPlannerMainWPF.EventModels;
 using MessageBox = System.Windows.MessageBox;
 
@@ -169,7 +163,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _directoryPath = value;
 
-                if (ShellViewModel.CheckDirectory(value))
+                if (FileCheck.CheckDirectory(value))
                 {
                     GoodFolderPath = true;
                 }
@@ -186,7 +180,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _subCategoryPath = value;
 
-                if (ShellViewModel.CheckDirectory(value))
+                if (FileCheck.CheckDirectory(value))
                 {
                     GoodSubCatPath = true;
                 }

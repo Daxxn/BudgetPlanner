@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using BudgetPlannerLib;
 using BudgetPlannerLib.Models;
 using BudgetPlannerMainWPF.EventModels;
@@ -85,7 +84,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void AddStaticCategories()
         {
-            TestDataAccesser testData = new TestDataAccesser(1);
+            TestDataAccesser testData = new TestDataAccesser(2);
             IncomeDataList = new BindableCollection<Income>(testData.IncomeList);
             ExpenseDataList = new BindableCollection<Expense>(testData.ExpenseList);
         }

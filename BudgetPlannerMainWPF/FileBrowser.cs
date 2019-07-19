@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -15,14 +11,24 @@ namespace BudgetPlannerMainWPF
         private OpenFileDialog Opener { get; set; }
         private FolderBrowserDialog Folder { get; set; }
 
+        /// <summary>
+        /// Opens the WPF save file dialog window.
+        /// </summary>
+        /// <param name="initialDir">Default dir to start.</param>
+        /// <param name="title">Window Title.</param>
+        /// <param name="isMainFile">Specifies what file extension to look for.</param>
+        /// <returns>Returns the path to the selected file.</returns>
         public string SaveFileAccess(string initialDir, string title, bool isMainFile)
         {
             string output = "";
+            string tempName = "";
+            string budgetFilter = "Budget Files (*.bpn, *.bps)|*.bpn;*.bps|All Files (*.*)|*.*";
 
             string defExt = ".bps";
             if (isMainFile)
             {
                 defExt = ".bpn";
+                tempName = "Suggested Name Test.bpn";
             }
 
             Saver = new SaveFileDialog()
@@ -31,7 +37,9 @@ namespace BudgetPlannerMainWPF
                 Title = title,
                 OverwritePrompt = true,
                 AddExtension = true,
-                DefaultExt = defExt
+                DefaultExt = defExt,
+                FileName = tempName,
+                Filter = budgetFilter
             };
 
             if(Saver.ShowDialog() == true)
@@ -42,6 +50,13 @@ namespace BudgetPlannerMainWPF
             return output;
         }
 
+        /// <summary>
+        /// Opens the WPF open file dialog window.
+        /// </summary>
+        /// <param name="initialDir">Default dir to start.</param>
+        /// <param name="title">Window Title.</param>
+        /// <param name="isMainFile">Specifies the file extension to look for.</param>
+        /// <returns>Returns the path to the selected file.</returns>
         public string OpenFileAccess(string initialDir, string title, bool isMainFile)
         {
             string output = "";
@@ -56,7 +71,8 @@ namespace BudgetPlannerMainWPF
                 Multiselect = false,
                 InitialDirectory = initialDir,
                 Title = title,
-                DefaultExt = defExt
+                DefaultExt = defExt,
+                AddExtension = true
             };
 
             if(Opener.ShowDialog() == true)
@@ -66,6 +82,12 @@ namespace BudgetPlannerMainWPF
 
             return output;
         }
+
+        /// <summary>
+        /// Opens the WinForm open folder dialog window.
+        /// </summary>
+        /// <param name="description">Window Title</param>
+        /// <returns>Returns the path to the selected file.</returns>
         public string OpenFolderAccess(string description)
         {
             string output = "";

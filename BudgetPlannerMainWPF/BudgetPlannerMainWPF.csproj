@@ -82,6 +82,7 @@
     <Compile Include="EventModels\UpdateDataListEvent.cs" />
     <Compile Include="EventModels\UpdateSubCatEvent.cs" />
     <Compile Include="FileBrowser.cs" />
+    <Compile Include="FileCheck.cs" />
     <Compile Include="IFileBrowser.cs" />
     <Compile Include="MessageManager.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />

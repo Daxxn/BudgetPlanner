@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
     /// <summary>
+    /// Need to phase out.
     /// CreatingNewBudget Event Arguments
     /// </summary>
     public class FolderEventArgs : EventArgs

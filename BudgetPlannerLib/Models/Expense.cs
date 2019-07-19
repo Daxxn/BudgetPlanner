@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BudgetPlannerLib.Models
 {
-    public class Expense : DataElement
+    public class Expense : DataElement, IEquals
     {
         #region - Fields
         private static int NumOfExpenses { get; set; } = 0;
@@ -48,6 +48,16 @@ namespace BudgetPlannerLib.Models
         public static void ClearData()
         {
             AllExpenseCategories.Clear();
+        }
+
+        public override Boolean Equals(Object obj)
+        {
+            var a = obj as Expense;
+            return a != null &&
+                this.IdNumber == a.IdNumber &&
+                this.Category == a.Category &&
+                this.Value == a.Value &&
+                this.SelectedCategory == a.SelectedCategory;
         }
         #endregion
 

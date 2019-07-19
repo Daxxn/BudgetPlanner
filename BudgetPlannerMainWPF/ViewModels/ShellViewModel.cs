@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using BudgetPlannerMainWPF.Views;
 using BudgetPlannerMainWPF.EventModels;
 using XMLParsingLibrary;
+using XMLParsingLibrary.Interfaces;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -19,25 +20,86 @@ namespace BudgetPlannerMainWPF.ViewModels
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
 
+        /// <summary>
+        /// Name added to the Window Bar.
+        /// </summary>
         private string _WindowTitle = "Budget Planner";
+
+        /// <summary>
+        /// Project name added to the save file and the Window Title.
+        /// </summary>
         private string _budgetName = String.Empty;
+
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
         private string _budgetDir = String.Empty;
+
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
         private string _SubCatDir = String.Empty;
+
+        /// <summary>
+        /// Stores the Sub Category File Path.
+        /// </summary>
         private string _subCatFileName = String.Empty;
 
-        private bool isFileOpen = false;
+        /// <summary>
+        /// Set when a project is opened.
+        /// </summary>
+        private bool IsFileOpen { get; set; } = false;
+
+        /// <summary>
+        /// Set when a sub category file is open.
+        /// </summary>
+        private bool IsSubFileOpen { get; set; } = false;
+
+        #region Save Check Properties
+        /// <summary>
+        /// New Save Check. Set when the MAIN file is saved.
+        /// </summary>
+        private bool IsMainFileSaved { get; set; } = false;
+
+        /// <summary>
+        /// New save check. Set when the SUB file is saved.
+        /// </summary>
+        private bool IsSubFileSaved { get; set; } = false;
+
+        private Income[] SaveIncomeState { get; set; }
+        private Expense[] SaveExpenseState { get; set; }
+
+        private SubCategory[] SaveSubIncomeState { get; set; }
+        private SubCategory[] SaveSubExpenseState { get; set; }
+        #endregion
+
+        /// <summary>
+        /// Stores whether the last screen was the NewBudgetView.
+        /// </summary>
         private bool lastScreenIsNF = false;
 
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
         private FileControl _saveControl;
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
         private FileControl _openControl;
         
+        /// <summary>
+        /// File name used for saving the main project.
+        /// </summary>
         public string FileName { get; set; }
 
         private DataViewModel _dataViewModel;
         private SubCategoryViewModel _categoryViewModel = new SubCategoryViewModel();
         private NewBudgetViewModel _newBudgetViewModel = new NewBudgetViewModel();
 
-        public static event EventHandler CancellingNewBudget;
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
+        //public static event EventHandler CancellingNewBudget;
         #endregion
 
         #region - Constructors
@@ -54,6 +116,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             
             SubCategoryViewModel.SubCatEventManager += this.SubCatEventManager_Event;
         }
+
         public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser)
         {
             _fileBrowser = fileBrowser;
@@ -71,14 +134,20 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             //DataViewModel.SortCategories();
             _eventAggregator.PublishOnUIThread(new UpdateDataListEvent());
+
+            #region Testing ONLY:
+            BudgetName = "Test";
+            TestDataAccesser testData = new TestDataAccesser(2);
+            DataViewModel.IncomeDataList = new BindableCollection<Income>(testData.IncomeList);
+            DataViewModel.ExpenseDataList = new BindableCollection<Expense>(testData.ExpenseList);
+            #endregion
         }
         #endregion
 
         #region - Methods
-
-        #region -- Access FileBrowser
-
-        #endregion
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
         private void SubCatEventManager_Event(Object sender, SubCategoryEventArgs e)
         {
             if (e.SaveCode == 0)
@@ -99,15 +168,42 @@ namespace BudgetPlannerMainWPF.ViewModels
                 SubCatFileName = e.SubCatFileName;
             }
         }
+        
+        /// <summary>
+        /// Sets up empty data lists.
+        /// </summary>
+        public void InitializeAll()
+        {
+            DataViewModel.Initialize();
+            SubCategoryViewModel.Initialize();
+        }
 
         /// <summary>
-        /// Confirms the existance of the entered string
+        /// Checks the main file save state. 
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static bool CheckDirectory(string input)
+        /// <returns>If either Income or Expense datalists dont match, returns false.</returns>
+        public bool CheckMainFileSaveState()
         {
-            if (System.IO.Directory.Exists(input))
+            bool A = CheckSaveState(DataViewModel.IncomeDataList.ToArray(), SaveIncomeState);
+            bool B = CheckSaveState(DataViewModel.ExpenseDataList.ToList(), SaveExpenseState.ToList());
+
+            if (A && B)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        /// <summary>
+        /// Checks the sub category file save state.
+        /// </summary>
+        /// <returns>If the Income or Expense SubCategory lists are different, returns false.</returns>
+        public bool CheckSubFileSaveState()
+        {
+            bool A = CheckSaveState(Income.AllIncomeCategories, SaveSubIncomeState.ToList());
+            bool B = CheckSaveState(Expense.AllExpenseCategories, SaveSubExpenseState.ToList());
+
+            if (A && B)
             {
                 return true;
             }
@@ -115,6 +211,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         }
 
         #region -- Private Methods
+        /// <summary>
+        /// Need to phase out.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreatingNewBudget_Event(object sender, FolderEventArgs e)
         {
             if (!e.OpenSubCategories)
@@ -126,40 +227,47 @@ namespace BudgetPlannerMainWPF.ViewModels
                 CreateNewBudget(e.BudgetName, e.FolderPath, e.SubCatPath, e.OpenSubCategories);
             }
         }
-
-
+        
         /// <summary>
+        /// Needs full testing.
         /// Creates a new budget, clears the old budget and directs a new path.
         /// </summary>
         /// <param name="budgetname">Name from CreatingNewBudget Event</param>
         /// <param name="budgetDir">Directory from CreatingNewBudget Event</param>
         private void CreateNewBudget(string budgetName, string budgetDir, string subDir)
         {
-            if (!isFileOpen)
+            if (!IsFileOpen)
             {
                 BudgetName = budgetName;
                 WindowTitle = $"Budget Planner - {budgetName}";
                 BudgetDirectory = budgetDir;
                 SubCategoryDirectory = subDir;
+
+                IsMainFileSaved = false;
+                IsFileOpen = true;
+
                 Activate_DataView();
             }
             else
             {
-                MessageBoxResult contin = MessageBox.Show(
-                        "Are you sure? This will erase any unsaved data.",
-                        "New File", MessageBoxButton.OKCancel);
+                bool contin = MessageManager.DisplayMessageWithOK(
+                    "Are you sure? This will erase any unsaved data.", 
+                    "New File");
 
-                if (contin == MessageBoxResult.OK)
+                if (contin)
                 {
                     ClearData();
                     BudgetName = budgetName;
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
+
+                    IsFileOpen = true;
+                    IsMainFileSaved = false;
+
                     Activate_DataView();
-                    isFileOpen = true;
                 }
-                else if (contin == MessageBoxResult.Cancel)
+                else
                 {
                     //CancellingNewBudget?.Invoke(this, new EventArgs());
                     _eventAggregator.PublishOnUIThread(new CancelNewEvent());
@@ -170,7 +278,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         private void CreateNewBudget(string budgetName, string budgetDir, string subDir, bool openSubs)
         {
-            if (!isFileOpen)
+            if (!IsFileOpen)
             {
                 if (openSubs)
                 {
@@ -180,6 +288,10 @@ namespace BudgetPlannerMainWPF.ViewModels
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
                     OpenSubs();
+
+                    IsMainFileSaved = false;
+                    IsFileOpen = true;
+
                     Activate_DataView();
                 }
                 else if (!openSubs)
@@ -188,26 +300,32 @@ namespace BudgetPlannerMainWPF.ViewModels
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
+
+                    IsMainFileSaved = false;
+                    IsFileOpen = true;
+
                     Activate_DataView();
                 }
             }
             else
             {
-                MessageBoxResult contin = MessageBox.Show(
-                        "Are you sure? This will erase any unsaved data.",
-                        "New File", MessageBoxButton.OKCancel);
+                bool contin = MessageManager.DisplayMessageWithOK(
+                    "Are you sure? This will erase any unsaved data.", 
+                    "New File");
 
-                if (contin == MessageBoxResult.OK)
+                if (contin)
                 {
                     ClearData();
                     BudgetName = budgetName;
                     WindowTitle = $"Budget Planner - {budgetName}";
                     BudgetDirectory = budgetDir;
                     SubCategoryDirectory = subDir;
+
+                    IsMainFileSaved = false;
+                    IsFileOpen = true;
                     Activate_DataView();
-                    isFileOpen = true;
                 }
-                else if (contin == MessageBoxResult.Cancel)
+                else
                 {
                     _eventAggregator.PublishOnUIThread(new CancelNewEvent());
                     Activate_DataView();
@@ -215,32 +333,24 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
 
         }
-        #endregion
-        public void InitializeAll()
-        {
-            DataViewModel.Initialize();
-            SubCategoryViewModel.Initialize();
-        }
-
+        
         /// <summary>
         /// Erases all current data to set up for a new file.
         /// </summary>
-        public void NewFile()
+        private void NewFile()
         {
             ActivateItem(NewBudgetViewModel);
             lastScreenIsNF = true;
 
-            if (isFileOpen)
+            if (IsFileOpen)
             {
-                MessageBoxResult save = MessageBox.Show("Save before creating new budget?", "Save??", MessageBoxButton.YesNo);
-                if (save == MessageBoxResult.Yes)
+                if (MessageManager.DisplayMessageWithOK("Save before creating new budget?", "Save??"))
                 {
                     SaveFileAs();
                     SaveSubsAs();
                 }
             }
         }
-
         
         /// <summary>
         /// Clears all data from the DataLists and SubCategory Lists.
@@ -256,6 +366,143 @@ namespace BudgetPlannerMainWPF.ViewModels
             BudgetDirectory = String.Empty;
             SubCategoryDirectory = String.Empty;
         }
+
+        /// <summary>
+        /// Checks on the status of the loaded data from a file.
+        /// </summary>
+        /// <typeparam name="T">Type of data in the list.</typeparam>
+        /// <param name="data">List to check.</param>
+        /// <returns>returns a bool on whether null or empty.</returns>
+        private bool CheckData<T>(List<T> data) where T : class
+        {
+            if (data != null)
+            {
+                if (data.Count > 0)
+                {
+                    // Need to remove
+                    MessageManager.DisplayMessage("Check Passed", "Info");
+                    return true;
+                }
+                else
+                {
+                    MessageManager.DisplayMessage("Income Sub Categories where empty.", "Info");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageManager.DisplayMessage("Income Sub Categories where not found.", "Error");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks on the status of the loaded data from a file.
+        /// </summary>
+        /// <typeparam name="T">Type of data in the list.</typeparam>
+        /// <param name="data">List to check.</param>
+        /// <returns>returns a bool on whether null or empty.</returns>
+        private bool CheckData<T>(BindableCollection<T> data) where T : class
+        {
+            if (data != null)
+            {
+                if (data.Count > 0)
+                {
+                    MessageManager.DisplayMessage("Check Passed");
+                    return true;
+                }
+                else
+                {
+                    MessageManager.DisplayMessage("Income Sub Categories where empty.", "Info");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageManager.DisplayMessage("Income Sub Categories where not found.", "Error");
+                return false;
+            }
+        }
+
+        private void SetMainFileSaveState()
+        {
+            SaveIncomeState = DataViewModel.IncomeDataList.ToArray();
+            SaveExpenseState = DataViewModel.ExpenseDataList.ToArray();
+        }
+
+        private void SetSubFileSaveState()
+        {
+            SaveSubIncomeState = Income.AllIncomeCategories.ToArray();
+            SaveSubExpenseState = Expense.AllExpenseCategories.ToArray();
+        }
+        
+        private bool CheckSaveState<T>(List<T> input, List<T> saveData) where T : IEquals
+        {
+            bool pass = false;
+
+            if (input.Count == saveData.Count)
+            {
+                for (int i = 0; i < input.Count; i++)
+                {
+                    if (!input[i].Equals(saveData[i]))
+                    {
+                        pass = false;
+                        break;
+                    }
+                    else pass = true;
+                }
+            }
+            else pass = false;
+
+            return pass;
+        }
+
+        private bool CheckSaveState<T>(BindableCollection<T> input, BindableCollection<T> saveData) where T : IEquals
+        {
+            bool pass = false;
+
+            if (input.Count == saveData.Count)
+            {
+                for (int i = 0; i < input.Count; i++)
+                {
+                    if (!input[i].Equals(saveData[i]))
+                    {
+                        pass = false;
+                        break;
+                    }
+                    else pass = true;
+                }
+            }
+            else pass = false;
+
+            return pass;
+        }
+
+        private bool CheckSaveState<T>(T[] input, T[] saveData)
+        {
+            bool pass = false;
+
+            if (input != null && saveData != null)
+            {
+                if (input.Length == saveData.Length)
+                {
+                    for (int i = 0; i < input.Length; i++)
+                    {
+                        if (!input[i].Equals(saveData[i]))
+                        {
+                            pass = false;
+                            break;
+                        }
+                        else pass = true;
+                    }
+                }
+                else pass = false;
+            }
+            else pass = false;
+
+            return pass;
+        }
+        #endregion
 
         #region Add/Remove Data Controls
         /// <summary>
@@ -401,8 +648,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             // Probably not needed...
             IXMLData data = new XMLData();
+            IXMLDataSub allData = new XMLData();
 
-            string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory, 
+            string selectedFile = _fileBrowser.OpenFileAccess(SubCategoryDirectory,
                 "Open Budget Plan", true);
 
             XMLReader reader = new XMLReader(selectedFile, data);
@@ -412,72 +660,131 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel.IncomeDataList = new BindableCollection<Income>(reader.Data.IncomeData);
             DataViewModel.ExpenseDataList = new BindableCollection<Expense>(reader.Data.ExpenseData);
 
-            isFileOpen = true;
+            IsFileOpen = true;
             FileName = selectedFile;
+
+            SetMainFileSaveState();
+            IsMainFileSaved = true;
             Activate_DataView();
         }
 
-        private void AssignFile()
+        #region --- File Management Buttom Methods
+        /// <summary>
+        /// When Menu Open Button is pressed.
+        /// </summary>
+        public void OpenFile_Button()
         {
+            if (IsFileOpen)
+            {
+                if (!CheckMainFileSaveState())
+                {
+                    int save = MessageManager.DisplayMessageWithYesNo(
+                                "This file hasnt been saved. Save First?",
+                                "Careful!");
 
+                    if (save == 1)
+                    {
+                        SaveFile();
+                        OpenFile();
+                    }
+                    else if (save == 2)
+                    {
+                        OpenFile();
+                    } 
+                }
+            }
+            else
+            {
+                OpenFile();
+            }
+        }
+        
+        public void SaveFile_Button()
+        {
+            if (IsFileOpen)
+            {
+                if (FileCheck.CheckFile(FileName))
+                {
+                    SaveFile();
+                }
+                else
+                {
+                    SaveFileAs();
+                }
+            }
+            else
+            {
+                SaveFileAs();
+            }
         }
 
+        public void SaveSubs_Button()
+        {
+            if (IsSubFileOpen)
+            {
+                if (FileCheck.CheckFile(SubCatFileName))
+                {
+                    SaveSubs();
+                }
+                else
+                {
+                    SaveSubsAs();
+                }
+            }
+            else
+            {
+                SaveSubsAs();
+            }
+        }
+
+        public void SaveAll_Button()
+        {
+            SaveFile_Button();
+            SaveSubs_Button();
+        }
+
+        public void SaveAllAs_Button()
+        {
+            SaveFileAs();
+            SaveSubsAs();
+        }
+        #endregion
+        
         /// <summary>
-        /// Opens the OpenFileDialog. Pulls SubCategory Data from a .bps file.
+        /// Test Version ONLY!
         /// </summary>
         public void OpenSubs()
         {
-            string selectedPath = _fileBrowser.OpenFileAccess(
-                SubCategoryDirectory,
-                "Open Category File",
-                false);
-
-            List<SubCategory> incSub = new List<SubCategory>();
-            List<SubCategory> expSub = new List<SubCategory>();
-
-            // Unproven Syntax... Handle with care!
-            if(FileControl_2.OpenSubsFile(selectedPath, out incSub, out expSub))
+            // Should be able to phase the if checks out. Need to test.
+            if (!IsSubFileOpen)
             {
-                Income.AllIncomeCategories = incSub;
-                Expense.AllExpenseCategories = expSub;
+                string selectedPath = _fileBrowser.OpenFileAccess(
+                        SubCategoryDirectory,
+                        "Open Sub Category File",
+                        false);
+
+                XMLReader reader = new XMLReader(selectedPath);
+                reader.ParseSubFile(MessageManager.DisplayMessage);
+
+                // Need to test.
+                // Should work. Checks for null or empty using a generic method.
+                if (CheckData(reader.SubData.IncomeSubCategories))
+                {
+                    Income.AllIncomeCategories = reader.SubData.IncomeSubCategories;
+                }
+
+                if (CheckData(reader.SubData.ExpenseSubCategories))
+                {
+                    Expense.AllExpenseCategories = reader.SubData.ExpenseSubCategories;
+                }
+            }
+            // Need to implement sub file open & save checks.
+            else
+            {
             }
 
-            // Old
-            //if (isFileOpen)
-            //{
-            //    OpenFileDialog openFile = new OpenFileDialog
-            //    {
-            //        Multiselect = false,
-            //        Title = "Open Budget Plan",
-            //        DefaultExt = ".bpn",
-            //        InitialDirectory = SubCategoryDirectory
-            //    };
-
-            //    if (openFile.ShowDialog() == true)
-            //    {
-            //        FileName = openFile.FileName;
-            //        OpenController = new FileControl(FileName);
-            //        OpenController.OpenSubCategories();
-
-            //        Income.AllIncomeCategories = new List<SubCategory>(OpenController.IncomeSubCateories);
-            //        Expense.AllExpenseCategories = new List<SubCategory>(OpenController.ExpenseSubCategories);
-            //    }
-            //}
+            Activate_SubCategoryView();
         }
-
-        /// <summary>
-        /// Opens the SaveFileDialog and saves a complete .bpn file.
-        /// </summary>
-        //public void SaveFileAs()
-        //{
-        //    string selectedPath = _fileBrowser.SaveFileAccess(BudgetDirectory, "Save Budget Plan", true);
-
-        //    FileControl_2.SaveMainFile(selectedPath, BudgetName,
-        //            DataViewModel.IncomeDataList.ToList(),
-        //            DataViewModel.ExpenseDataList.ToList());
-
-        //    FileName = selectedPath;
-        //}
 
         public void SaveFileAs()
         {
@@ -489,19 +796,50 @@ namespace BudgetPlannerMainWPF.ViewModels
                 IncomeData = DataViewModel.IncomeDataList.ToList(),
                 ExpenseData = DataViewModel.ExpenseDataList.ToList()
             };
+
             XMLWrtier writer = new XMLWrtier(selectedFile, data);
-            writer.WriteBudgetFile(MessageManager.DisplayMessageWithOK, MessageManager.DisplayMessage, MessageManager.DisplayMessage, true, true);
+
+            writer.WriteBudgetFile(
+                MessageManager.DisplayMessageWithOK, 
+                MessageManager.DisplayMessage, 
+                MessageManager.DisplayMessage, 
+                true, 
+                true);
+
+            FileName = selectedFile;
+            IsFileOpen = true;
+            IsMainFileSaved = true;
+
+            SetMainFileSaveState();
         }
 
+        // Remove input later.
         public void SaveFile()
         {
-            FileControl_2.SaveMainFile(FileName, BudgetName,
-                    DataViewModel.IncomeDataList.ToList(),
-                    DataViewModel.ExpenseDataList.ToList());
+            IXMLData data = new XMLData()
+            {
+                ProjectName = BudgetName,
+                IncomeData = DataViewModel.IncomeDataList.ToList(),
+                ExpenseData = DataViewModel.ExpenseDataList.ToList()
+            };
+
+            // Shouldnt get to this point if its false.
+            if (IsMainFileSaved)
+            {
+                XMLWrtier wrtier = new XMLWrtier(FileName, data);
+                wrtier.WriteBudgetFile();
+            }
+            else
+            {
+                SaveFileAs();
+            }
+
+            IsMainFileSaved = true;
+            SetMainFileSaveState();
         }
 
         /// <summary>
-        /// Opens the SaveFileDialog and saves SubCategory Data to a .bps file.
+        /// Testing still. Saves the subcategories to an XML file.
         /// </summary>
         public void SaveSubsAs()
         {
@@ -510,34 +848,68 @@ namespace BudgetPlannerMainWPF.ViewModels
                 "Save Sub Categories",
                 false);
 
-            FileControl_2.SaveSubFile(selectedFile,
-                    Income.AllIncomeCategories,
-                    Expense.AllExpenseCategories);
+            IXMLDataSub subData = new XMLData()
+            {
+                IncomeSubCategories = Income.AllIncomeCategories,
+                ExpenseSubCategories = Expense.AllExpenseCategories
+            };
 
+            XMLWrtier wrtier = new XMLWrtier(selectedFile, subData);
+            wrtier.WriteSubFile(MessageManager.DisplayMessage);
+
+            // Update the Shell
             SubCatFileName = selectedFile;
-        }
+            IsSubFileSaved = true;
 
-        public void SaveSubsAs(string subsPath)
-        {
-            string selectedFile = _fileBrowser.SaveFileAccess(
-                SubCategoryDirectory,
-                "Save Sub Categories",
-                false);
+            SetSubFileSaveState();
+            // Testing check method.
             
-            FileControl_2.SaveSubFile(selectedFile,
-                    Income.AllIncomeCategories,
-                    Expense.AllExpenseCategories);
-
-            SubCatFileName = selectedFile;
         }
+
+        private void CheckMethodTest()
+        {
+            if (CheckSaveState(SaveIncomeState, DataViewModel.IncomeDataList.ToArray()))
+            {
+                MessageManager.DisplayMessage("Save State Check Passed!!");
+            }
+            else
+            {
+                MessageManager.DisplayMessage("Save State Check Failed...");
+            }
+        }
+
+        // OLD
+        //public void SaveSubs()
+        //{
+        //    FileControl_2.SaveSubFile(SubCatFileName,
+        //        Income.AllIncomeCategories,
+        //        Expense.AllExpenseCategories);
+        //}
 
         public void SaveSubs()
         {
-            FileControl_2.SaveSubFile(SubCatFileName,
-                Income.AllIncomeCategories,
-                Expense.AllExpenseCategories);
+            if (FileCheck.CheckDirectory(SubCatFileName))
+            {
+                IXMLDataSub data = new XMLData()
+                {
+                    IncomeSubCategories = Income.AllIncomeCategories,
+                    ExpenseSubCategories = Expense.AllExpenseCategories
+                };
+
+                XMLWrtier wrtier = new XMLWrtier(SubCatFileName, data);
+                wrtier.WriteSubFile(MessageManager.DisplayMessage);
+
+                IsSubFileSaved = true;
+
+                SetSubFileSaveState();
+            }
+            else
+            {
+                SaveSubsAs();
+            }
         }
 
+        // Need to remove. Error prone.
         public void SaveSubs(string path)
         {
             FileControl_2.SaveSubFile(path,
@@ -550,9 +922,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if(message.ActionCode == 1)
             {
+                // Not going to use the Writable Path.
+                // Too many possible bugs.
                 if (message.Path != String.Empty)
                 {
-                    SaveSubsAs(message.Path);
+                    SaveSubsAs();
                 }
                 else
                 {
@@ -561,7 +935,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
             else if(message.ActionCode == 2)
             {
-                SaveSubs(message.Path);
+                SaveSubs();
             }
             else if (message.ActionCode == 3)
             {
@@ -569,7 +943,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
             else if (message.ActionCode == 4)
             {
-
+                // Not needed.
             }
         }
 
@@ -605,10 +979,14 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataElement.Exit();
         }
 
+
+        public string NameWindowTitle(string name)
+        {
+            return $"Budget Planner - {name}";
+        }
         #endregion
 
         #region - Properties
-
         public string WindowTitle
         {
             get { return _WindowTitle; }
@@ -616,6 +994,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _WindowTitle = value;
                 NotifyOfPropertyChange(() => WindowTitle);
+                NotifyOfPropertyChange(() => BudgetName);
             }
         }
         public string BudgetName
@@ -624,7 +1003,9 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _budgetName = value;
+                WindowTitle = NameWindowTitle(value);
                 NotifyOfPropertyChange(() => BudgetName);
+                NotifyOfPropertyChange(() => WindowTitle);
             }
         }
 

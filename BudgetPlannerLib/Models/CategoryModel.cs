@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BudgetPlannerLib.Models
 {
+    /// <summary>
+    /// What was this for???
+    /// </summary>
     public class CategoryModel
     {
         #region - Fields

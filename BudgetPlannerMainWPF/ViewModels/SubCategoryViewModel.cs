@@ -26,8 +26,8 @@ namespace BudgetPlannerMainWPF.ViewModels
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
 
-        private string _subCategoryPath;
-        private bool _goodSubCatPath;
+        private string _subCategoryPath = String.Empty;
+        private bool _goodSubCatPath = false;
 
         private string _subCatFileName;
 
@@ -211,7 +211,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _subCategoryPath = value;
 
-                if (ShellViewModel.CheckDirectory(value))
+                if (FileCheck.CheckDirectory(value))
                 {
                     GoodSubCatPath = true;
                 }
