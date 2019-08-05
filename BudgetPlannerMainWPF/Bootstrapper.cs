@@ -24,7 +24,9 @@ namespace BudgetPlannerMainWPF
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                // Should work. need to implement.
+                .Singleton<IExceptionLogger, ExceptionLogger>();
 
             _container.PerRequest<IFileBrowser, FileBrowser>();
 
@@ -33,10 +35,13 @@ namespace BudgetPlannerMainWPF
                 .ToList()
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
+
+            
         }
 
         protected override void OnStartup(Object sender, StartupEventArgs e)
         {
+            ExceptionLogger.Initialize();
             DisplayRootViewFor<ShellViewModel>();
         }
 

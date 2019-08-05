@@ -31,44 +31,29 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         #region - Methods
         #region -- Private Methods
-        public static string OpenFolderDialog(string description)
-        {
-            string output = "";
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog()
-            {
-                Description = description,
-                RootFolder = Environment.SpecialFolder.MyComputer
-            };
 
-            DialogResult result = folderDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                output = folderDialog.SelectedPath;
-            }
-            else
-            {
-                output = "Something went wrong!!";
-            }
-
-            folderDialog.Dispose();
-            return output;
-        }
         #endregion
+
         #region -- Buttons
         /// <summary>
         /// NewSavePath Button
         /// </summary>
         public void NewSavePath()
         {
-            //DirectoryPath = OpenFolderDialog("Select Save Folder");
             DirectoryPath = _fileBrowser.OpenFolderAccess("Select Save Folder");
         }
 
         public void GetSubCatPath()
         {
-            //SubCategoryPath = OpenFolderDialog("Select Sub-Category File");
-            SubCategoryPath = _fileBrowser.OpenFolderAccess("Select Sub-Category File");
+            // Wrong FileDialog
+            //SubCategoryPath = _fileBrowser.OpenFolderAccess("Select Sub-Category File");
+
+            Tuple<string, bool> tempPath = _fileBrowser.OpenFileAccess(DirectoryPath, "Open Category File", false);
+
+            if (tempPath.Item2)
+            {
+                SubCategoryPath = tempPath.Item1;
+            }
         }
 
         /// <summary>
@@ -83,7 +68,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 {
                     if (GoodFolderPath)
                     {
-                        if (SubCategoryPath == "")
+                        if (SubCategoryPath == String.Empty)
                         {
                             _eventAggregator.PublishOnUIThread(new NewBudgetEvent(BudgetName, DirectoryPath, DirectoryPath, false));
                         }
@@ -95,23 +80,23 @@ namespace BudgetPlannerMainWPF.ViewModels
                             }
                             else
                             {
-                                MessageBox.Show("Bad Sub-Category Path. If there's a check in the box to the right, it's a good path.", Error);
+                                MessageManager.DisplayMessage("Bad Sub-Category Path. If there's a check in the box to the right, it's a good path.", Error);
                             }
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Bad Save Location. If there's a check in the box to the right, it's a good path.", Error);
+                        MessageManager.DisplayMessage("Bad Save Location. If there's a check in the box to the right, it's a good path.", Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No Path Given.", Error);
+                    MessageManager.DisplayMessage("No Path Given.", Error);
                 }
             }
             else
             {
-                MessageBox.Show("No Name Given.", Error);
+                MessageManager.DisplayMessage("No Name Given.", Error);
             }
         }
 
@@ -180,7 +165,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 _subCategoryPath = value;
 
-                if (FileCheck.CheckDirectory(value))
+                if (FileCheck.CheckFile(value))
                 {
                     GoodSubCatPath = true;
                 }

@@ -9,27 +9,27 @@ namespace BudgetPlannerMainWPF.EventModels
     public class NewBudgetEvent
     {
         #region - Fields
-        public string BudgetName_E { get; private set; }
-        public string MainFolder_E { get; private set; }
-        public string SubCatFolder_E { get; private set; }
-        public bool OpenSubCategories_E { get; private set; }
+        public string BudgetName { get; private set; }
+        public string MainFolder { get; private set; }
+        public string SubCatFolder { get; private set; }
+        public bool OpenSubCategories { get; private set; }
         #endregion
 
         #region - Constructors
         public NewBudgetEvent(string budgetName, string mainFolder,
             string subCatFolder, bool openSubs)
         {
-            BudgetName_E = budgetName;
-            MainFolder_E = mainFolder;
-            SubCatFolder_E = subCatFolder;
-            OpenSubCategories_E = openSubs;
+            BudgetName = budgetName;
+            MainFolder = mainFolder;
+            SubCatFolder = subCatFolder;
+            OpenSubCategories = openSubs;
         }
 
         public NewBudgetEvent(string budgetName, string mainFolder, string subCatFolder)
         {
-            BudgetName_E = budgetName;
-            MainFolder_E = mainFolder;
-            SubCatFolder_E = subCatFolder;
+            BudgetName = budgetName;
+            MainFolder = mainFolder;
+            SubCatFolder = subCatFolder;
         }
         #endregion
     }

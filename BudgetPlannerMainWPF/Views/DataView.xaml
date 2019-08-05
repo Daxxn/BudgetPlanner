@@ -329,7 +329,7 @@
             <!--#region ::Title::-->
             <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16"
                        FontWeight="DemiBold" Padding="4,0,0,0"
-                       >Budget Data:</TextBlock>
+                       >Budget Data Editter:</TextBlock>
             <!--#endregion-->
 
             <!--#region ::DataView Divider::-->

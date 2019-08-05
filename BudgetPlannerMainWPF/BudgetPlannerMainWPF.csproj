@@ -81,8 +81,10 @@
     <Compile Include="EventModels\UpdateDataEvent.cs" />
     <Compile Include="EventModels\UpdateDataListEvent.cs" />
     <Compile Include="EventModels\UpdateSubCatEvent.cs" />
+    <Compile Include="ExceptionLogger.cs" />
     <Compile Include="FileBrowser.cs" />
     <Compile Include="FileCheck.cs" />
+    <Compile Include="IExceptionLogger.cs" />
     <Compile Include="IFileBrowser.cs" />
     <Compile Include="MessageManager.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />
@@ -133,7 +135,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\DataView.xaml">
       <SubType>Designer</SubType>

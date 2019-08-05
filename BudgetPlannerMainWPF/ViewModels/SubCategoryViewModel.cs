@@ -16,6 +16,7 @@ namespace BudgetPlannerMainWPF.ViewModels
     {
         #region - Fields
         private IEventAggregator _eventAggregator;
+        private IFileBrowser _fileBrowser;
 
         private BindableCollection<SubCategory> _incomeCategories = new BindableCollection<SubCategory>();
         private BindableCollection<SubCategory> _expenseCategories = new BindableCollection<SubCategory>();
@@ -54,8 +55,9 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
         }
-        public SubCategoryViewModel(IEventAggregator eventAggregator)
+        public SubCategoryViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser)
         {
+            _fileBrowser = fileBrowser;
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
         }
@@ -158,32 +160,25 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void NewSubCatPath()
         {
-            // Old Version
-            SubCategoryPath = NewBudgetViewModel.OpenFolderDialog(
-                "Select Sub-Category Save Location"
-                );
+            SubCategoryPath = _fileBrowser.OpenFolderAccess("Select Sub-Category Save Location");
 
             _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(4, SubCategoryPath));
-            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(3, SubCategoryPath, SubCatFileName));
         }
 
         public void OpenSubCats()
         {
-            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(2));
             _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(3, SubCategoryPath));
         }
 
         public void SaveSubCats()
         {
             FinishCategories();
-            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(1));
             _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(2, SubCategoryPath));
         }
 
         public void SaveSubCatsAs()
         {
             FinishCategories();
-            //SubCatEventManager?.Invoke(this, new SubCategoryEventArgs(0));
             _eventAggregator.PublishOnUIThread(new SaveSubCategoryEvent(1, SubCategoryPath));
         }
         #endregion
