@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
         xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d" Icon="C:\Users\Daxxn\Desktop\BudgetPlannerIcon_1.png"
+        mc:Ignorable="d"
         Title="{Binding Path=WindowTitle}" Height="520" Width="920" FontSize="14"
         WindowStyle="SingleBorderWindow" SizeToContent="Width">
     <Window.Background>
@@ -31,6 +31,7 @@
             <MenuItem x:Name="SaveFileAs" Header="Save As" ToolTip="Saves a new Budget file."/>
             <MenuItem x:Name="SaveAllAs_Button" Header="Save All As" ToolTip="Saves both the budget and the Categories as a new file."/>
             <MenuItem x:Name="SaveAll_Button" Header="Save All" ToolTip="Saves both the budget and the Categories."/>
+            <MenuItem x:Name="ThrowError" Header="Throw Error"/>
         </Menu>
 
         <Grid Grid.Row="1">

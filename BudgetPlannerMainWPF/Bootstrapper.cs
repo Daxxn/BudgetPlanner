@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using BudgetPlannerMainWPF.ViewModels;
 using Caliburn.Micro;
+using LoggerLibrary;
 
 namespace BudgetPlannerMainWPF
 {
@@ -24,9 +25,7 @@ namespace BudgetPlannerMainWPF
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
-                // Should work. need to implement.
-                .Singleton<IExceptionLogger, ExceptionLogger>();
+                .Singleton<IEventAggregator, EventAggregator>();
 
             _container.PerRequest<IFileBrowser, FileBrowser>();
 
@@ -41,7 +40,8 @@ namespace BudgetPlannerMainWPF
 
         protected override void OnStartup(Object sender, StartupEventArgs e)
         {
-            ExceptionLogger.Initialize();
+            //ExceptionLogger.Initialize();
+            ExceptionLog.OnStartup();
             DisplayRootViewFor<ShellViewModel>();
         }
 
@@ -63,6 +63,7 @@ namespace BudgetPlannerMainWPF
         protected override void OnExit(Object sender, EventArgs e)
         {
             ShellViewModel.Exit();
+            MessageBox.Show("Exit Status", $"ExitCode: {ExceptionLog.OnExit()}");
             base.OnExit(sender, e);
         }
     }

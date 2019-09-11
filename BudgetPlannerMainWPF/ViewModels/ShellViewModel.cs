@@ -11,6 +11,7 @@ using BudgetPlannerMainWPF.EventModels;
 using XMLParsingLibrary;
 using XMLParsingLibrary.Interfaces;
 using XMLParsingLibrary.Exceptions;
+using LoggerLibrary;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -19,7 +20,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         #region - Fields
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
-        private IExceptionLogger _exceptionLogger;
+        //private IExceptionLogger _exceptionLogger;
 
         /// <summary>
         /// Name added to the Window Bar.
@@ -139,9 +140,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         /// <param name="eventAggregator">Caliburns Event Manager.</param>
         /// <param name="fileBrowser">Custom Save/Open/Folder FileDialog Manager.</param>
-        public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser, IExceptionLogger exceptionLogger)
+        public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser /*IExceptionLogger exceptionLogger*/)
         {
-            _exceptionLogger = exceptionLogger;
+            //_exceptionLogger = exceptionLogger;
             _fileBrowser = fileBrowser;
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
@@ -164,6 +165,8 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel.IncomeDataList = new BindableCollection<Income>(testData.IncomeList);
             DataViewModel.ExpenseDataList = new BindableCollection<Expense>(testData.ExpenseList);
             #endregion
+
+            //_exceptionLogger.Info("ShellViewModel Initialized.", DataViewModel.IncomeDataList.ToArray(), DataViewModel.ExpenseDataList.ToArray(), IsFileOpen, IsSubFileOpen);
         }
         #endregion
 
@@ -681,6 +684,25 @@ namespace BudgetPlannerMainWPF.ViewModels
                 SetMainFileSaveState();
                 IsMainFileSaved = true;
                 Activate_DataView();
+
+                
+            }
+        }
+
+        public void ThrowError()
+        {
+            try
+            {
+                int[] testArray = new int[] { 1 };
+                for (int i = 0; i < testArray.Length + 10; i++)
+                {
+                    int test = testArray[i];
+                }
+            }
+            catch (Exception e)
+            {
+                //_exceptionLogger.Error(e);
+                ExceptionLog.LogException(e, DateTime.Now);
             }
         }
 
@@ -904,7 +926,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
                     SetMainFileSaveState();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageManager.DisplayMessage("An error occured while saving..");
                 }

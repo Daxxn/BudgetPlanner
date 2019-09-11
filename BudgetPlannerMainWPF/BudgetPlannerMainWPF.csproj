@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test_Release_1|AnyCPU'">
+    <OutputPath>bin\Test_Release_1\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -161,6 +164,10 @@
     <ProjectReference Include="..\BudgetPlannerLib\BudgetPlannerLib.csproj">
       <Project>{2162e53e-a177-4da2-8d40-b4f6478a7ab2}</Project>
       <Name>BudgetPlannerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LoggerLibrary\LoggerLibrary.csproj">
+      <Project>{871ae045-d2ae-4714-a4f8-db10bf4354a6}</Project>
+      <Name>LoggerLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
