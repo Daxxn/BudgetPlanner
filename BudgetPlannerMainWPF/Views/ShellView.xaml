@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="{Binding Path=WindowTitle}" Height="520" Width="920" FontSize="14"
+        Title="{Binding Path=WindowTitle}" Height="600" Width="920" FontSize="14"
         WindowStyle="SingleBorderWindow" SizeToContent="Width">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -38,6 +38,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.Background>
                 <SolidColorBrush Color="{DynamicResource BackGround_Main}"/>
@@ -52,7 +53,7 @@
                 </Button.Background>
                 Budget
             </Button>
-            <Button x:Name="Activate_SubCategoryView" Grid.Column="1" Padding="20,0,20,0">
+            <Button x:Name="Activate_SubCategoryView" Grid.Column="1" Padding="20,0,20,0" Margin="0,0,2,0">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFF4F7F7"/>
@@ -60,6 +61,15 @@
                     </LinearGradientBrush>
                 </Button.Background>
                 Categories
+            </Button>
+            <Button x:Name="Activate_PaystubView" Grid.Column="2" Padding="20,0,20,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF4F7F7"/>
+                        <GradientStop Color="#FF7C90BB" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                paystubs
             </Button>
         </Grid>
         <!--#endregion-->

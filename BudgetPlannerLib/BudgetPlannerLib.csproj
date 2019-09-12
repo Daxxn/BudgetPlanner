@@ -46,12 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataElement.cs" />
+    <Compile Include="Exceptions\PaystubTypeException.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\FileControl.cs" />
     <Compile Include="Models\FileControl_2.cs" />
     <Compile Include="Models\IEquals.cs" />
     <Compile Include="Models\Income.cs" />
+    <Compile Include="Models\PaystubModel.cs" />
+    <Compile Include="Models\PaystubType.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="TestDataAccesser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

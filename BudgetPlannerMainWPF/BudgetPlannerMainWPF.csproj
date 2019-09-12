@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -93,6 +94,7 @@
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\FolderEventArgs.cs" />
     <Compile Include="ViewModels\NewBudgetViewModel.cs" />
+    <Compile Include="ViewModels\PaystubViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SimpleKeyEventAgrs.cs" />
     <Compile Include="ViewModels\SubCategoryEventArgs.cs" />
@@ -102,6 +104,9 @@
     </Compile>
     <Compile Include="Views\NewBudgetView.xaml.cs">
       <DependentUpon>NewBudgetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaystubView.xaml.cs">
+      <DependentUpon>PaystubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -144,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewBudgetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaystubView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

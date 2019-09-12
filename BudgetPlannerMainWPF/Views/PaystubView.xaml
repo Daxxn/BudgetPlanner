@@ -1,0 +1,271 @@
+﻿<UserControl x:Class="BudgetPlannerMainWPF.Views.PaystubView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
+             xmlns:local_2="clr-namespace:BudgetPlannerLib.Models;assembly=BudgetPlannerLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+    <UserControl.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFE1E9F1" Offset="0"/>
+            <GradientStop Color="White" Offset="1"/>
+        </LinearGradientBrush>
+    </UserControl.Background>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="10"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="22" FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       >Paystubs</TextBlock>
+
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                           HorizontalAlignment="Center" FontWeight="Bold"
+                           >New Paystub Entry</TextBlock>
+
+                <TextBlock Grid.Column="0" Grid.Row="1">Paystub Amount:</TextBlock>
+                <TextBox x:Name="PaystubAmount" Grid.Column="1" Grid.Row="1" Background="AliceBlue"/>
+
+                <!--Doesnt work. would need some complicated code.-->
+                <!--<ComboBox x:Name="NewPaystubTypeMenu" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                          
+                          SelectedItem="{Binding Path=NewPaystubType, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=PaystubType}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>-->
+
+                <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                          SelectedItem="{Binding Path=NewPaystubType}"
+                          ItemsSource="{Binding Path=NewPaystubTypeDisplay}">
+                </ComboBox>
+
+                <!--<Grid Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        
+                    </Grid.ColumnDefinitions>
+                </Grid>-->
+
+                <Button x:Name="AddPaystub" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    Add
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                           HorizontalAlignment="Center" FontWeight="DemiBold"
+                           >Selected Paystub</TextBlock>
+
+                <TextBlock Grid.Column="0" Grid.Row="1">Index:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=SelectedPaystub.Index, Mode=OneWay}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <TextBlock Grid.Column="0" Grid.Row="2">Gross:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=SelectedPaystub.Gross, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <TextBlock Grid.Column="0" Grid.Row="3">Net:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=SelectedPaystub.Net, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <Button x:Name="RemoveSelected" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    Remove Setected Paystub
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                           FontSize="16" FontWeight="DemiBold"
+                           HorizontalAlignment="Center">
+                    Net and Gross Averages
+                </TextBlock>
+
+                <TextBlock Grid.Column="0" Grid.Row="1">Gross Average:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=GrossAverage, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <TextBlock Grid.Column="0" Grid.Row="2">Net Average:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=NetAverage, Mode=OneWay, StringFormat=C}"
+                                       Background="AliceBlue"/>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="CalculateAverage" Grid.Column="0" Grid.ColumnSpan="2" Content="Calculate Average"
+                        >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0">Figure Out Missing Values:</TextBlock>
+                    <CheckBox x:Name="FindMissingSelect" Grid.Column="1"
+                          ToolTip="If checked, will try to figure out what missing values where based on the difference of net and gross. Will only work if theres a net and gross value with one paystub."
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+
+                <TextBlock Grid.Column="0" Grid.Row="2">Gross Percentage:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=GrossPercentage, Mode=OneWay, StringFormat=F2}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <TextBlock Grid.Column="0" Grid.Row="3">Net Parcentage:</TextBlock>
+                <Border Grid.Column="1" Grid.Row="3" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=NetPercentage, Mode=OneWay, StringFormat=F2}"
+                                       Background="AliceBlue"/>
+                </Border>
+
+                <TextBlock Grid.Column="0" Grid.Row="4">Percentage Error</TextBlock>
+                <Border Grid.Column="1" Grid.Row="4" Margin="0,2,0,2"
+                                    BorderThickness="1" CornerRadius="2">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Border_2}"/>
+                    </Border.BorderBrush>
+                    <TextBlock Text="{Binding Path=PercentageDifference, Mode=OneWay, StringFormat=F4}"
+                                       Background="AliceBlue"/>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Column="1">
+            <DataGrid x:Name="PaystubDataList"
+                      AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      SelectedItem="{Binding Path=SelectedPaystub}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Index" Binding="{Binding Path=Index}"/>
+                    <DataGridTextColumn Header="Gross" Binding="{Binding Path=Gross}"/>
+                    <DataGridTextColumn Header="Net" Binding="{Binding Path=Net}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>
