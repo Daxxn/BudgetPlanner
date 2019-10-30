@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\FolderEventArgs.cs" />
     <Compile Include="ViewModels\NewBudgetViewModel.cs" />
+    <Compile Include="ViewModels\PaystubViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SimpleKeyEventAgrs.cs" />
     <Compile Include="ViewModels\SubCategoryEventArgs.cs" />
@@ -99,6 +100,9 @@
     </Compile>
     <Compile Include="Views\NewBudgetView.xaml.cs">
       <DependentUpon>NewBudgetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaystubView.xaml.cs">
+      <DependentUpon>PaystubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -144,6 +148,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PaystubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +169,10 @@
     <ProjectReference Include="..\BudgetPlannerLib\BudgetPlannerLib.csproj">
       <Project>{2162e53e-a177-4da2-8d40-b4f6478a7ab2}</Project>
       <Name>BudgetPlannerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaystubLibrary\PaystubLibrary.csproj">
+      <Project>{e3762747-1e2c-4dcb-8f03-b1cf65df3441}</Project>
+      <Name>PaystubLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

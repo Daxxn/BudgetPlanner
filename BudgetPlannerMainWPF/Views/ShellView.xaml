@@ -37,6 +37,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.Background>
                 <SolidColorBrush Color="{DynamicResource BackGround_Main}"/>
@@ -59,6 +60,15 @@
                     </LinearGradientBrush>
                 </Button.Background>
                 Categories
+            </Button>
+            <Button x:Name="Activate_PaystubView" Grid.Column="2" Padding="20,0,20,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF4F7F7"/>
+                        <GradientStop Color="#FF7C90BB" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                Paystubs
             </Button>
         </Grid>
         <!--#endregion-->

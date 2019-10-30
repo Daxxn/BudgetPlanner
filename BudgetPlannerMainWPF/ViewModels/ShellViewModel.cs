@@ -115,7 +115,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         private DataViewModel _dataViewModel;
         private SubCategoryViewModel _categoryViewModel = new SubCategoryViewModel();
         private NewBudgetViewModel _newBudgetViewModel = new NewBudgetViewModel();
-        
+        private PaystubViewModel _paystubViewModel;
         #endregion
 
         #region - Constructors
@@ -149,6 +149,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel = new DataViewModel(eventAggregator);
             SubCategoryViewModel = new SubCategoryViewModel(eventAggregator, fileBrowser);
             NewBudgetViewModel = new NewBudgetViewModel(eventAggregator, fileBrowser);
+            PaystubViewModel = new PaystubViewModel(eventAggregator, fileBrowser);
 
             InitializeAll();
 
@@ -629,6 +630,11 @@ namespace BudgetPlannerMainWPF.ViewModels
                 ));
 
             ActivateItem(SubCategoryViewModel);
+        }
+
+        public void Activate_PaystubView()
+        {
+            ActivateItem(PaystubViewModel);
         }
         #endregion
         #endregion
@@ -1200,6 +1206,15 @@ namespace BudgetPlannerMainWPF.ViewModels
             set
             {
                 _newBudgetViewModel = value;
+            }
+        }
+
+        public PaystubViewModel PaystubViewModel
+        {
+            get { return _paystubViewModel; }
+            set
+            {
+                _paystubViewModel = value;
             }
         }
         #endregion
