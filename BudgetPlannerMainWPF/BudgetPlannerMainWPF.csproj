@@ -154,9 +154,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\source\repos\Exploration\XMLReaderConstruction\XMLParsingLibrary\XMLParsingLibrary.csproj">
-      <Project>{35a899f2-c233-4e4f-9323-8395c89d7a92}</Project>
-      <Name>XMLParsingLibrary</Name>
+    <ProjectReference Include="..\..\XMLParserLibrary\XMLParserLibrary\XMLParserLibrary.csproj">
+      <Project>{5a2aa1b3-268d-4f09-8d10-0478b339f089}</Project>
+      <Name>XMLParserLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\BudgetPlannerLib\BudgetPlannerLib.csproj">
       <Project>{2162e53e-a177-4da2-8d40-b4f6478a7ab2}</Project>

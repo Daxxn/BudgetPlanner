@@ -8,9 +8,9 @@ using BudgetPlannerLib.Models;
 using Caliburn.Micro;
 using Microsoft.Win32;
 using BudgetPlannerMainWPF.EventModels;
-using XMLParsingLibrary;
-using XMLParsingLibrary.Interfaces;
-using XMLParsingLibrary.Exceptions;
+using XMLParserLibrary;
+using XMLParserLibrary.Interfaces;
+using XMLParserLibrary.Exceptions;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -684,7 +684,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        #region --- File Management Buttom Methods
+        #region --- File Management Button Methods
         /// <summary>
         /// Erases all current data to set up for a new file.
         /// </summary>
@@ -904,7 +904,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
                     SetMainFileSaveState();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageManager.DisplayMessage("An error occured while saving..");
                 }

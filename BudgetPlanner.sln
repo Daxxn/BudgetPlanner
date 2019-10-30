@@ -12,9 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Messages.txt = Messages.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLParsingLibrary", "..\..\..\source\repos\Exploration\XMLReaderConstruction\XMLParsingLibrary\XMLParsingLibrary.csproj", "{35A899F2-C233-4E4F-9323-8395C89D7A92}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExceptionLogFolder", "ExceptionLogFolder", "{3BF1A113-7A9A-4D07-B014-E8EEFA0F2FE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLParserLibrary", "..\XMLParserLibrary\XMLParserLibrary\XMLParserLibrary.csproj", "{5A2AA1B3-268D-4F09-8D10-0478B339F089}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaystubLibrary", "PaystubLibrary\PaystubLibrary.csproj", "{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +32,14 @@ Global
 		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35A899F2-C233-4E4F-9323-8395C89D7A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35A899F2-C233-4E4F-9323-8395C89D7A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35A899F2-C233-4E4F-9323-8395C89D7A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35A899F2-C233-4E4F-9323-8395C89D7A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A2AA1B3-268D-4F09-8D10-0478B339F089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A2AA1B3-268D-4F09-8D10-0478B339F089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A2AA1B3-268D-4F09-8D10-0478B339F089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A2AA1B3-268D-4F09-8D10-0478B339F089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
