@@ -251,7 +251,7 @@ namespace PaystubLibrary
         /// Finds the difference of the min and max percentages and compares that to the users desired accuracy tolerance.
         /// </summary>
         /// <returns>Returns true if the check passes.</returns>
-        private bool CheckPercentageAccuracy()
+        private bool CheckConvertedPercentageAccuracy()
         {
             bool pass = true;
 
@@ -264,6 +264,20 @@ namespace PaystubLibrary
             }
 
             if (calcAccuracy > (decimal)Accuracy)
+            {
+                pass = false;
+            }
+
+            return pass;
+        }
+
+        public bool CheckPercentageAccuracy()
+        {
+            bool pass = true;
+
+            decimal percentDiff = Paystubs.Max(x => x.Percent) - Paystubs.Min(x => x.Percent);
+
+            if (percentDiff > (decimal)Accuracy)
             {
                 pass = false;
             }
@@ -340,6 +354,7 @@ namespace PaystubLibrary
             {
                 if (stub.Gross != 0 && stub.Net != 0)
                 {
+                    //tempAverage += stub.GetConvertedPercentage();
                     tempAverage += stub.GetPercentage();
                     passCount++;
                 }

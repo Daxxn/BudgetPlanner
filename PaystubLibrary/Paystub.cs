@@ -9,6 +9,7 @@ namespace PaystubLibrary
     public class Paystub
     {
         #region Properties & Variables
+        public string Name { get; set; }
         public int Index { get; set; }
         public decimal Gross { get; set; }
         public decimal Net { get; set; }
@@ -18,6 +19,29 @@ namespace PaystubLibrary
 
         #region Constructors
         public Paystub() { }
+        public Paystub(string name, int index, decimal gross, decimal net)
+        {
+            Name = name;
+            Index = index;
+            Gross = gross;
+            Net = net;
+        }
+
+        public Paystub(string name, int index, decimal amount, bool isGross)
+        {
+            Name = name;
+            Index = index;
+
+            if (isGross)
+            {
+                Gross = amount;
+            }
+            else
+            {
+                Net = amount;
+            }
+        }
+
         public Paystub(int index, decimal amount, bool isGross)
         {
             Index = index;
@@ -31,12 +55,14 @@ namespace PaystubLibrary
                 Net = amount;
             }
         }
+
         public Paystub(int index, decimal gross, decimal net)
         {
             Index = index;
             Gross = gross;
             Net = net;
         }
+
         public Paystub(int index, decimal gross, decimal net, decimal percent)
         {
             Index = index;
@@ -47,16 +73,29 @@ namespace PaystubLibrary
         #endregion
 
         #region Methods
+        public void ConvertedPercentage()
+        {
+            if (Gross != 0)
+            {
+                Percent = Net / Gross * 100;
+            }
+            else Percent = 0;
+        }
+
         public void Percentage()
         {
-            Percent = Net / Gross * 100;
+            if (Gross != 0)
+            {
+                Percent = Net / Gross;
+            }
+            else Percent = 0;
         }
 
         /// <summary>
         /// Calculates the Percentage from the gross and net values, also places the result in the Percent prop.
         /// </summary>
         /// <returns>Returns a decimal of the calculated percentage.</returns>
-        public decimal GetPercentage()
+        public decimal GetConvertedPercentage()
         {
             if (Net != 0 && Gross != 0)
             {
@@ -71,14 +110,39 @@ namespace PaystubLibrary
             }
         }
 
-        public void GrossFromPercentage()
+        public decimal GetPercentage()
+        {
+            if (Net != 0 && Gross != 0)
+            {
+                Percent = Net / Gross;
+                Complete = true;
+                return Percent;
+            }
+            else
+            {
+                Complete = false;
+                return 0;
+            }
+        }
+
+        public void ConvertedGrossFromPercentage()
         {
             Gross = Net / Percent * 100;
         }
 
-        public void NetFromPercentage()
+        public void GrossFromPercentage()
+        {
+            Gross = Net / Percent;
+        }
+
+        public void ConvertedNetFromPercentage()
         {
             Net = Percent / 100 * Gross;
+        }
+
+        public void NetFromPercentage()
+        {
+            Net = Percent * Gross;
         }
 
         public override string ToString()
@@ -94,6 +158,7 @@ namespace PaystubLibrary
                     && paystub.Net != 0
                     && paystub.Percent != 0)
                 {
+                    //paystub.ConvertedGrossFromPercentage();
                     paystub.GrossFromPercentage();
                 }
             }
@@ -107,9 +172,36 @@ namespace PaystubLibrary
                     && paystub.Gross != 0
                     && paystub.Percent != 0)
                 {
+                    //paystub.ConvertedNetFromPercentage();
                     paystub.NetFromPercentage();
                 }
             }
+        }
+
+        public static List<Paystub> GetPercentages(List<Paystub> paystubs)
+        {
+            List<Paystub> output = paystubs;
+
+            foreach (Paystub paystub in output)
+            {
+                //paystub.ConvertedPercentage();
+                paystub.Percentage();
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Creates a blank paystub. Probably not necessary.
+        /// </summary>
+        /// <param name="currentIndex"></param>
+        /// <returns></returns>
+        public static Paystub Default(int currentIndex)
+        {
+            return new Paystub()
+            {
+                Index = currentIndex++
+            };
         }
         #endregion
 
