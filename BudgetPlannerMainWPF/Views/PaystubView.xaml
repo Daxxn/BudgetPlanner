@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BudgetPlannerMainWPF.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignHeight="520" d:DesignWidth="800">
     <UserControl.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFE1E9F1" Offset="0"/>
@@ -13,204 +13,328 @@
         </LinearGradientBrush>
     </UserControl.Background>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16" FontWeight="DemiBold">
-            Paystub Editor
-        </TextBlock>
-
-        <Grid Grid.Column="0" Grid.Row="1">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto" MinHeight="20"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto" MinHeight="20"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16" FontWeight="DemiBold">
+            Paystub Editor
+            </TextBlock>
+
+            <Grid Grid.Column="1" Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Center">
-                    Paystub Controls
-                </TextBlock>
+                <TextBox Grid.Row="0" FontSize="14" FontWeight="DemiBold"
+                   Text="{Binding Path=CollectionName, Mode=TwoWay}"/>
 
-                <Button x:Name="AddPaystub" Grid.Column="0" Grid.Row="1">
-                    Add
-                </Button>
-
-                <Button x:Name="RemovePaystub" Grid.Column="1" Grid.Row="1">
-                    Remove
-                </Button>
-
-                <Button Name="ResetTest" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
-                    Reset Test
-                </Button>
+                <TextBox Grid.Row="1" Text="{Binding Path=CollectionDescription, Mode=TwoWay}"/>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="20"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" HorizontalAlignment="Center">
-                    Paystub Calculation
-                </TextBlock>
-
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Button x:Name="CalculatePaystubs" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
-                        Estimate Paystubs
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Center">
+                    Paystub Controls
+                    </TextBlock>
+
+                    <Button x:Name="AddPaystub" Grid.Column="0" Grid.Row="1">
+                        Add
                     </Button>
 
-                    <Button x:Name="CalculatePercentages" Grid.Row="1">
-                        Calculate Percentages
+                    <Button x:Name="RemovePaystub" Grid.Column="1" Grid.Row="1">
+                        Remove
+                    </Button>
+
+                    <Button Name="ResetTest" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+                        Reset Test
                     </Button>
                 </Grid>
 
-                <TextBlock Grid.Column="0" Grid.Row="2">
-                    Accuracy
-                </TextBlock>
-
-                <Grid Grid.Column="0" Grid.Row="3">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto" MaxWidth="50" MinWidth="30"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <Slider x:Name="AccuracyDisplay" Grid.Column="0" Grid.Row="1"
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Center">
+                    Paystub Calculation
+                    </TextBlock>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="CalculatePaystubs" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
+                            Estimate Paystubs
+                        </Button>
+
+                        <Button x:Name="CalculatePercentages" Grid.Row="1">
+                            Calculate Percentages
+                        </Button>
+                    </Grid>
+
+                    <TextBlock Grid.Column="0" Grid.Row="2">
+                    Accuracy
+                    </TextBlock>
+
+                    <Grid Grid.Column="0" Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" MaxWidth="50" MinWidth="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Slider x:Name="AccuracyInputDisplay" Grid.Column="0" Grid.Row="1"
                         Maximum="100" Minimum="0" 
                         TickPlacement="BottomRight" TickFrequency="10"/>
 
-                    <TextBox Text="{Binding Path=AccuracyDisplay}" 
+                        <TextBox Text="{Binding Path=AccuracyInputDisplay}" 
                              Grid.Column="1" Grid.Row="1" Background="AliceBlue"/>
-                </Grid>
+                    </Grid>
 
-                <TextBlock Grid.Column="0" Grid.Row="4">
+                    <TextBlock Grid.Column="0" Grid.Row="4">
                     Complete Paystub Check
-                </TextBlock>
+                    </TextBlock>
 
-                <Grid Grid.Column="0" Grid.Row="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto" MaxWidth="50" MinWidth="30"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" MaxWidth="50" MinWidth="30"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Slider x:Name="CompletePaystubCountDisplay" Grid.Column="0" Grid.Row="1"
+                        <Slider x:Name="CompletePaystubCountInputDisplay" Grid.Column="0" Grid.Row="1"
                         Maximum="10" Minimum="1" 
                         TickPlacement="BottomRight" TickFrequency="1"/>
 
-                    <TextBox Text="{Binding Path=CompletePaystubCountDisplay}" 
+                        <TextBox Text="{Binding Path=CompletePaystubCountInputDisplay}"
                              Grid.Column="1" Grid.Row="1" Background="AliceBlue"/>
+                    </Grid>
+
+                    <Grid Grid.Column="0" Grid.Row="7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.Row="0">
+                        Accuracy
+                        </TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="0"
+                               Text="{Binding Path=WarningMessage}">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=WarningBackground}" Value="True">
+                                            <Setter Property="TextBlock.Background" Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=WarningBackground}" Value="False">
+                                            <Setter Property="TextBlock.Background" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0" Grid.Row="1">
+                            Calculation:
+                        </TextBlock>
+                        <TextBlock Text="{Binding Path=DecisionDisp}" Grid.Column="1" Grid.Row="1">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=DecisionBackground}" Value="True">
+                                            <Setter Property="TextBlock.Background" Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=DecisionBackground}" Value="False">
+                                            <Setter Property="TextBlock.Background" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
                 </Grid>
-            </Grid>
 
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" HorizontalAlignment="Center">
-                    Selected Paystub
-                </TextBlock>
-
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
+                    Paystub Data
+                    </TextBlock>
+
+                    <Grid Grid.Column="0" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.Row="0">
+                        Average Gross
+                        </TextBlock>
+                        <TextBlock Background="AliceBlue" Grid.Column="1" Grid.Row="0"
+                             Text="{Binding Path=AverageGross, Mode=OneWay, StringFormat=C2}"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="1">
+                        Average Net
+                        </TextBlock>
+                        <TextBlock Background="AliceBlue" Grid.Column="1" Grid.Row="1" 
+                             Text="{Binding Path=AverageNet, Mode=OneWay, StringFormat=C2}"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="2">
+                        Average Percent
+                        </TextBlock>
+                        <TextBlock Background="AliceBlue" Grid.Column="1" Grid.Row="2"
+                               Text="{Binding Path=AveragePercent, Mode=OneWay, StringFormat=P2}"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="3">
+                        Percentage Diff
+                        </TextBlock>
+                        <TextBlock Background="AliceBlue" Grid.Column="1" Grid.Row="3"
+                               Text="{Binding Path=PercentDifference, Mode=OneWay, StringFormat=P2}"/>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Grid.Row="0">
-                        Name:
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Center">
+                    Selected Paystub
                     </TextBlock>
-                    <TextBox Text="{Binding Path=SelectedPaystub.Name}" Background="AliceBlue" 
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.Row="0">
+                        Name:
+                        </TextBlock>
+                        <TextBox Text="{Binding Path=SelectedPaystub.Name}" Background="AliceBlue" 
                              MaxLength="100"  Grid.Column="1" Grid.Row="0"
                              HorizontalContentAlignment="Center"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="1">
+                        <TextBlock Grid.Column="0" Grid.Row="1">
                         Index:
-                    </TextBlock>
-                    <TextBox Text="{Binding Path=SelectedPaystub.Index}" Background="AliceBlue" 
+                        </TextBlock>
+                        <TextBox Text="{Binding Path=SelectedPaystub.Index}" Background="AliceBlue" 
                              Grid.Column="1" Grid.Row="1"
                              HorizontalContentAlignment="Center"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="2">
+                        <TextBlock Grid.Column="0" Grid.Row="2">
                         Gross:
-                    </TextBlock>
-                    <TextBox Text="{Binding Path=SelectedPaystub.Gross, StringFormat=C2}" Background="AliceBlue"
+                        </TextBlock>
+                        <TextBox Text="{Binding Path=SelectedPaystub.Gross, StringFormat=C2}" Background="AliceBlue"
                              Grid.Column="1" Grid.Row="2"
                              HorizontalContentAlignment="Center"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="3">
+                        <TextBlock Grid.Column="0" Grid.Row="3">
                         Net:
-                    </TextBlock>
-                    <TextBox Text="{Binding Path=SelectedPaystub.Net, StringFormat=C2}" Background="AliceBlue" 
+                        </TextBlock>
+                        <TextBox Text="{Binding Path=SelectedPaystub.Net, StringFormat=C2}" Background="AliceBlue" 
                              Grid.Column="1" Grid.Row="3"
                              HorizontalContentAlignment="Center"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="4">
+                        <TextBlock Grid.Column="0" Grid.Row="4">
                         Percentage:
-                    </TextBlock>
-                    <TextBox Text="{Binding Path=SelectedPaystub.Percent, StringFormat=P2}" Background="AliceBlue" 
+                        </TextBlock>
+                        <TextBox Text="{Binding Path=SelectedPaystub.Percent, StringFormat=P2}" Background="AliceBlue" 
                              Grid.Column="1" Grid.Row="4"
                              HorizontalContentAlignment="Center"/>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
 
-        <DataGrid x:Name="PaystubDataList" Grid.Column="1" Grid.Row="1" 
-                  AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedPaystub}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn Header="Index" Binding="{Binding Path=Index}"/>
-                <DataGridTextColumn Header="Gross" Binding="{Binding Path=Gross, StringFormat=C2}"/>
-                <DataGridTextColumn Header="Net" Binding="{Binding Path=Net, StringFormat=C2}"/>
-                <DataGridTextColumn Header="Percentage" Binding="{Binding Path=Percent, Mode=OneWay, StringFormat=P2}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+            <ScrollViewer Grid.Column="1" Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <DataGrid x:Name="PaystubDataList" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedPaystub}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
+                        <DataGridTextColumn Header="Index" Binding="{Binding Path=Index}"/>
+                        <DataGridTextColumn Header="Gross" Binding="{Binding Path=Gross, StringFormat=C2}"/>
+                        <DataGridTextColumn Header="Net" Binding="{Binding Path=Net, StringFormat=C2}"/>
+                        <DataGridTextColumn Header="Percentage" Binding="{Binding Path=Percent, Mode=OneWay, StringFormat=P2}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

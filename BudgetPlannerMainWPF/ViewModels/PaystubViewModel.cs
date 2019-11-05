@@ -16,9 +16,32 @@ namespace BudgetPlannerMainWPF.ViewModels
         public BindableCollection<Paystub> _paystubDataList;
         public Paystub _selectedPaystub;
 
-        public int _accuracyDisp;
-        public double _accuracy;
-        public int _compPaystubCountDisp = 1;
+        public int _accuracyInputDisp;
+        public double _accuracyInput;
+        public int _compPaystubCountInputDisp = 1;
+
+        public string _collectionName = "No Name";
+        public string _collectionDesc = "<empty>";
+
+        public decimal _averageGross;
+        public decimal _averageNet;
+        public decimal _averagePercent;
+
+        public CalcType _decision = CalcType.NotEnoughInfo;
+        public string _decisionDisp = String.Empty;
+        public bool _decisionBackground = false;
+
+        public Warning _warning = Warning.NoWarning;
+        public string _warningMessage;
+        public bool _warningBackground;
+
+
+        public decimal _percentDiff;
+
+        /// <summary>
+        /// Hold on... probably gonna do this differently. use an int and just count it.
+        /// </summary>
+        public decimal _compPaystubOut;
         #endregion
 
         #region - Constructors
@@ -26,7 +49,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             _eventAggregator = eventAggregator;
             _fileBrowser = fileBrowser;
-
+            
             #region Testing ONLY
             #region Test 1
             //PaystubDataList = new BindableCollection<Paystub>()
@@ -85,18 +108,27 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void CalculatePaystubs()
         {
-            PaystubCollection.Accuracy = Accuracy;
-            PaystubCollection.PassCount = CompletePaystubCountDisplay;
+            Tuple<List<Paystub>, Tuple<decimal, decimal, decimal>, Tuple<decimal, decimal>> calcOut = 
+                PaystubCalculator.BeginCalc(
+                    MessageManager.DisplayMessage, 
+                    ConvertWarning,
+                    PaystubDataList.ToList(), 
+                    (decimal)AccuracyInput
+                    );
+            
+            Decision = PaystubCalculator.Decision;
 
-            PaystubCollection test = new PaystubCollection()
-            {
-                Name = "Test",
-                Paystubs = PaystubDataList.ToList()
-            };
+            //Tuple 1
+            PaystubDataList = new BindableCollection<Paystub>(calcOut.Item1);
 
-            test.BeginCalc(MessageManager.DisplayMessage, ConvertWarning);
+            // Tuple 2
+            AverageGross = calcOut.Item2.Item1;
+            AverageNet = calcOut.Item2.Item2;
+            AveragePercent = calcOut.Item2.Item3;
 
-            PaystubDataList = new BindableCollection<Paystub>(test.Paystubs);
+            // Tuple 3
+            PercentDifference = calcOut.Item3.Item1;
+            CompletePaystubOut = calcOut.Item3.Item2;
         }
 
         public void CalculatePercentages()
@@ -118,6 +150,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void ConvertWarning(Warning warning)
         {
+            Warning = warning;
             switch (warning)
             {
                 case Warning.NoWarning:
@@ -137,9 +170,31 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Full Properties
+        public string CollectionName
+        {
+            get { return _collectionName; }
+            set
+            {
+                _collectionName = value;
+                NotifyOfPropertyChange(() => CollectionName);
+            }
+        }
+
+        public string CollectionDescription
+        {
+            get { return _collectionDesc; }
+            set
+            {
+                _collectionDesc = value;
+                NotifyOfPropertyChange(() => CollectionDescription);
+            }
+        }
         public BindableCollection<Paystub> PaystubDataList
         {
-            get { return _paystubDataList; }
+            get
+            {
+                return _paystubDataList;
+            }
             set
             {
                 _paystubDataList = value;
@@ -157,48 +212,170 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public int AccuracyDisplay
+        public int AccuracyInputDisplay
         {
-            get { return _accuracyDisp; }
+            get { return _accuracyInputDisp; }
             set
             {
-                _accuracyDisp = value;
-                NotifyOfPropertyChange(() => AccuracyDisplay);
-                NotifyOfPropertyChange(() => Accuracy);
+                _accuracyInputDisp = value;
+                NotifyOfPropertyChange(() => AccuracyInputDisplay);
+                NotifyOfPropertyChange(() => AccuracyInput);
             }
         }
 
-        public double Accuracy
+        public double AccuracyInput
         {
             get
             {
-                if (AccuracyDisplay != 0)
+                if (AccuracyInputDisplay != 0)
                 {
-                    return 1 - ((double)AccuracyDisplay / 100);
+                    return 1 - ((double)AccuracyInputDisplay / 100);
                 }
                 else { return 0; }
             }
         }
 
-        public double Accuracy_old
+        public int CompletePaystubCountInputDisplay
         {
-            get { return _accuracy; }
+            get { return _compPaystubCountInputDisp; }
             set
             {
-                _accuracy = value;
-                NotifyOfPropertyChange(() => Accuracy);
+                _compPaystubCountInputDisp = value;
+                NotifyOfPropertyChange(() => CompletePaystubCountInputDisplay);
             }
         }
 
-        public int CompletePaystubCountDisplay
+        #region Calculator Properties
+        public decimal AverageGross
         {
-            get { return _compPaystubCountDisp; }
+            get { return _averageGross; }
             set
             {
-                _compPaystubCountDisp = value;
-                NotifyOfPropertyChange(() => CompletePaystubCountDisplay);
+                _averageGross = value;
+                NotifyOfPropertyChange(() => AverageGross);
             }
         }
+
+        public decimal AverageNet
+        {
+            get { return _averageNet; }
+            set
+            {
+                _averageNet = value;
+                NotifyOfPropertyChange(() => AverageNet);
+            }
+        }
+
+        public decimal AveragePercent
+        {
+            get { return _averagePercent; }
+            set
+            {
+                _averagePercent = value;
+                NotifyOfPropertyChange(() => AveragePercent);
+            }
+        }
+
+        public CalcType Decision
+        {
+            get { return _decision; }
+            set
+            {
+                _decision = value;
+                DecisionDisp = value.ToString();
+
+                bool decisionBackground = false;
+
+                if(value == CalcType.CalcGross || value == CalcType.CalcNet)
+                {
+                    decisionBackground = true;
+                }
+
+                DecisionBackground = decisionBackground;
+
+                NotifyOfPropertyChange(() => Decision);
+            }
+        }
+
+        public string DecisionDisp
+        {
+            get { return _decisionDisp; }
+            set
+            {
+                _decisionDisp = value;
+                NotifyOfPropertyChange(() => DecisionDisp);
+            }
+        }
+
+        public bool DecisionBackground
+        {
+            get { return _decisionBackground; }
+            set
+            {
+                _decisionBackground = value;
+                NotifyOfPropertyChange(() => DecisionBackground);
+            }
+        }
+
+        public Warning Warning
+        {
+            get { return _warning; }
+            set
+            {
+                _warning = value;
+                WarningMessage = Warning.ToString();
+                bool warnBackground = true;
+
+                if (value != Warning.NoWarning)
+                {
+                    warnBackground = false;
+                }
+
+                WarningBackground = warnBackground;
+                NotifyOfPropertyChange(() => Warning);
+            }
+        }
+
+        public string WarningMessage
+        {
+            get { return _warningMessage; }
+            set
+            {
+                _warningMessage = value;
+                NotifyOfPropertyChange(() => WarningMessage);
+            }
+        }
+
+        public bool WarningBackground
+        {
+            get { return _warningBackground; }
+            set
+            {
+                _warningBackground = value;
+                NotifyOfPropertyChange(() => WarningBackground);
+            }
+        }
+
+        public decimal PercentDifference
+        {
+            get { return _percentDiff; }
+            set
+            {
+                _percentDiff = value;
+                NotifyOfPropertyChange(() => PercentDifference);
+            }
+        }
+
+        public decimal CompletePaystubOut
+        {
+            get { return _compPaystubOut; }
+            set
+            {
+                _compPaystubOut = value;
+                NotifyOfPropertyChange(() => CompletePaystubOut);
+            }
+        }
+        #endregion
         #endregion
     }
 }
