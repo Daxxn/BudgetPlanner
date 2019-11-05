@@ -9,10 +9,129 @@
                     <local:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <!--#region :: Custom Colors :: -->
             <Color x:Key="GridSplitterColor">#FFB9DEFF</Color>
             <Color x:Key="BackGround_Main">#FFDDE4E8</Color>
             <Color x:Key="BorderColor_1">#FF99CCFF</Color>
-            <Color x:Key="Border_2">#FF81AACD</Color>
+            <Color x:Key="BorderColor_2">#FF81AACD</Color>
+            <Color x:Key="Slider_Tick_Blue">#FF1D3CA8</Color>
+            <Color x:Key="Slider_Background_1">#FFC7D9FF</Color>
+            <!--#endregion-->
+            
+            <!--#region :: Button Backgrounds :: -->
+            <Style TargetType="Button" x:Key="Button_Control">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFBBE0FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Button" x:Key="View_Buttons">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF4F7F7" Offset="0"/>
+                            <GradientStop Color="#FF7C90BB" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region :: Backgrounds :: -->
+            <Style TargetType="UserControl" x:Key="View_Background">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFE1E9F1" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region :: Border Styles :: -->
+            <Style TargetType="Border" x:Key="Border_Main">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource BorderColor_1}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="CornerRadius" Value="4"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Padding" Value="1"/>
+            </Style>
+            
+            <Style TargetType="Border" x:Key="Border_TextBox" BasedOn="{StaticResource Border_Main}">
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="1"/>
+            </Style>
+            
+            <Style TargetType="GridSplitter" x:Key="Splitter_Main">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource GridSplitterColor}"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Border" x:Key="TextBlock_Border" BasedOn="{StaticResource Border_TextBox}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region :: TextBlock Styles :: -->
+            <Style TargetType="TextBlock" x:Key="TextBlock_Main">
+                <Setter Property="Margin" Value="2,0,2,0"/>
+                <Setter Property="Padding" Value="1"/>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="TextBlock_Titles">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region :: Other Styles :: -->
+            <Style TargetType="DataGrid" x:Key="DataGrid_Main">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+            </Style>
+            
+            <Style TargetType="Slider" x:Key="Slider_1">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource Slider_Background_1}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource Slider_Tick_Blue}"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Grid" x:Key="Shell_Background">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource BackGround_Main}"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region :: Margin Styles ::-->
+            <Style TargetType="TextBlock" x:Key="Paystub_Output_Margin">
+                <Setter Property="Margin" Value="2,1,2,1"/>
+            </Style>
+            <!--#endregion-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>
