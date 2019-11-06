@@ -73,6 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EventModels\AccessDirectoryEvent.cs" />
+    <Compile Include="EventModels\AddManyPaystubsEventModel.cs" />
     <Compile Include="EventModels\CancelNewEvent.cs" />
     <Compile Include="EventModels\ChangeViewEvent.cs" />
     <Compile Include="EventModels\EnterEvent.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="IExceptionLogger.cs" />
     <Compile Include="IFileBrowser.cs" />
     <Compile Include="MessageManager.cs" />
+    <Compile Include="ViewModels\AddPaystubViewModel.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\FolderEventArgs.cs" />
     <Compile Include="ViewModels\NewBudgetViewModel.cs" />
@@ -95,6 +97,9 @@
     <Compile Include="ViewModels\SimpleKeyEventAgrs.cs" />
     <Compile Include="ViewModels\SubCategoryEventArgs.cs" />
     <Compile Include="ViewModels\SubCategoryViewModel.cs" />
+    <Compile Include="Views\AddPaystubView.xaml.cs">
+      <DependentUpon>AddPaystubView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataView.xaml.cs">
       <DependentUpon>DataView.xaml</DependentUpon>
     </Compile>
@@ -140,6 +145,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddPaystubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BudgetPlannerMainWPF.EventModels;
 using Caliburn.Micro;
 using PaystubLibrary;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
-    public class PaystubViewModel : Screen
+    public class PaystubViewModel : Screen, IHandle<AddManyPaystubsEventModel>
     {
         #region - Fields & Properties
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
         private IWindowManager _windowManager;
+
+        public AddPaystubViewModel _addPaystubViewModel;
 
         public BindableCollection<Paystub> _paystubDataList;
         public Paystub _selectedPaystub;
@@ -50,7 +53,10 @@ namespace BudgetPlannerMainWPF.ViewModels
             _windowManager = windowManager;
 
             _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
             _fileBrowser = fileBrowser;
+
+            AddPaystubViewModel = new AddPaystubViewModel(windowManager, eventAggregator);
 
             #region Testing ONLY
             #region Test 1
@@ -106,7 +112,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         public void AddMany()
         {
             // Testing only.
-            //_windowManager.ShowWindow()
+            _windowManager.ShowWindow(AddPaystubViewModel, null, null);
         }
 
         public void RemovePaystub()
@@ -175,9 +181,23 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
+        public void Handle(AddManyPaystubsEventModel message)
+        {
+            PaystubDataList = new BindableCollection<Paystub>(message.PaystubDataList);
+        }
+
         #endregion
 
         #region - Full Properties
+        public AddPaystubViewModel AddPaystubViewModel
+        {
+            get { return _addPaystubViewModel; }
+            set
+            {
+                _addPaystubViewModel = value;
+                //NotifyOfPropertyChange(() => AddPaystubViewModel);
+            }
+        }
         public string CollectionName
         {
             get { return _collectionName; }
