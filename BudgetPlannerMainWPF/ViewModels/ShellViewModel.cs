@@ -17,6 +17,7 @@ namespace BudgetPlannerMainWPF.ViewModels
     public class ShellViewModel : Conductor<object>, IHandle<NewBudgetEvent>, IHandle<SaveSubCategoryEvent>
     {
         #region - Fields
+        private IWindowManager _windowManager;
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
         private IExceptionLogger _exceptionLogger;
@@ -139,8 +140,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         /// <param name="eventAggregator">Caliburns Event Manager.</param>
         /// <param name="fileBrowser">Custom Save/Open/Folder FileDialog Manager.</param>
-        public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser, IExceptionLogger exceptionLogger)
+        public ShellViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser, IExceptionLogger exceptionLogger, IWindowManager windowManager)
         {
+            // Testing only.
+            _windowManager = windowManager;
+
             _exceptionLogger = exceptionLogger;
             _fileBrowser = fileBrowser;
             _eventAggregator = eventAggregator;
@@ -149,7 +153,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             DataViewModel = new DataViewModel(eventAggregator);
             SubCategoryViewModel = new SubCategoryViewModel(eventAggregator, fileBrowser);
             NewBudgetViewModel = new NewBudgetViewModel(eventAggregator, fileBrowser);
-            PaystubViewModel = new PaystubViewModel(eventAggregator, fileBrowser);
+            PaystubViewModel = new PaystubViewModel(eventAggregator, fileBrowser, windowManager);
 
             InitializeAll();
 

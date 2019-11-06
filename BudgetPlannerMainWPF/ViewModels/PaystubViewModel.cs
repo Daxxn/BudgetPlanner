@@ -12,6 +12,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         #region - Fields & Properties
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
+        private IWindowManager _windowManager;
 
         public BindableCollection<Paystub> _paystubDataList;
         public Paystub _selectedPaystub;
@@ -35,7 +36,6 @@ namespace BudgetPlannerMainWPF.ViewModels
         public string _warningMessage;
         public bool _warningBackground;
 
-
         public decimal _percentDiff;
 
         /// <summary>
@@ -45,11 +45,13 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Constructors
-        public PaystubViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser)
+        public PaystubViewModel(IEventAggregator eventAggregator, IFileBrowser fileBrowser, IWindowManager windowManager)
         {
+            _windowManager = windowManager;
+
             _eventAggregator = eventAggregator;
             _fileBrowser = fileBrowser;
-            
+
             #region Testing ONLY
             #region Test 1
             //PaystubDataList = new BindableCollection<Paystub>()
@@ -99,6 +101,12 @@ namespace BudgetPlannerMainWPF.ViewModels
         public void AddPaystub()
         {
             PaystubDataList.Add(Paystub.Default(PaystubDataList.Count));
+        }
+
+        public void AddMany()
+        {
+            // Testing only.
+            //_windowManager.ShowWindow()
         }
 
         public void RemovePaystub()

@@ -76,8 +76,8 @@
                             Remove
                         </Button>
 
-                        <Button Name="ResetTest" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Style="{StaticResource Button_Control}">
-                            Reset Test
+                        <Button Name="AddMany" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Style="{StaticResource Button_Control}">
+                            Add Many
                         </Button>
                     </Grid>
                 </Border>

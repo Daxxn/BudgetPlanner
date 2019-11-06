@@ -25,7 +25,7 @@
         <!--#region ::Menu::-->
         <!--Good enough for now. Maybe make the save buttons into a drop-down menu.-->
         <Menu Name="Menu_Bar" Grid.Row="0" Background="LightGray">
-            <MenuItem x:Name="NewFile_Button" Header="New" ToolTip="Creates a New Budget"/>
+            <MenuItem x:Name="NewFile_Button" ToolTip="Creates a New Budget" Style="{StaticResource NewFile}"/>
             <MenuItem x:Name="OpenFile_Button" Header="Open" ToolTip="Opens a Budget"/>
             <MenuItem x:Name="SaveFile_Button" Header="Save" ToolTip="Saves a budget."/>
             <MenuItem x:Name="SaveFileAs" Header="Save As" ToolTip="Saves a new Budget file."/>

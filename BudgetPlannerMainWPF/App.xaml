@@ -9,6 +9,13 @@
                     <local:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <Image x:Key="NewFileIcon" Source="C:\Users\Cody\source\repos\GitHub\BudgetPlanner\BudgetPlannerMainWPF\Icons\NewFile_Icon_1.bmp"/>
+            <!--#region :: Icons :: -->
+            <Style TargetType="MenuItem" x:Key="NewFile">
+                <Setter Property="Icon" Value="{StaticResource NewFileIcon}"/>
+            </Style>
+            <!--#endregion-->
+            
             <!--#region :: Custom Colors :: -->
             <Color x:Key="GridSplitterColor">#FFB9DEFF</Color>
             <Color x:Key="BackGround_Main">#FFDDE4E8</Color>
