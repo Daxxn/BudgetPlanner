@@ -9,7 +9,7 @@ namespace PaystubLibrary
     public class Paystub
     {
         #region Properties & Variables
-        public string Name { get; set; }
+        public string Name { get; set; } = "No Name";
         public int Index { get; set; }
         public decimal Gross { get; set; }
         public decimal Net { get; set; }

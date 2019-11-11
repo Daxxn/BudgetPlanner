@@ -31,6 +31,26 @@
             <MenuItem x:Name="SaveFileAs" Header="Save As" ToolTip="Saves a new Budget file."/>
             <MenuItem x:Name="SaveAllAs_Button" Header="Save All As" ToolTip="Saves both the budget and the Categories as a new file."/>
             <MenuItem x:Name="SaveAll_Button" Header="Save All" ToolTip="Saves both the budget and the Categories."/>
+            <MenuItem Header="Save...">
+                <MenuItem Header="All" cal:Message.Attach="[Event Click] = [Action Save('ALL')]"/>
+                <MenuItem Header="All As" cal:Message.Attach="[Event Click] = [Action SaveAs('ALL')]"/>
+                <MenuItem Header="Budget" cal:Message.Attach="[Event Click] = [Action Save('BUDGET')]"/>
+                <MenuItem Header="Budget As" cal:Message.Attach="[Event Click] = [Action SaveAs('BUDGET')]"/>
+                <MenuItem Header="Categories" cal:Message.Attach="[Event Click] = [Action Save('CATEGORY')]"/>
+                <MenuItem Header="Categories As" cal:Message.Attach="[Event Click] = [Action SaveAs('CATEGORY')]"/>
+                <MenuItem Header="Paystubs" cal:Message.Attach="[Event Click] = [Action Save('PAYSTUB')]"/>
+                <MenuItem Header="Paystubs As" cal:Message.Attach="[Event Click] = [Action SaveAs('PAYSTUB')]"/>
+            </MenuItem>
+            <MenuItem Header="Open...">
+                <MenuItem Header="All" cal:Message.Attach="[Event Click] = [Action Open('ALL')]"/>
+                <MenuItem Header="All As" cal:Message.Attach="[Event Click] = [Action OpenAs('ALL')]"/>
+                <MenuItem Header="Budget" cal:Message.Attach="[Event Click] = [Action Open('BUDGET')]"/>
+                <MenuItem Header="Budget As" cal:Message.Attach="[Event Click] = [Action OpenAs('BUDGET')]"/>
+                <MenuItem Header="Categories" cal:Message.Attach="[Event Click] = [Action Open('CATEGORY')]"/>
+                <MenuItem Header="Categories As" cal:Message.Attach="[Event Click] = [Action OpenAs('CATEGORY')]"/>
+                <MenuItem Header="Paystubs" cal:Message.Attach="[Event Click] = [Action Open('PAYSTUB')]"/>
+                <MenuItem Header="Paystubs As" cal:Message.Attach="[Event Click] = [Action OpenAs('PAYSTUB')]"/>
+            </MenuItem>
         </Menu>
 
         <Grid Grid.Row="1">

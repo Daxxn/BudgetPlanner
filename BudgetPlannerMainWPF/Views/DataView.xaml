@@ -201,8 +201,7 @@
             <!--#endregion-->
 
             <!--#region ::Title::-->
-            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="16"
-                       FontWeight="DemiBold" Padding="4,0,0,0"
+            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource TextBlock_Titles}" Padding="4,0,0,0"
                        >Budget Data Editter:</TextBlock>
             <!--#endregion-->
 

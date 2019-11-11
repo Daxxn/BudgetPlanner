@@ -12,6 +12,7 @@ namespace BudgetPlannerMainWPF.EventModels
         #region - Fields & Properties
         public Paystub[] Paystubs { get; private set; }
         public List<Paystub> PaystubDataList { get; private set; }
+        public uint AddCode { get; private set; }
         #endregion
 
         #region - Constructors
@@ -23,6 +24,11 @@ namespace BudgetPlannerMainWPF.EventModels
         public AddManyPaystubsEventModel(List<Paystub> paystubs)
         {
             PaystubDataList = paystubs;
+        }
+        public AddManyPaystubsEventModel(List<Paystub> paystubs, uint addCode)
+        {
+            PaystubDataList = paystubs;
+            AddCode = addCode;
         }
         #endregion
 

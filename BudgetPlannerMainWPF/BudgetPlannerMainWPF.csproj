@@ -72,6 +72,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enums\Enums.cs" />
     <Compile Include="EventModels\AccessDirectoryEvent.cs" />
     <Compile Include="EventModels\AddManyPaystubsEventModel.cs" />
     <Compile Include="EventModels\CancelNewEvent.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="IExceptionLogger.cs" />
     <Compile Include="IFileBrowser.cs" />
     <Compile Include="MessageManager.cs" />
+    <Compile Include="Structs\AddToSelector.cs" />
     <Compile Include="ViewModels\AddPaystubViewModel.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\FolderEventArgs.cs" />

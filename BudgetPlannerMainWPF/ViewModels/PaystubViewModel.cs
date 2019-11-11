@@ -120,6 +120,12 @@ namespace BudgetPlannerMainWPF.ViewModels
             PaystubDataList.Remove(SelectedPaystub);
         }
 
+        public void NewPaystubs()
+        {
+            PaystubDataList = new BindableCollection<Paystub>();
+            SelectedPaystub = null;
+        }
+
         public void CalculatePaystubs()
         {
             Tuple<List<Paystub>, Tuple<decimal, decimal, decimal>, Tuple<decimal, decimal>> calcOut = 
@@ -183,7 +189,23 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void Handle(AddManyPaystubsEventModel message)
         {
-            PaystubDataList = new BindableCollection<Paystub>(message.PaystubDataList);
+            // Add New
+            if (message.AddCode == 0)
+            {
+                PaystubDataList = new BindableCollection<Paystub>(message.PaystubDataList);
+            }
+            // Add To Front
+            else if (message.AddCode == 1)
+            {
+                BindableCollection<Paystub> temp = new BindableCollection<Paystub>(message.PaystubDataList);
+                temp.AddRange(this.PaystubDataList);
+
+                PaystubDataList = temp;
+            }
+            else if (message.AddCode == 2)
+            {
+                PaystubDataList.AddRange(message.PaystubDataList);
+            }
         }
 
         #endregion

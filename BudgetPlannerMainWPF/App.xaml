@@ -50,6 +50,18 @@
             </Style>
             <!--#endregion-->
             
+            <!--#region :: CheckBox Styles :: -->
+            <Style TargetType="CheckBox" x:Key="CheckBox_1">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource BorderColor_1}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+            <!--#endregion-->
+            
             <!--#region :: Backgrounds :: -->
             <Style TargetType="UserControl" x:Key="View_Background">
                 <Setter Property="Background">
@@ -100,10 +112,19 @@
             </Style>
 
             <Style TargetType="TextBlock" x:Key="TextBlock_Titles">
-                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Margin" Value="2"/>
                 <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="FontSize" Value="16"/>
             </Style>
+
+            <Style TargetType="TextBlock" x:Key="TextBlock_AddMany">
+                <Setter Property="Margin" Value="2,0,1,0"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region :: TextBox Styles :: -->
+            
             <!--#endregion-->
             
             <!--#region :: Other Styles :: -->

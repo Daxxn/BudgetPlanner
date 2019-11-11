@@ -31,8 +31,6 @@ namespace BudgetPlannerMainWPF.ViewModels
         private bool _goodSubCatPath = false;
 
         private string _subCatFileName;
-
-        public event EventHandler<SubCategoryEventArgs> SubCatEventManager;
         #endregion
 
         #region - Constructors

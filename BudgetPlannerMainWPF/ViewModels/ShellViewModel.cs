@@ -14,6 +14,15 @@ using XMLParserLibrary.Exceptions;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
+    // BAD Need to move to another file!!!
+    public enum FileType
+    {
+        All,
+        Budget,
+        Category,
+        Paystub
+    }
+
     public class ShellViewModel : Conductor<object>, IHandle<NewBudgetEvent>, IHandle<SaveSubCategoryEvent>
     {
         #region - Fields
@@ -132,7 +141,7 @@ namespace BudgetPlannerMainWPF.ViewModels
 
             DataViewModel.SortCategories();
             
-            SubCategoryViewModel.SubCatEventManager += this.SubCatEventManager_Event;
+            //SubCategoryViewModel.SubCatEventManager += this.SubCatEventManager_Event;
         }
 
         /// <summary>
@@ -173,6 +182,88 @@ namespace BudgetPlannerMainWPF.ViewModels
         #endregion
 
         #region - Methods
+
+        #region -- Save Menu Button Testing
+        public void Save(FileType file)
+        {
+            if(file == FileType.All)
+            {
+                SaveAll_Button();
+            }
+            else if (file == FileType.Budget)
+            {
+                
+            }
+            else if (file == FileType.Category)
+            {
+                
+            }
+            else if (file == FileType.Paystub)
+            {
+                
+            }
+        }
+
+        public void SaveAs(FileType button)
+        {
+            if (button == FileType.All)
+            {
+
+            }
+            else if (button == FileType.Budget)
+            {
+
+            }
+            else if (button == FileType.Category)
+            {
+
+            }
+            else if (button == FileType.Paystub)
+            {
+
+            }
+        }
+
+        public void Open(FileType button)
+        {
+            if (button == FileType.All)
+            {
+                
+            }
+            else if (button == FileType.Budget)
+            {
+                
+            }
+            else if (button == FileType.Category)
+            {
+                
+            }
+            else if (button == FileType.Paystub)
+            {
+                
+            }
+        }
+
+        public void OpenAs(FileType button)
+        {
+            if (button == FileType.All)
+            {
+                
+            }
+            else if (button == FileType.Budget)
+            {
+                
+            }
+            else if (button == FileType.Category)
+            {
+                
+            }
+            else if (button == FileType.Paystub)
+            {
+                
+            }
+        }
+        #endregion
         /// <summary>
         /// Need to phase out.
         /// </summary>

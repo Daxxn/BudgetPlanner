@@ -4,9 +4,8 @@ using PaystubLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using BudgetPlannerMainWPF.Structs;
 
 namespace BudgetPlannerMainWPF.ViewModels
 {
@@ -16,12 +15,16 @@ namespace BudgetPlannerMainWPF.ViewModels
         private IWindowManager _windowManager;
         private IEventAggregator _eventAggregator;
 
-        private List<Paystub> _paystubDataList;
+        private BindableCollection<Paystub> _paystubDataList;
 
-        private string _dataInput;
+        private string _nameInput;
         private int _indexInput;
-        private decimal _grossInput;
-        private decimal _netInput;
+        private decimal? _grossInput;
+        private decimal? _netInput;
+
+        private AddToSelector[] _addToSelectorList;
+
+        private AddToSelector _addToSelection;
         #endregion
 
         #region - Constructors
@@ -32,7 +35,8 @@ namespace BudgetPlannerMainWPF.ViewModels
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
 
-            PaystubDataList = new List<Paystub>();
+            PaystubDataList = new BindableCollection<Paystub>();
+            InitComboBox();
         }
         #endregion
 
@@ -50,35 +54,65 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 Add();
             }
-            
         }
 
         public void Add()
         {
-            PaystubDataList.Add(
-                new Paystub(DataInput, IndexInput, GrossInput, NetInput)
-                );
+            Paystub temp = new Paystub()
+            {
+                Index = PaystubDataList.Count + 1
+            };
+
+            if (NameInput != null)
+            {
+                temp.Name = NameInput;
+            }
+
+            if (GrossInput != null)
+            {
+                temp.Gross = (decimal)GrossInput;
+            }
+
+            if (NetInput != null)
+            {
+                temp.Net = (decimal)NetInput;
+            }
+
+            PaystubDataList.Add(temp);
             ClearInputFields();
         }
-        public void SendDataTest()
+
+        public void SendData()
         {
-            _eventAggregator.PublishOnUIThread(new AddManyPaystubsEventModel(PaystubDataList));
+            _eventAggregator.PublishOnUIThread(new AddManyPaystubsEventModel(PaystubDataList.ToList(), AddToSelection.Code));
             ClearInputFields();
-            PaystubDataList = new List<Paystub>();
+            PaystubDataList = new BindableCollection<Paystub>();
             this.TryClose(null);
         }
 
         private void ClearInputFields()
         {
-            DataInput = String.Empty;
+            NameInput = null;
             IndexInput = 0;
-            GrossInput = 0;
-            NetInput = 0;
+            GrossInput = null;
+            NetInput = null;
+        }
+
+        private void InitComboBox()
+        {
+            AddToSelectorList = new AddToSelector[]
+            {
+                new AddToSelector(0, "Add New"),
+                new AddToSelector(1, "Add To Front"),
+                new AddToSelector(2, "Add To End")
+            };
+
+            AddToSelection = AddToSelectorList[2];
         }
         #endregion
 
         #region - Full Properties
-        public List<Paystub> PaystubDataList
+        public BindableCollection<Paystub> PaystubDataList
         {
             get { return _paystubDataList; }
             set
@@ -87,13 +121,14 @@ namespace BudgetPlannerMainWPF.ViewModels
                 NotifyOfPropertyChange(() => PaystubDataList);
             }
         }
-        public string DataInput
+
+        public string NameInput
         {
-            get { return _dataInput; }
+            get { return _nameInput; }
             set
             {
-                _dataInput = value;
-                NotifyOfPropertyChange(() => DataInput);
+                _nameInput = value;
+                NotifyOfPropertyChange(() => NameInput);
             }
         }
 
@@ -107,7 +142,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public decimal GrossInput
+        public decimal? GrossInput
         {
             get { return _grossInput; }
             set
@@ -117,13 +152,33 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public decimal NetInput
+        public decimal? NetInput
         {
             get { return _netInput; }
             set
             {
                 _netInput = value;
                 NotifyOfPropertyChange(() => NetInput);
+            }
+        }
+
+        public AddToSelector[] AddToSelectorList
+        {
+            get { return _addToSelectorList; }
+            set
+            {
+                _addToSelectorList = value;
+                NotifyOfPropertyChange(() => AddToSelectorList);
+            }
+        }
+
+        public AddToSelector AddToSelection
+        {
+            get { return _addToSelection; }
+            set
+            {
+                _addToSelection = value;
+                NotifyOfPropertyChange(() => AddToSelection);
             }
         }
         #endregion
