@@ -6,13 +6,13 @@ namespace BudgetPlannerMainWPF.EventModels
     public class UpdateSubCatEvent
     {
         #region - Fields
-        public List<SubCategory> IncomeSubs { get; private set; }
-        public List<SubCategory> ExpenseSubs { get; private set; }
+        public List<Category> IncomeSubs { get; private set; }
+        public List<Category> ExpenseSubs { get; private set; }
         #endregion
 
         #region - Constructors
         public UpdateSubCatEvent() { }
-        public UpdateSubCatEvent(List<SubCategory> income, List<SubCategory> expense)
+        public UpdateSubCatEvent(List<Category> income, List<Category> expense)
         {
             IncomeSubs = income;
             ExpenseSubs = expense;

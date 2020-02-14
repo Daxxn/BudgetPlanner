@@ -45,7 +45,7 @@
                   Grid.Column="0" Grid.Row="0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Income Categories" Binding="{Binding Path=Name}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Amount}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -57,7 +57,7 @@
                   Grid.Column="1" Grid.Row="0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Expense Categories" Binding="{Binding Path=Name}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Amount}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

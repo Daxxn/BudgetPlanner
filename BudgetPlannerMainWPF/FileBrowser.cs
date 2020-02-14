@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BudgetPlannerMainWPF.Enums;
+using System;
 using System.Windows.Forms;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -12,12 +13,76 @@ namespace BudgetPlannerMainWPF
         private FolderBrowserDialog Folder { get; set; }
 
         #region Filter Strings
-        private const string MainFileFilter = "Budget Planner Project Files|*.bpn";
-        private const string SubFileFilter = "Budget Planner Sub Category Files|*.bps";
-        private const string AllBudgetFilesFilter = "All Budget Planner Files|*.bpn;*.bps";
+        private const string MainFileFilter = "Complete Budget Planner Project Files|*.bpm";
+        private const string BudgetFileFilter = "Budget Files|*.bpb";
+        private const string CategoryFileFilter = "Category Files|*.bpc";
+        private const string PaystubFileFilter = "Paystub Files|*.bpp";
+        private const string AllBudgetFilesFilter = "All Budget Planner Files|*.bpm;*.bpb*.bpc*.bpp";
         private const string AllFilesFilter = "All Files|*.*";
         #endregion
 
+        /// <summary>
+        /// Opens the SaveFileDialog and returns a path uri.
+        /// </summary>
+        /// <param name="dir">Initial Directory to start at.</param>
+        /// <param name="fileName">The File name to suggest.</param>
+        /// <param name="ext">The Extension the file should have.</param>
+        /// <param name="dialogTitle">The title to display at the to of the dialog.</param>
+        /// <returns>Returns the uri and a bool indicating success.</returns>
+        public Tuple<string, bool> SaveFileAccess(string dir, string fileName, ExtensionType ext, string dialogTitle)
+        {
+            Tuple<string, bool> output;
+            string extension = "";
+            string filter = "";
+            if (ext == ExtensionType.Main)
+            {
+                extension = Properties.Resources.MainExtension;
+                filter = $"{MainFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Budget)
+            {
+                extension = Properties.Resources.BudgetExtension;
+                filter = $"{BudgetFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Category)
+            {
+                extension = Properties.Resources.CategoryExtension;
+                filter = $"{CategoryFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Paystub)
+            {
+                extension = Properties.Resources.PaystubExtension;
+                filter = $"{PaystubFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else
+            {
+                throw new Exception("Extension type doesnt exist. How did you do that??");
+            }
+
+            Saver = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckFileExists = false,
+                CheckPathExists = true,
+                DefaultExt = extension,
+                InitialDirectory = dir,
+                OverwritePrompt = true,
+                FileName = fileName,
+                Filter = filter,
+                Title = dialogTitle
+            };
+
+            if (Saver.ShowDialog() is true)
+            {
+                output = Tuple.Create(Saver.FileName, true);
+            }
+            else
+            {
+                output = Tuple.Create("", false);
+            }
+
+            return output;
+        }
 
         /// <summary>
         /// Opens the WPF save file dialog window.
@@ -41,7 +106,7 @@ namespace BudgetPlannerMainWPF
             else
             {
                 defExt = ".bps";
-                filter = $"{SubFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+                filter = $"{CategoryFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
             }
 
             Saver = new SaveFileDialog()
@@ -88,7 +153,7 @@ namespace BudgetPlannerMainWPF
             else
             {
                 defExt = ".bps";
-                filter = $"{SubFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+                filter = $"{CategoryFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
             }
 
             Saver = new SaveFileDialog()
@@ -134,7 +199,7 @@ namespace BudgetPlannerMainWPF
             else
             {
                 defExt = ".bps";
-                filter = $"{SubFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+                filter = $"{CategoryFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
             }
 
             Opener = new OpenFileDialog()
@@ -147,7 +212,7 @@ namespace BudgetPlannerMainWPF
                 Filter = filter
             };
 
-            if(Opener.ShowDialog() == true)
+            if(Opener.ShowDialog() is true)
             {
                 output = Tuple.Create(Opener.FileName, true);
             }
@@ -156,6 +221,62 @@ namespace BudgetPlannerMainWPF
                 output = Tuple.Create("", false);
             }
             
+            return output;
+        }
+
+        public Tuple<string, bool> OpenFileAccess(string dir, string fileName, ExtensionType ext, string dialogTitle)
+        {
+            Tuple<string, bool> output;
+            string extension = "";
+            string filter = "";
+
+            if (ext == ExtensionType.Main)
+            {
+                extension = Properties.Resources.MainExtension;
+                filter = $"{MainFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Budget)
+            {
+                extension = Properties.Resources.BudgetExtension;
+                filter = $"{BudgetFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Category)
+            {
+                extension = Properties.Resources.CategoryExtension;
+                filter = $"{CategoryFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else if (ext == ExtensionType.Paystub)
+            {
+                extension = Properties.Resources.PaystubExtension;
+                filter = $"{PaystubFileFilter}|{AllBudgetFilesFilter}|{AllFilesFilter}";
+            }
+            else
+            {
+                throw new Exception("Extension type doesnt exist. How did you do that??");
+            }
+
+            Opener = new OpenFileDialog()
+            {
+                AddExtension = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                DefaultExt = extension,
+                FileName = fileName,
+                Filter = filter,
+                InitialDirectory = dir,
+                Multiselect = false,
+                Title = dialogTitle
+            };
+
+            if (Opener.ShowDialog() is true)
+            {
+                output = Tuple.Create(Opener.FileName, true);
+            }
+            else
+            {
+                output = Tuple.Create("", false);
+            }
+
             return output;
         }
 

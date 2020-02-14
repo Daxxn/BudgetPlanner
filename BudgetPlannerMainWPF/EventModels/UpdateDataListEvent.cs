@@ -6,13 +6,13 @@ namespace BudgetPlannerMainWPF.EventModels
     public class UpdateDataListEvent
     {
         #region - Fields
-        public BindableCollection<SubCategory> IncomeCategories { get; private set; }
-        public BindableCollection<SubCategory> ExpenseCategories { get; private set; }
+        public BindableCollection<Category> IncomeCategories { get; private set; }
+        public BindableCollection<Category> ExpenseCategories { get; private set; }
         #endregion
 
         #region - Constructors
         public UpdateDataListEvent() { }
-        public UpdateDataListEvent(BindableCollection<SubCategory> incomeCats, BindableCollection<SubCategory> expenseCats)
+        public UpdateDataListEvent(BindableCollection<Category> incomeCats, BindableCollection<Category> expenseCats)
         {
             IncomeCategories = incomeCats;
             ExpenseCategories = expenseCats;

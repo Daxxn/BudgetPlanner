@@ -23,7 +23,7 @@ namespace BudgetPlannerLib
         public string[] incomeSubCategories = { "Earned Income", "Unearned Income", "Other" };
         public string[] expenseSubCategories = { "Deductions", "Heathcare", "Food", "Insurance", "Transportation" };
 
-        private List<SubCategory> _incomeSubCats;
+        private List<Category> _incomeSubCats;
 
         private List<string> _incomeCategories;
         private List<decimal> _incomeValues;
@@ -91,28 +91,28 @@ namespace BudgetPlannerLib
 
             for (int i = 0; i < IncomeCategories.Count; i++)
             {
-                IncomeList.Add(new Income(GetRandomItem(incomeSubCategories), IncomeCategories[i], IncomeValues[i], i + 1));
+                IncomeList.Add(new Income(GetRandomItem(incomeSubCategories), IncomeCategories[i], IncomeValues[i], (uint)i + 1));
             }
 
             for (int i = 0; i < ExpenseCategories.Count; i++)
             {
-                ExpenseList.Add(new Expense(GetRandomItem(expenseSubCategories), ExpenseCategories[i], ExpenseValues[i], i + 1));
+                ExpenseList.Add(new Expense(GetRandomItem(expenseSubCategories), ExpenseCategories[i], ExpenseValues[i], (uint)i + 1));
             }
         }
 
         private void SetStaticData_2()
         {
-            Income.AllIncomeCategories = new List<SubCategory>()
+            Income.AllIncomeCategories = new List<Category>()
             {
-                new SubCategory("Inc 1"),
-                new SubCategory("Inc 2")
+                new Category("Inc 1"),
+                new Category("Inc 2")
             };
 
-            Expense.AllExpenseCategories = new List<SubCategory>()
+            Expense.AllExpenseCategories = new List<Category>()
             {
-                new SubCategory("Exp 1"),
-                new SubCategory("Exp 2"),
-                new SubCategory("Exp 3")
+                new Category("Exp 1"),
+                new Category("Exp 2"),
+                new Category("Exp 3")
             };
 
             IncomeList = new List<Income>()
@@ -175,13 +175,13 @@ namespace BudgetPlannerLib
             return tempStr;
         }
 
-        private List<SubCategory> SetSubCategories(string[] array)
+        private List<Category> SetSubCategories(string[] array)
         {
-            List<SubCategory> subCats = new List<SubCategory>();
+            List<Category> subCats = new List<Category>();
 
             foreach (var item in array)
             {
-                subCats.Add(new SubCategory(item));
+                subCats.Add(new Category(item));
             }
 
             return subCats;
@@ -243,7 +243,7 @@ namespace BudgetPlannerLib
             }
         }
 
-        public List<SubCategory> IncomeSubCategories
+        public List<Category> IncomeSubCategories
         {
             get { return _incomeSubCats; }
             set

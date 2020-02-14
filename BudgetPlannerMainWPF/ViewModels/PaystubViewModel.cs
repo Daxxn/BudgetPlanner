@@ -106,7 +106,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         #region -- Buttons
         public void AddPaystub()
         {
-            PaystubDataList.Add(Paystub.Default(PaystubDataList.Count));
+            PaystubDataList.Add(Paystub.Default((uint)PaystubDataList.Count));
         }
 
         public void AddMany()

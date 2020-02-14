@@ -26,8 +26,8 @@ namespace BudgetPlannerMainWPF.ViewModels
         private decimal _netDifference;
         private string _netNegative;
 
-        private BindableCollection<SubCategory> _incomeSubCategoryDisplay;
-        private BindableCollection<SubCategory> _expenseSubCategoryDisplay;
+        private BindableCollection<Category> _incomeSubCategoryDisplay;
+        private BindableCollection<Category> _expenseSubCategoryDisplay;
         
         #endregion
 
@@ -37,7 +37,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public DataViewModel()
         {
-            DataElement.ValueChanged += this.DataElement_ValueChanged;
+            BaseColumn.ValueChanged += this.DataElement_ValueChanged;
             DataView.SendEnter += this.DataView_SendEnter;
         }
 
@@ -125,8 +125,8 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if(ExpenseDataList != null)
             {
-                IncomeTotal = IncomeDataList.Sum(x => x.Value);
-                ExpenseTotal = ExpenseDataList.Sum(x => x.Value);
+                IncomeTotal = IncomeDataList.Sum(x => x.Amount);
+                ExpenseTotal = ExpenseDataList.Sum(x => x.Amount);
                 NetDifference = IncomeTotal - ExpenseTotal;
             }
         }
@@ -140,10 +140,10 @@ namespace BudgetPlannerMainWPF.ViewModels
             {
                 SortCategories();
                 IncomeSubCategoryDisplay =
-                    new BindableCollection<SubCategory>(Income.AllIncomeCategories);
+                    new BindableCollection<Category>(Income.AllIncomeCategories);
 
                 ExpenseSubCategoryDisplay =
-                    new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+                    new BindableCollection<Category>(Expense.AllExpenseCategories);
             }
         }
 
@@ -152,7 +152,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void UpdateIncome()
         {
-            IncomeTotal = IncomeDataList.Sum(x => x.Value);
+            IncomeTotal = IncomeDataList.Sum(x => x.Amount);
             NetDifference = IncomeTotal - ExpenseTotal;
 
             if(Income.AllIncomeCategories != null)
@@ -167,7 +167,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void UpdateExpense()
         {
-            ExpenseTotal = ExpenseDataList.Sum(x => x.Value);
+            ExpenseTotal = ExpenseDataList.Sum(x => x.Amount);
             NetDifference = IncomeTotal - ExpenseTotal;
 
             if(Expense.AllExpenseCategories != null)
@@ -218,9 +218,9 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <param name="dataList">Income DataList</param>
         /// <param name="AllsubCategories">Static Income SubCategories</param>
         /// <returns>New SubCategory List With Totals</returns>
-        public List<SubCategory> SortCategories(List<Income> dataList, List<SubCategory> AllsubCategories)
+        public List<Category> SortCategories(List<Income> dataList, List<Category> AllsubCategories)
         {
-            List<SubCategory> tempCategories = new List<SubCategory>();
+            List<Category> tempCategories = new List<Category>();
 
             foreach (var subCategory in AllsubCategories)
             {
@@ -230,15 +230,15 @@ namespace BudgetPlannerMainWPF.ViewModels
                 {
                     if (subCategory.Name == selected.SelectedCategory.Name)
                     {
-                        tempSum.Add(selected.Value);
+                        tempSum.Add(selected.Amount);
                     }
                 }
 
                 if (tempSum.Count > 0)
                 {
-                    subCategory.Value = tempSum.Sum();
+                    subCategory.Amount = tempSum.Sum();
                 }
-                else { subCategory.Value = 0; }
+                else { subCategory.Amount = 0; }
 
                 tempCategories.Add(subCategory);
             }
@@ -252,10 +252,10 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <param name="dataList">Income DataList</param>
         /// <param name="AllsubCategories">Static Income SubCategories</param>
         /// <returns>New SubCategory List With Totals</returns>
-        public List<SubCategory> SortCategories(List<Expense> dataList, List<SubCategory> AllsubCategories)
+        public List<Category> SortCategories(List<Expense> dataList, List<Category> AllsubCategories)
         {
             // Final list to replace the old static list.
-            List<SubCategory> tempCategories = new List<SubCategory>();
+            List<Category> tempCategories = new List<Category>();
 
             // Loops through the static SubCategory list.
             foreach (var subCategory in AllsubCategories)
@@ -268,7 +268,7 @@ namespace BudgetPlannerMainWPF.ViewModels
                 {
                     if (subCategory.Name == selected.SelectedCategory.Name)
                     {
-                        tempSum.Add(selected.Value);
+                        tempSum.Add(selected.Amount);
                     }
                 }
 
@@ -276,9 +276,9 @@ namespace BudgetPlannerMainWPF.ViewModels
                 // if not epmty, Sums the list and throws it into subCategory.Value.
                 if (tempSum.Count > 0)
                 {
-                    subCategory.Value = tempSum.Sum();
+                    subCategory.Amount = tempSum.Sum();
                 }
-                else { subCategory.Value = 0; }
+                else { subCategory.Amount = 0; }
 
                 // Finally adds the SubCategory to the main list, repeat.
                 tempCategories.Add(subCategory);
@@ -305,8 +305,8 @@ namespace BudgetPlannerMainWPF.ViewModels
             if (message.PreviousView != PrevView.DataView)
             {
                 UpdateData();
-                IncomeSubCategoryDisplay = new BindableCollection<SubCategory>(Income.AllIncomeCategories);
-                ExpenseSubCategoryDisplay = new BindableCollection<SubCategory>(Expense.AllExpenseCategories);
+                IncomeSubCategoryDisplay = new BindableCollection<Category>(Income.AllIncomeCategories);
+                ExpenseSubCategoryDisplay = new BindableCollection<Category>(Expense.AllExpenseCategories);
             }
         }
 
@@ -316,7 +316,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void AddIncomeColumn()
         {
-            IncomeDataList.Add(new Income("Default", "New Income", 0.0M, IncomeDataList.Count + 1));
+            IncomeDataList.Add(new Income("Default", "New Income", 0.0M, (uint)IncomeDataList.Count + 1));
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void AddExpenseColumn()
         {
-            ExpenseDataList.Add(new Expense("default", "New Expense", 0.0M, ExpenseDataList.Count + 1));
+            ExpenseDataList.Add(new Expense("default", "New Expense", 0.0M, (uint)ExpenseDataList.Count + 1));
         }
 
         /// <summary>
@@ -462,7 +462,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <summary>
         /// Connected to Income.AllSubCategories & the IncomeSubCategory DataGrid
         /// </summary>
-        public BindableCollection<SubCategory> IncomeSubCategoryDisplay
+        public BindableCollection<Category> IncomeSubCategoryDisplay
         {
             get { return _incomeSubCategoryDisplay; }
             set
@@ -475,7 +475,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// <summary>
         /// Connected to Expense.AllSubCategories & the ExpenseSubCategory DataGrid
         /// </summary>
-        public BindableCollection<SubCategory> ExpenseSubCategoryDisplay
+        public BindableCollection<Category> ExpenseSubCategoryDisplay
         {
             get { return _expenseSubCategoryDisplay; }
             set

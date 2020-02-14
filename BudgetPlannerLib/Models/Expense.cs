@@ -4,33 +4,17 @@ using System.Linq;
 
 namespace BudgetPlannerLib.Models
 {
-    public class Expense : DataElement, IEquals
+    public class Expense : BaseColumn, IEquals
     {
         #region - Fields
-        private static int NumOfExpenses { get; set; } = 0;
-        private int _idNum;
-
-        private static List<SubCategory> _allExpenseCategories = new List<SubCategory>();
-        private SubCategory _selectedCategory;
+        private static List<Category> _allExpenseCategories = new List<Category>();
+        private Category _selectedCategory = new Category();
         #endregion
 
         #region - Constructors
         public Expense() : base() { }
-        public Expense(string categ, decimal val, int id) : base(categ, val)
-        {
-            Category = categ;
-            Value = val;
-            IdNumber = id;
-            NumOfExpenses++;
-        }
-        public Expense(string subCat, string categ, decimal val, int id) : base(categ, val)
-        {
-            SelectedCategory = new SubCategory(subCat);
-            Category = categ;
-            Value = val;
-            IdNumber = id;
-            NumOfExpenses++;
-        }
+        public Expense(string name, decimal amount, uint id) : base(id, name, amount) { }
+        public Expense(string categoryName, string name, decimal amount, uint id) : base(id, name, amount, categoryName) { }
         #endregion
 
         #region - Methods
@@ -38,10 +22,10 @@ namespace BudgetPlannerLib.Models
         {
             return new Expense()
             {
-                IdNumber = Int32.Parse(fields[0]),
-                Category = fields[1],
-                Value = Decimal.Parse(fields[2], System.Globalization.NumberStyles.Currency),
-                SelectedCategory = new SubCategory(fields[3])
+                IDNumber = UInt32.Parse(fields[0]),
+                Name = fields[1],
+                Amount = Decimal.Parse(fields[2], System.Globalization.NumberStyles.Currency),
+                SelectedCategory = new Category(fields[3])
             };
         }
 
@@ -50,28 +34,20 @@ namespace BudgetPlannerLib.Models
             AllExpenseCategories.Clear();
         }
 
-        public override Boolean Equals(Object obj)
-        {
-            var a = obj as Expense;
-            return a != null &&
-                this.IdNumber == a.IdNumber &&
-                this.Category == a.Category &&
-                this.Value == a.Value &&
-                this.SelectedCategory == a.SelectedCategory;
-        }
+        //public override Boolean Equals(Object obj)
+        //{
+        //    var a = obj as Expense;
+        //    return a != null &&
+        //        this.IdNumber == a.IdNumber &&
+        //        this.Category == a.Category &&
+        //        this.Value == a.Value &&
+        //        this.SelectedCategory == a.SelectedCategory;
+        //}
         #endregion
 
         #region - Properties
-        public int IdNumber
-        {
-            get { return _idNum; }
-            set
-            {
-                _idNum = value;
-            }
-        }
 
-        public static List<SubCategory> AllExpenseCategories
+        public static List<Category> AllExpenseCategories
         {
             get { return _allExpenseCategories; }
             set
@@ -80,7 +56,7 @@ namespace BudgetPlannerLib.Models
             }
         }
 
-        public SubCategory SelectedCategory
+        public Category SelectedCategory
         {
             get { return _selectedCategory; }
             set

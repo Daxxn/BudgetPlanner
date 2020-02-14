@@ -107,13 +107,13 @@
 
                                 <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
                                 <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2" Style="{DynamicResource Border_TextBox}">
-                                    <TextBlock Text="{Binding Path=SelectedIncome.Category}"
+                                    <TextBlock Text="{Binding Path=SelectedIncome.Name}"
                                        Background="AliceBlue"/>
                                 </Border>
 
                                 <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
                                 <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2" Style="{DynamicResource Border_TextBox}">
-                                    <TextBlock Text="{Binding Path=SelectedIncome.Value, Mode=OneWay, StringFormat=C}"
+                                    <TextBlock Text="{Binding Path=SelectedIncome.Amount, Mode=OneWay, StringFormat=C}"
                                        Background="AliceBlue"/>
                                 </Border>
 
@@ -148,13 +148,13 @@
 
                                 <TextBlock Grid.Column="0" Grid.Row="1">Name:</TextBlock>
                                 <Border Grid.Column="1" Grid.Row="1" Margin="0,2,0,2" Style="{DynamicResource Border_TextBox}">
-                                    <TextBlock Text="{Binding Path=SelectedExpense.Category}"
+                                    <TextBlock Text="{Binding Path=SelectedExpense.Name}"
                                        Background="AliceBlue"/>
                                 </Border>
 
                                 <TextBlock Grid.Column="0" Grid.Row="2">Amount:</TextBlock>
                                 <Border Grid.Column="1" Grid.Row="2" Margin="0,2,0,2" Style="{DynamicResource Border_TextBox}">
-                                    <TextBlock Text="{Binding Path=SelectedExpense.Value, Mode=OneWay, StringFormat=C}"
+                                    <TextBlock Text="{Binding Path=SelectedExpense.Amount, Mode=OneWay, StringFormat=C}"
                                        Background="AliceBlue"/>
                                 </Border>
 
@@ -231,7 +231,7 @@
                           Grid.Column="0" Grid.Row="0" Margin="0,0,2,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Income" Binding="{Binding Path=Name, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay, StringFormat=C}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Amount, Mode=OneWay, StringFormat=C}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <!--#endregion-->
@@ -242,7 +242,7 @@
                           Grid.Column="1" Grid.Row="0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Expense" Binding="{Binding Path=Name, Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Value, Mode=OneWay, StringFormat=C}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Path=Amount, Mode=OneWay, StringFormat=C}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <!--#endregion-->
@@ -265,9 +265,9 @@
                   SelectedItem="{Binding Path=SelectedIncome}"
                   Grid.Column="0" Grid.Row="0" Margin="0,0,0,4">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
-                        <DataGridTextColumn Header="Income" Binding="{Binding Path=Category, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay, StringFormat=C}"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Path=IDNumber}"/>
+                        <DataGridTextColumn Header="Income" Binding="{Binding Path=Name, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Amount, Mode=TwoWay, StringFormat=C}"/>
                         <DataGridTemplateColumn Header="Sub-Category">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -298,9 +298,9 @@
                   SelectedItem="{Binding Path=SelectedExpense}"
                   Grid.Column="1" Grid.Row="0" Margin="4,0,0,4">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Path=IdNumber}"/>
-                        <DataGridTextColumn Header="Expense" Binding="{Binding Path=Category, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Value, Mode=TwoWay, StringFormat=C}"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Path=IDNumber}"/>
+                        <DataGridTextColumn Header="Expense" Binding="{Binding Path=Name, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Path=Amount, Mode=TwoWay, StringFormat=C}"/>
                         <DataGridTemplateColumn Header="Sub-Category">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

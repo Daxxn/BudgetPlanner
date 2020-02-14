@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace BudgetPlannerMainWPF.Enums
 {
-    enum AddTo
+    public enum AddTo
     {
         AddToFront = 1,
         AddToEnd = 2,
         CreateNew = 3
+    }
+
+    public enum ExtensionType
+    {
+        Main,
+        Budget,
+        Category,
+        Paystub
     }
 }

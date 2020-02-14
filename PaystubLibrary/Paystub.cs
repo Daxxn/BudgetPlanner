@@ -10,7 +10,7 @@ namespace PaystubLibrary
     {
         #region Properties & Variables
         public string Name { get; set; } = "No Name";
-        public int Index { get; set; }
+        public uint Index { get; set; }
         public decimal Gross { get; set; }
         public decimal Net { get; set; }
         public decimal Percent { get; set; }
@@ -19,7 +19,7 @@ namespace PaystubLibrary
 
         #region Constructors
         public Paystub() { }
-        public Paystub(string name, int index, decimal gross, decimal net)
+        public Paystub(string name, uint index, decimal gross, decimal net)
         {
             Name = name;
             Index = index;
@@ -27,7 +27,7 @@ namespace PaystubLibrary
             Net = net;
         }
 
-        public Paystub(string name, int index, decimal amount, bool isGross)
+        public Paystub(string name, uint index, decimal amount, bool isGross)
         {
             Name = name;
             Index = index;
@@ -42,7 +42,7 @@ namespace PaystubLibrary
             }
         }
 
-        public Paystub(int index, decimal amount, bool isGross)
+        public Paystub(uint index, decimal amount, bool isGross)
         {
             Index = index;
 
@@ -56,16 +56,24 @@ namespace PaystubLibrary
             }
         }
 
-        public Paystub(int index, decimal gross, decimal net)
+        public Paystub(uint index, decimal gross, decimal net)
         {
             Index = index;
             Gross = gross;
             Net = net;
         }
 
-        public Paystub(int index, decimal gross, decimal net, decimal percent)
+        public Paystub(uint index, decimal gross, decimal net, decimal percent)
         {
             Index = index;
+            Gross = gross;
+            Net = net;
+            Percent = percent;
+        }
+        public Paystub(uint index, string name, decimal gross, decimal net, decimal percent)
+        {
+            Index = index;
+            Name = name;
             Gross = gross;
             Net = net;
             Percent = percent;
@@ -196,7 +204,7 @@ namespace PaystubLibrary
         /// </summary>
         /// <param name="currentIndex"></param>
         /// <returns></returns>
-        public static Paystub Default(int currentIndex)
+        public static Paystub Default(uint currentIndex)
         {
             return new Paystub()
             {

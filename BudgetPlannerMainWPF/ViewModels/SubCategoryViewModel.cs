@@ -18,11 +18,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         private IEventAggregator _eventAggregator;
         private IFileBrowser _fileBrowser;
 
-        private BindableCollection<SubCategory> _incomeCategories = new BindableCollection<SubCategory>();
-        private BindableCollection<SubCategory> _expenseCategories = new BindableCollection<SubCategory>();
+        private BindableCollection<Category> _incomeCategories = new BindableCollection<Category>();
+        private BindableCollection<Category> _expenseCategories = new BindableCollection<Category>();
 
-        private SubCategory _selectedIncomeCategory;
-        private SubCategory _selectedExpenseCategory;
+        private Category _selectedIncomeCategory;
+        private Category _selectedExpenseCategory;
 
         private string _newIncomeName = String.Empty;
         private string _newExpenseName = String.Empty;
@@ -40,15 +40,15 @@ namespace BudgetPlannerMainWPF.ViewModels
         public SubCategoryViewModel()
         {
             #region Test Data. Should get replaced on startup.
-            IncomeCategories.Add(new SubCategory("Temp Income Category 1"));
-            IncomeCategories.Add(new SubCategory("Temp Income Category 2"));
-            IncomeCategories.Add(new SubCategory("Temp Income Category 3"));
-            IncomeCategories.Add(new SubCategory("Should not be shown."));
+            IncomeCategories.Add(new Category("Temp Income Category 1"));
+            IncomeCategories.Add(new Category("Temp Income Category 2"));
+            IncomeCategories.Add(new Category("Temp Income Category 3"));
+            IncomeCategories.Add(new Category("Should not be shown."));
 
-            ExpenseCategories.Add(new SubCategory("Temp Expense Category 1"));
-            ExpenseCategories.Add(new SubCategory("Temp Expense Category 2"));
-            ExpenseCategories.Add(new SubCategory("Temp Expense Category 3"));
-            ExpenseCategories.Add(new SubCategory("Should not be shown."));
+            ExpenseCategories.Add(new Category("Temp Expense Category 1"));
+            ExpenseCategories.Add(new Category("Temp Expense Category 2"));
+            ExpenseCategories.Add(new Category("Temp Expense Category 3"));
+            ExpenseCategories.Add(new Category("Should not be shown."));
             #endregion
 
             SubCategoryView.SendEnter += this.SubCategoryView_SendKeyPress;
@@ -67,8 +67,8 @@ namespace BudgetPlannerMainWPF.ViewModels
         /// </summary>
         public void Initialize()
         {
-            IncomeCategories = new BindableCollection<SubCategory>();
-            ExpenseCategories = new BindableCollection<SubCategory>();
+            IncomeCategories = new BindableCollection<Category>();
+            ExpenseCategories = new BindableCollection<Category>();
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace BudgetPlannerMainWPF.ViewModels
             IncomeCategories.Clear();
             ExpenseCategories.Clear();
 
-            SelectedIncomeCategory = new SubCategory();
-            SelectedExpenseCategory = new SubCategory();
+            SelectedIncomeCategory = new Category();
+            SelectedExpenseCategory = new Category();
         }
 
         #region -- Buttons
@@ -106,11 +106,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if(NewIncomeName == String.Empty)
             {
-                IncomeCategories.Add(new SubCategory("Default"));
+                IncomeCategories.Add(new Category("Default"));
             }
             else
             {
-                IncomeCategories.Add(new SubCategory(NewIncomeName));
+                IncomeCategories.Add(new Category(NewIncomeName));
                 NewIncomeName = String.Empty;
             }
         }
@@ -130,11 +130,11 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             if(NewExpenseName == String.Empty)
             {
-                ExpenseCategories.Add(new SubCategory("Default"));
+                ExpenseCategories.Add(new Category("Default"));
             }
             else
             {
-                ExpenseCategories.Add(new SubCategory(NewExpenseName));
+                ExpenseCategories.Add(new Category(NewExpenseName));
                 NewExpenseName = String.Empty;
             }
         }
@@ -190,8 +190,8 @@ namespace BudgetPlannerMainWPF.ViewModels
 
         public void Handle(UpdateSubCatEvent message)
         {
-            IncomeCategories = new BindableCollection<SubCategory>(message.IncomeSubs);
-            ExpenseCategories = new BindableCollection<SubCategory>(message.ExpenseSubs);
+            IncomeCategories = new BindableCollection<Category>(message.IncomeSubs);
+            ExpenseCategories = new BindableCollection<Category>(message.ExpenseSubs);
         }
         #endregion
         #endregion
@@ -234,7 +234,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public BindableCollection<SubCategory> IncomeCategories
+        public BindableCollection<Category> IncomeCategories
         {
             get { return _incomeCategories; }
             set
@@ -244,7 +244,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public BindableCollection<SubCategory> ExpenseCategories
+        public BindableCollection<Category> ExpenseCategories
         {
             get { return _expenseCategories; }
             set
@@ -254,7 +254,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public SubCategory SelectedIncomeCategory
+        public Category SelectedIncomeCategory
         {
             get { return _selectedIncomeCategory; }
             set
@@ -264,7 +264,7 @@ namespace BudgetPlannerMainWPF.ViewModels
             }
         }
 
-        public SubCategory SelectedExpenseCategory
+        public Category SelectedExpenseCategory
         {
             get { return _selectedExpenseCategory; }
             set

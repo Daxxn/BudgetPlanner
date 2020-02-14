@@ -60,7 +60,7 @@ namespace BudgetPlannerMainWPF.ViewModels
         {
             Paystub temp = new Paystub()
             {
-                Index = PaystubDataList.Count + 1
+                Index = (uint)PaystubDataList.Count + 1
             };
 
             if (NameInput != null)

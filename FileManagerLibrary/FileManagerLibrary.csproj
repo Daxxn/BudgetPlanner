@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2162E53E-A177-4DA2-8D40-B4F6478A7AB2}</ProjectGuid>
+    <ProjectGuid>{0E11AD79-26B6-473E-B323-69EEF509B4FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BudgetPlannerLib</RootNamespace>
-    <AssemblyName>BudgetPlannerLib</AssemblyName>
+    <RootNamespace>FileManagerLibrary</RootNamespace>
+    <AssemblyName>FileManagerLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,14 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\BaseColumn.cs" />
-    <Compile Include="Models\Expense.cs" />
-    <Compile Include="Models\IEquals.cs" />
-    <Compile Include="Models\Income.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="TestDataAccesser.cs" />
+    <Compile Include="BudgetFile.cs" />
+    <Compile Include="CategoryFile.cs" />
+    <Compile Include="Element.cs" />
+    <Compile Include="FileModel.cs" />
+    <Compile Include="MainFile.cs" />
+    <Compile Include="OpenController.cs" />
+    <Compile Include="PaystubFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveController.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BudgetPlannerLib\BudgetPlannerLib.csproj">
+      <Project>{2162e53e-a177-4da2-8d40-b4f6478a7ab2}</Project>
+      <Name>BudgetPlannerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaystubLibrary\PaystubLibrary.csproj">
+      <Project>{e3762747-1e2c-4dcb-8f03-b1cf65df3441}</Project>
+      <Name>PaystubLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

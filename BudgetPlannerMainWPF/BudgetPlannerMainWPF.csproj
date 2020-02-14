@@ -181,6 +181,10 @@
       <Project>{2162e53e-a177-4da2-8d40-b4f6478a7ab2}</Project>
       <Name>BudgetPlannerLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileManagerLibrary\FileManagerLibrary.csproj">
+      <Project>{0E11AD79-26B6-473E-B323-69EEF509B4FB}</Project>
+      <Name>FileManagerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PaystubLibrary\PaystubLibrary.csproj">
       <Project>{e3762747-1e2c-4dcb-8f03-b1cf65df3441}</Project>
       <Name>PaystubLibrary</Name>

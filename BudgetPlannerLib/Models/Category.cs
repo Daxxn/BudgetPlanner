@@ -2,18 +2,23 @@
 
 namespace BudgetPlannerLib.Models
 {
-    public class SubCategory : IEquals
+    public class Category : IEquals
     {
         #region - Fields
         private string _name;
-        private decimal _value = 0;
+        private decimal _amount;
         #endregion
 
         #region - Constructors
-        public SubCategory() { }
-        public SubCategory(string subCat)
+        public Category() { }
+        public Category(string name)
         {
-            Name = subCat;
+            Name = name;
+        }
+        public Category(string name, decimal amount)
+        {
+            Name = name;
+            Amount = amount;
         }
         #endregion
 
@@ -23,22 +28,22 @@ namespace BudgetPlannerLib.Models
         /// </summary>
         /// <param name="fields">String array from the Parser.</param>
         /// <returns>Fresh SubCategory</returns>
-        public static SubCategory FromFields(string[] fields)
+        public static Category FromFields(string[] fields)
         {
-            return new SubCategory()
+            return new Category()
             {
                 Name = fields[0],
-                Value = 0
+                Amount = 0
             };
         }
 
-        public override Boolean Equals(Object obj)
-        {
-            var a = obj as SubCategory;
-            return a != null &&
-                this.Name == a.Name &&
-                this.Value == a.Value;
-        }
+        //public override Boolean Equals(Object obj)
+        //{
+        //    var a = obj as Category;
+        //    return a != null &&
+        //        this.Name == a.Name &&
+        //        this.Value == a.Value;
+        //}
         #endregion
 
         #region - Properties
@@ -58,12 +63,12 @@ namespace BudgetPlannerLib.Models
         /// <summary>
         /// SubCategory Total Value
         /// </summary>
-        public decimal Value
+        public decimal Amount
         {
-            get { return _value; }
+            get { return _amount; }
             set
             {
-                _value = value;
+                _amount = value;
             }
         }
         #endregion

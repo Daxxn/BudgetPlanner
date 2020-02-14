@@ -1,9 +1,12 @@
 ﻿using System;
+using BudgetPlannerMainWPF.Enums;
 
 namespace BudgetPlannerMainWPF
 {
     public interface IFileBrowser
     {
+        Tuple<string, bool> SaveFileAccess(string directory, string fileName, ExtensionType extension, string dialogTitle);
+
         /// <summary>
         /// Opens the WPF save file dialog window.
         /// </summary>
@@ -22,6 +25,8 @@ namespace BudgetPlannerMainWPF
         /// <param name="isMainFile">Specifies what file extension to look for.</param>
         /// <returns>Returns the path to the selected file.</returns>
         Tuple<string, bool> SaveFileAccess(string initDir, string title, string projName, bool isMainFile);
+
+        Tuple<string, bool> OpenFileAccess(string directory, string fileName, ExtensionType extension, string dialogTitle);
 
         /// <summary>
         /// Opens the WPF open file dialog window.

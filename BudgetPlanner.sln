@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerMainWPF", "BudgetPlannerMainWPF\BudgetPlannerMainWPF.csproj", "{364C4824-38CC-4FB4-A4F1-5D64E5E1EAF1}"
 EndProject
@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerLib", "BudgetP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AECE9AAF-F66C-47D5-A4D5-71A1B7FDDF90}"
 	ProjectSection(SolutionItems) = preProject
+		DesktopMessage.txt = DesktopMessage.txt
 		Messages.txt = Messages.txt
 	EndProjectSection
 EndProject
@@ -17,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLParserLibrary", "..\XMLParserLibrary\XMLParserLibrary\XMLParserLibrary.csproj", "{5A2AA1B3-268D-4F09-8D10-0478B339F089}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaystubLibrary", "PaystubLibrary\PaystubLibrary.csproj", "{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagerLibrary", "FileManagerLibrary\FileManagerLibrary.csproj", "{0E11AD79-26B6-473E-B323-69EEF509B4FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +43,10 @@ Global
 		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3762747-1E2C-4DCB-8F03-B1CF65DF3441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E11AD79-26B6-473E-B323-69EEF509B4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E11AD79-26B6-473E-B323-69EEF509B4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E11AD79-26B6-473E-B323-69EEF509B4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E11AD79-26B6-473E-B323-69EEF509B4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
